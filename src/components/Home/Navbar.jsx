@@ -1,9 +1,9 @@
 // src/components/Navbar.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router';
-import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
 import { FaLeaf, FaBars, FaTimes, FaUserCircle } from 'react-icons/fa';
+import useAuth from '../../Hooks/useAuth';
 
 
 
