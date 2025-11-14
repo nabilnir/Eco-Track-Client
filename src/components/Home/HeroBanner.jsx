@@ -64,7 +64,7 @@ const HeroBanner = () => {
 
     const interval = setInterval(() => {
       nextSlide();
-    }, 5000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [currentSlide, slidesData.length]);
@@ -92,7 +92,7 @@ const HeroBanner = () => {
 
   if (loading) {
     return (
-      <div className="relative w-full h-[500px] lg:h-[70vh] flex items-center justify-center bg-gray-100 rounded-b-xl mb-12">
+      <div className="relative w-full h-[500px] lg:h-[70vh] flex items-center justify-center bg-gray-100">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
           <p className="text-gray-600">Loading...</p>
@@ -106,7 +106,7 @@ const HeroBanner = () => {
   }
 
   return (
-    <div className="relative w-full h-[500px] lg:h-[70vh] overflow-hidden rounded-b-xl shadow-lg mb-12">
+    <div className="relative w-full h-[500px] lg:h-[70vh] overflow-hidden shadow-lg">
       {/* Slides */}
       <div className="relative w-full h-full">
         {slidesData.map((slide, index) => (
@@ -119,21 +119,23 @@ const HeroBanner = () => {
             }`}
             style={{ backgroundImage: `url(${slide.imageSrc})` }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40 flex items-center">
-              <div className="max-w-4xl mx-auto px-6 lg:px-12 text-white">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-wide mb-4 drop-shadow-lg animate-fade-in-up">
-                  {slide.title}
-                </h1>
-                <p className="text-lg sm:text-xl mb-8 font-light drop-shadow-md max-w-2xl animate-fade-in-up animation-delay-200">
-                  {slide.subtitle}
-                </p>
-                <a 
-                  href={slide.ctaLink} 
-                  className="inline-flex items-center space-x-2 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg text-base font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg animate-fade-in-up animation-delay-400"
-                >
-                  <span>{slide.ctaText}</span>
-                  <FaArrowRight />
-                </a>
+            <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-black/30 flex items-center">
+              <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full">
+                <div className="max-w-3xl">
+                  <h1 className="text-white text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-wide mb-4 drop-shadow-lg animate-fade-in-up">
+                    {slide.title}
+                  </h1>
+                  <p className="text-white text-lg sm:text-xl mb-8 font-light drop-shadow-md animate-fade-in-up animation-delay-200">
+                    {slide.subtitle}
+                  </p>
+                  <a 
+                    href={slide.ctaLink} 
+                    className="inline-flex items-center space-x-2 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg text-base font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg animate-fade-in-up animation-delay-400"
+                  >
+                    <span>{slide.ctaText}</span>
+                    <FaArrowRight />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
