@@ -10,28 +10,28 @@ export default function UpcomingEvents() {
   const API_BASE = import.meta.env.VITE_API_URL || '';
 
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    const fetchEvents = async () => {
+      try {
+        if (!API_BASE) {
+          console.warn('VITE_API_URL not set. Skipping events fetch.');
+          setEvents([]);
+          return;
+        }
 
-  const fetchEvents = async () => {
-    try {
-      if (!API_BASE) {
-        console.warn('VITE_API_URL not set. Skipping events fetch.');
+        const res = await fetch(`${API_BASE}/api/events`);
+        if (!res.ok) throw new Error(`Failed to fetch events: ${res.status}`);
+        const data = await res.json();
+        setEvents(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error('Error fetching events:', err);
         setEvents([]);
-        return;
+      } finally {
+        setLoading(false);
       }
+    };
 
-      const res = await fetch(`${API_BASE}/api/events`);
-      if (!res.ok) throw new Error(`Failed to fetch events: ${res.status}`);
-      const data = await res.json();
-      setEvents(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error('Error fetching events:', err);
-      setEvents([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+    fetchEvents();
+  }, [API_BASE]);
 
   if (loading) {
     return (
