@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import { FaFilter, FaPlus, FaUsers, FaCalendar, FaTimes } from 'react-icons/fa';
 import useAuth from '../Hooks/useAuth';
-
+import bannerImg from '../assets/coastsland.jpg'
 
 const Challenges = () => {
   const [challenges, setChallenges] = useState([]);
@@ -96,11 +96,30 @@ const Challenges = () => {
     filters.maxParticipants;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50">
+      {/* Banner with background image */}
+      <div
+        className="relative w-full h-[260px] md:h-[340px] lg:h-[420px] bg-cover bg-center shadow-md mb-12"
+        style={{ backgroundImage: `url(${bannerImg})` }}
+      >
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-black/40" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white drop-shadow-lg">
+            Sustainability Challenges
+          </h1>
+          <p className="mt-3 text-lg md:text-xl text-white/90 max-w-3xl drop-shadow-md">
+            Discover and join challenges to make a positive impact on our planet
+          </p>
+        </div>
+      </div>
+
+      {/* Main content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">All Challenges</h1>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">All Challenges</h2>
             <p className="text-gray-600">Found {challenges.length} challenges</p>
           </div>
           <div className="flex gap-3">

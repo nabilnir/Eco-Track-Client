@@ -7,6 +7,10 @@ import Challenges from "../Pages/Challenges";
 import ChallengeDetails from "../Pages/ChallengeDetails";
 import ProtectedRoutes from "./ProtectedRoutes";
 import AddChallenge from "../Pages/AddChallenge";
+import MyActivities from "../Pages/MyActivities";
+import JoinChallenge from "../Pages/JoinChallenge";
+import ActivityDetail from "../Pages/ActivityDetails";
+import Error from "../components/Error/Error";
 
 const router = createBrowserRouter([
   {
@@ -37,9 +41,25 @@ const router = createBrowserRouter([
       {
         path: 'challenges/add',
         element : <AddChallenge />
+      },
+      {
+        path: '/my-activities',
+        element: <MyActivities />
+      },
+      {
+        path: '/challenges/join/:id',
+        element: <JoinChallenge />
+      },
+      {
+        path: '/my-activities/:id',
+        element: <ActivityDetail />
       }
     ]
   },
+  {
+    path: '*',
+    Component: Error
+  }
 ]);
 
 
