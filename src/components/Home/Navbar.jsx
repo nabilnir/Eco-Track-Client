@@ -94,7 +94,23 @@ const Navbar = () => {
               >
                 My Activities
               </NavLink>
+              
+              
             )}
+            {
+              user &&(
+                <NavLink
+                to="/myprofile"
+                className={({ isActive }) =>
+                  `text-gray-700 hover:text-green-600 transition duration-300 font-medium relative py-1 ${
+                    isActive ? 'text-green-600' : ''
+                  }`
+                }
+              >
+                My Profile
+              </NavLink>
+              )
+            }
           </div>
           
           {/* Right Section (Auth/User Menu) */}

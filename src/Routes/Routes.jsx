@@ -11,6 +11,7 @@ import MyActivities from "../Pages/MyActivities";
 import JoinChallenge from "../Pages/JoinChallenge";
 import ActivityDetail from "../Pages/ActivityDetails";
 import Error from "../components/Error/Error";
+import MyProfile from "../Pages/MyProfile";
 
 
 const router = createBrowserRouter([
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
         Component : Challenges
       },
       {
+        path:'/myprofile',
+        element: <MyProfile />
+      },
+      {
         path: '/challenges/:id',
         Component: ChallengeDetails
       },
@@ -55,6 +60,7 @@ const router = createBrowserRouter([
         path: '/my-activities/:id',
         element: <ActivityDetail />
       }
+
     ]
   },
   {
