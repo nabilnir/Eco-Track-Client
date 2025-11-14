@@ -12,6 +12,7 @@ import JoinChallenge from "../Pages/JoinChallenge";
 import ActivityDetail from "../Pages/ActivityDetails";
 import Error from "../components/Error/Error";
 
+
 const router = createBrowserRouter([
   {
     path: "/",
