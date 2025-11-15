@@ -1,35 +1,36 @@
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router';
-import { toast } from 'react-toastify';
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router';
+import toast from 'react-hot-toast';
+import useAuth from '../Hooks/useAuth';
 
 const ActivityDetail = () => {
   const { id } = useParams();
+  const { user } = useAuth();
   const [activity, setActivity] = useState(null);
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState('');
   const [updating, setUpdating] = useState(false);
 
+  const API_BASE = import.meta.env.VITE_API_URL || '';
+
   useEffect(() => {
     fetchActivity();
-    
   }, [id]);
 
   const fetchActivity = async () => {
     try {
-      setLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user-challenges/${id}`);
-      if (!response.ok) throw new Error(`Failed to load (${response.status})`);
+      const response = await fetch(`${API_BASE}/api/user-challenges/${user.email}`);
       const data = await response.json();
-
+      const foundActivity = data.find(item => item._id === id);
       
-      setActivity(data || null);
-      setProgress(Number(data?.progress ?? 0));
-      setStatus(data?.status ?? 'Not Started');
+      if (foundActivity) {
+        setActivity(foundActivity);
+        setProgress(foundActivity.progress);
+        setStatus(foundActivity.status);
+      }
     } catch (error) {
       console.error('Failed to fetch activity:', error);
-      setActivity(null);
-      toast.error('Failed to load activity.');
     } finally {
       setLoading(false);
     }
@@ -38,17 +39,17 @@ const ActivityDetail = () => {
   const handleUpdate = async () => {
     setUpdating(true);
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user-challenges/${id}`, {
+      const response = await fetch(`${API_BASE}/api/user-challenges/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ progress: Number(progress), status })
+        body: JSON.stringify({ progress: parseInt(progress), status })
       });
 
       if (response.ok) {
         toast.success('Progress updated successfully!');
-        await fetchActivity();
+        fetchActivity();
       } else {
         toast.error('Failed to update progress');
       }
@@ -68,21 +69,13 @@ const ActivityDetail = () => {
     );
   }
 
-  
-  if (!activity || !activity.challenge) {
+  if (!activity) {
     return (
       <div className="min-h-screen bg-gray-50 py-12 flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-gray-500 mb-6">Activity not found or missing challenge data.</p>
-          <Link to="/my-activities" className="text-emerald-600 hover:text-emerald-700">
-            ← Back to My Activities
-          </Link>
-        </div>
+        <p className="text-gray-500">Activity not found</p>
       </div>
     );
   }
-
-  const challenge = activity.challenge;
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
@@ -94,15 +87,15 @@ const ActivityDetail = () => {
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           <div className="relative h-64">
             <img
-              src={challenge.imageUrl ?? '/assets/placeholder.jpg'}
-              alt={challenge.title ?? 'Challenge'}
+              src={activity.challenge.imageUrl}
+              alt={activity.challenge.title}
               className="w-full h-full object-cover"
             />
           </div>
 
           <div className="p-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">{challenge.title ?? 'Untitled Challenge'}</h1>
-            <p className="text-gray-600 mb-6">{challenge.description ?? ''}</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">{activity.challenge.title}</h1>
+            <p className="text-gray-600 mb-6">{activity.challenge.description}</p>
 
             <div className="bg-gray-50 rounded-lg p-6 mb-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Update Progress</h2>
@@ -116,8 +109,8 @@ const ActivityDetail = () => {
                   min="0"
                   max="100"
                   value={progress}
-                  onChange={(e) => setProgress(Number(e.target.value))}
-                  className="w-full"
+                  onChange={(e) => setProgress(e.target.value)}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                 />
                 <div className="w-full bg-gray-200 rounded-full h-3 mt-2">
                   <div
@@ -153,12 +146,20 @@ const ActivityDetail = () => {
               <div className="bg-gray-50 rounded-lg p-4">
                 <p className="text-gray-600">Joined Date</p>
                 <p className="font-semibold text-gray-900">
-                  {activity.joinDate ? new Date(activity.joinDate).toLocaleDateString() : '—'}
+                  {new Date(activity.joinDate).toLocaleDateString()}
                 </p>
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
                 <p className="text-gray-600">Duration</p>
-                <p className="font-semibold text-gray-900">{challenge.duration ?? '—'} days</p>
+                <p className="font-semibold text-gray-900">{activity.challenge.duration} days</p>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4">
+                <p className="text-gray-600">Target</p>
+                <p className="font-semibold text-gray-900">{activity.challenge.target}</p>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4">
+                <p className="text-gray-600">Impact Metric</p>
+                <p className="font-semibold text-gray-900">{activity.challenge.impactMetric}</p>
               </div>
             </div>
           </div>

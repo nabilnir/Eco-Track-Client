@@ -12,6 +12,7 @@ import JoinChallenge from "../Pages/JoinChallenge";
 import ActivityDetail from "../Pages/ActivityDetails";
 import Error from "../components/Error/Error";
 import MyProfile from "../Pages/MyProfile";
+import Tips from "../Pages/Tips";
 
 
 const router = createBrowserRouter([
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: '/challenges',
         Component : Challenges
+      },
+      {
+        path: '/tips',
+        element: <Tips />
       },
       {
         path:'/myprofile',

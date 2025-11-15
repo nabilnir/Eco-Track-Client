@@ -111,6 +111,20 @@ const Navbar = () => {
               </NavLink>
               )
             }
+            {
+              user &&(
+                <NavLink
+                to="/tips"
+                className={({ isActive }) =>
+                  `text-gray-700 hover:text-green-600 transition duration-300 font-medium relative py-1 ${
+                    isActive ? 'text-green-600' : ''
+                  }`
+                }
+              >
+                Tips
+              </NavLink>
+              )
+            }
           </div>
           
           {/* Right Section (Auth/User Menu) */}

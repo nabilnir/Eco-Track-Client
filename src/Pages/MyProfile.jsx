@@ -114,7 +114,7 @@ const MyProfile = () => {
 
           <h3 className="text-xl font-bold text-text-dark border-b pb-2 mb-4">My Status</h3>
 
-          {/* User Status (Placeholder for current challenge status) */}
+          {/* User Status */}
           <div className="bg-green-50 p-4 rounded-lg border border-green-200">
               <h4 className="text-lg font-semibold text-green-700 mb-2">Current Active Challenge:</h4>
               <p className="text-gray-600">
