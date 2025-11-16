@@ -83,6 +83,16 @@ const Navbar = () => {
             >
               Challenges
             </NavLink>
+            <NavLink
+              to="/events"
+              className={({ isActive }) =>
+                `text-gray-700 hover:text-green-600 transition duration-300 font-medium relative py-1 ${
+                  isActive ? 'text-green-600' : ''
+                }`
+              }
+            >
+              Events
+            </NavLink>
             {user && (
               <NavLink
                 to="/my-activities"
@@ -214,6 +224,20 @@ const Navbar = () => {
               onClick={closeMenus}
             >
               Challenges
+            </NavLink>
+            <NavLink
+              to="/tips"
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-green-600 w-full text-left"
+              onClick={closeMenus}
+            >
+              Tips
+            </NavLink>
+            <NavLink
+              to="/events"
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-green-600 w-full text-left"
+              onClick={closeMenus}
+            >
+              Events
             </NavLink>
             {user && (
               <>

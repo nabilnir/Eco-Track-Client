@@ -5,18 +5,25 @@ import WhyGoGreen from "../components/Home/Static/WhyGoGreen";
 import HowItWorks from "../components/Home/Static/HowItWorks";
 import ActiveChallenges from "../components/Home/ActiveChallenges";
 import RecentTips from "../components/Home/RecentTips";
-import UpcomingEvents from "../components/Home/UpComingEvents";
+import UpComingEvents from '../components/Home/UpComingEvents'
+import { Toaster } from "react-hot-toast";
+
 
 const HomeLayout = () => {
   return (
     <div>
+      <Toaster position="top-right" />
       <HeroBanner />
       <LiveStatistics />
       <ActiveChallenges />
       <RecentTips />
-      <UpcomingEvents />
+      <UpComingEvents />
       <WhyGoGreen />
       <HowItWorks />
+
+
+      
+      
     </div>
   );
 };

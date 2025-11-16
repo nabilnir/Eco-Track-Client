@@ -209,7 +209,7 @@ const LiveStatistics = () => {
 
         <div className="mt-12 text-center">
           <p className="text-white/90 text-lg">
-            🌍 Join our growing community of environmental champions
+             Join our growing community of environmental champions
           </p>
           <p className="text-emerald-100 text-sm mt-2">
             Updated live • Last synced: {new Date().toLocaleTimeString()}

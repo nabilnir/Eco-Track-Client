@@ -47,7 +47,7 @@ const HeroBanner = () => {
             _id: '3',
             title: 'Connect with Community',
             subtitle: 'Join thousands making sustainable choices every day',
-            imageSrc: 'https://images.unsplash.com/photo-1524169358666-79f22534bc6e?w=1200',
+            imageSrc: 'https://imgs.search.brave.com/SL6JhBzOy5OSA1Ze9BJ7Jyi20d0Qn7Q9UXuA4dEb1js/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9lY29j/aGFsbGVuZ2UtbWFy/a2V0aW5nLnNmbzMu/Y2RuLmRpZ2l0YWxv/Y2VhbnNwYWNlcy5j/b20vaW1hZ2VzL0hl/cm9fU2l6ZWQud2lk/dGgtMTIwMC5qcGc',
             ctaText: 'Join Now',
             ctaLink: '/register'
           }

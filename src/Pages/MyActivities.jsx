@@ -54,7 +54,7 @@ const MyActivities = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-0">
+    <div className="min-h-screen bg-gray-50 py-0 mt-18">
      
       <header className="w-full overflow-hidden">
         <div

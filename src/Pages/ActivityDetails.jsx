@@ -78,7 +78,7 @@ const ActivityDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gray-50 py-12 mt-18">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link to="/my-activities" className="text-emerald-600 hover:text-emerald-700 mb-6 inline-block">
           ← Back to My Activities

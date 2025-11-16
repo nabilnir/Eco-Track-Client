@@ -3,7 +3,7 @@ import { FaMapMarkerAlt, FaUsers } from 'react-icons/fa';
 import Spinner from '../Spinner/Spinner';
 import { Link } from 'react-router';
 
-export default function UpcomingEvents() {
+const UpComingEvents= () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -104,7 +104,19 @@ export default function UpcomingEvents() {
             ))}
           </div>
         )}
+
+        <div className="mt-12 text-center">
+          <Link
+            to="/events"
+            className="inline-block bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors shadow-lg hover:shadow-xl"
+          >
+            View All Events →
+          </Link>
+        </div>
       </div>
+      
     </section>
   );
-}
+};
+
+export default UpComingEvents;
