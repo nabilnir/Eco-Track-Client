@@ -79,7 +79,9 @@ const RecentTips= () => {
         </div>
 
         <div className="mt-8 text-center">
-          <Link to="/tips" className="inline-block bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors shadow-lg hover:shadow-xl">
+          <Link to="/tips" className="inline-block bg-emerald-500
+           hover:bg-emerald-600 text-white px-8 py-3 rounded-lg 
+           font-semibold transition-colors shadow-lg hover:shadow-xl">
             View All Tips →
           </Link>
         </div>

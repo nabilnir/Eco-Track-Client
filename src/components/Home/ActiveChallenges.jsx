@@ -1,4 +1,3 @@
-// src/pages/Home.jsx
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import { FaUsers, FaArrowRight, FaCalendar } from 'react-icons/fa';
@@ -86,7 +85,9 @@ const ActiveChallenges = () => {
         <div className="text-center mt-12">
           <Link
             to="/challenges"
-            className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors shadow-lg hover:shadow-xl"
+            className="inline-flex items-center gap-2 bg-emerald-500
+             hover:bg-emerald-600 text-white px-8 py-3 rounded-lg
+              font-semibold transition-colors shadow-lg hover:shadow-xl"
           >
             View All Challenges <FaArrowRight />
           </Link>

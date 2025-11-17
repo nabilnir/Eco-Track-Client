@@ -14,7 +14,7 @@ const Footer = () => {
         {/* Footer Content Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 border-b border-gray-700 pb-10">
           
-          {/* Section 1: Logo & Description */}
+          {/*  Logo & Description */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2 text-2xl font-bold text-green-400">
               <img src={logo} className='w-12 h-12'  alt="" />
@@ -45,7 +45,7 @@ const Footer = () => {
             </div>
           </div>
           
-          {/* Section 2: Quick Links */}
+          {/*Quick Links */}
           <div>
             <h3 className="text-lg font-semibold text-white mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
@@ -56,7 +56,7 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* Section 3: Support */}
+          {/*  Support */}
           <div>
             <h3 className="text-lg font-semibold text-white mb-4">Support</h3>
             <ul className="space-y-2 text-sm">
@@ -67,7 +67,7 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* Section 4: Newsletter */}
+          {/*  Newsletter */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-white mb-4">Newsletter</h3>
             <p className="text-sm">Stay updated with our latest challenges and eco-tips.</p>
@@ -86,7 +86,7 @@ const Footer = () => {
           </div>
         </div>
         
-        {/* Footer Bottom (Copyright & Note) */}
+        {/* Footer Bottom  */}
         <div className="flex flex-col md:flex-row justify-between items-center pt-6 text-sm text-gray-400 space-y-3 md:space-y-0">
           <p>&copy; 2025 EcoTrack. All rights reserved.</p>
           <p className="text-center md:text-right">

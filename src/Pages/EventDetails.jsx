@@ -217,7 +217,8 @@ const EventDetails = () => {
 
             <button 
               onClick={handleRegister} 
-              className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-4 rounded-lg font-bold text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-4 rounded-lg
+               font-bold text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={registering}
             >
               {registering ? 'Registering...' : 'Register for Event'}

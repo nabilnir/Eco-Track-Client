@@ -21,14 +21,14 @@ const LiveStatistics = () => {
     treesPlanted: 0
   });
 
-  // use Vite env var
+  
   const API_BASE = import.meta.env.VITE_API_URL || '';
 
   useEffect(() => {
     fetchStatistics();
 
-    // Auto refresh every 30 seconds
-    const interval = setInterval(fetchStatistics, 30000);
+    
+    const interval = setInterval(fetchStatistics, 3000);
     return () => clearInterval(interval);
   }, []);
 
@@ -62,7 +62,7 @@ const LiveStatistics = () => {
     }
   };
 
-  // Animate numbers on load
+  // Animate numbers 
   useEffect(() => {
     if (loading) return;
 

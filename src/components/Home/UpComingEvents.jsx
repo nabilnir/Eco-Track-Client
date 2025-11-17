@@ -62,7 +62,8 @@ const UpComingEvents= () => {
             {events.map((event) => (
               <div
                 key={event._id ?? event.id}
-                className="bg-gradient-to-br from-emerald-50 to-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow border border-emerald-100"
+                className="bg-gradient-to-br from-emerald-50 to-white rounded-xl
+                 shadow-md p-6 hover:shadow-xl transition-shadow border border-emerald-100"
               >
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 bg-emerald-500 text-white rounded-lg p-4 text-center">
@@ -94,7 +95,8 @@ const UpComingEvents= () => {
                   <div className="mt-4 text-right">
                     <Link
                       to={`/events/${event._id}`}
-                      className="inline-block text-emerald-600 hover:underline font-medium"
+                      className="inline-block text-emerald-600
+                       hover:underline font-medium"
                     >
                       View event →
                     </Link>
@@ -108,7 +110,9 @@ const UpComingEvents= () => {
         <div className="mt-12 text-center">
           <Link
             to="/events"
-            className="inline-block bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors shadow-lg hover:shadow-xl"
+            className="inline-block bg-emerald-500 hover:bg-emerald-600
+             text-white px-8 py-3 rounded-lg font-semibold 
+             transition-colors shadow-lg hover:shadow-xl"
           >
             View All Events →
           </Link>

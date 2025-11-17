@@ -163,7 +163,8 @@ const MyProfile = () => {
 
                 <button
                   onClick={handleLogout}
-                  className="w-full max-w-xs mt-6 flex items-center justify-center text-red-500 border-2 border-red-500 hover:bg-red-50 px-4 py-2 rounded-lg font-semibold transition-colors"
+                  className="w-full max-w-xs mt-6 flex items-center justify-center text-red-500 border-2
+                   border-red-500 hover:bg-red-50 px-4 py-2 rounded-lg font-semibold transition-colors"
                 >
                   <FaSignOutAlt className="mr-2" />
                   Logout
@@ -196,15 +197,18 @@ const MyProfile = () => {
                 <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
                   <h4 className="text-lg font-semibold text-emerald-700 mb-2">Current Active Challenge:</h4>
                   <p className="text-gray-600">
-                    <strong>{activeChallenge.challenge.title}</strong> - Progress: <span className="text-emerald-600 font-bold">{activeChallenge.progress}%</span>
+                    <strong>{activeChallenge.challenge.title}</strong> - Progress: 
+                    <span className="text-emerald-600 font-bold">{activeChallenge.progress}%</span>
                   </p>
-                  <Link to="/my-activities" className="text-emerald-600 font-medium mt-2 inline-block hover:underline text-sm">
+                  <Link to="/my-activities" className="text-emerald-600 font-medium
+                   mt-2 inline-block hover:underline text-sm">
                     Update Progress →
                   </Link>
                 </div>
               ) : (
                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <p className="text-gray-600">No active challenges. <Link to="/challenges" className="text-emerald-600 hover:underline font-semibold">Join one now!</Link></p>
+                  <p className="text-gray-600">No active challenges. <Link to="/challenges" 
+                  className="text-emerald-600 hover:underline font-semibold">Join one now!</Link></p>
                 </div>
               )}
             </div>

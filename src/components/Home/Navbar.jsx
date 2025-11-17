@@ -134,7 +134,7 @@ const Navbar = () => {
             
           </div>
           
-          {/* Right Section (Auth/User Menu) */}
+          {/* Right Section  */}
           <div className="flex items-center space-x-4" ref={menuRef}>
             {user ? (
               // User Menu
@@ -199,7 +199,7 @@ const Navbar = () => {
               </div>
             )}
 
-            {/* Mobile Menu Button (Hamburger) */}
+            {/* Mobile Menu Button */}
             <button
               className="md:hidden text-gray-600 hover:text-green-600 p-2"
               onClick={toggleMobileMenu}

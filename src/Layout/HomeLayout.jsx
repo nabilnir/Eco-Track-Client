@@ -22,10 +22,6 @@ const HomeLayout = () => {
       <UpComingEvents />
       <WhyGoGreen />
       <HowItWorks />
-
-
-      
-      
     </div>
   );
 };

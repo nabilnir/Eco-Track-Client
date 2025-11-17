@@ -135,13 +135,16 @@ const JoinChallenge = () => {
             <button
               onClick={handleJoin}
               disabled={joining}
-              className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-lg font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 bg-emerald-500 hover:bg-emerald-600
+               text-white py-3 rounded-lg font-bold transition-colors 
+               disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {joining ? 'Joining...' : 'Confirm Join'}
             </button>
             <button
               onClick={() => navigate(-1)}
-              className="px-6 bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 rounded-lg font-bold transition-colors"
+              className="px-6 bg-gray-200 hover:bg-gray-300 text-gray-700 
+              py-3 rounded-lg font-bold transition-colors"
             >
               Cancel
             </button>

@@ -117,7 +117,8 @@ const MyActivities = () => {
                   />
                   
                   <div
-                    className={`absolute top-4 right-4 text-white px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(uc.status)}`}
+                    className={`absolute top-4 right-4 text-white px-3 py-1 rounded-full 
+                      text-sm font-semibold ${getStatusColor(uc.status)}`}
                   >
                     {uc.status ?? 'Not Started'}
                   </div>

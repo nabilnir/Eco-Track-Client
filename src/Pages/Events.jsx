@@ -53,7 +53,7 @@ const Events = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-0">
-      {/* Hero banner with background image */}
+      {/* Hero banner  */}
       <header className="w-full overflow-hidden">
         <div
           className="relative w-full h-[260px] md:h-[340px] lg:h-[420px] bg-cover bg-center"
@@ -83,10 +83,12 @@ const Events = () => {
               <Link
                 key={event._id}
                 to={`/events/${event._id}`}
-                className="bg-gradient-to-br from-emerald-50 to-white rounded-xl shadow-md p-6 hover:shadow-xl transition-all duration-300 border border-emerald-100 group"
+                className="bg-gradient-to-br from-emerald-50 to-white rounded-xl shadow-md
+                 p-6 hover:shadow-xl transition-all duration-300 border border-emerald-100 group"
               >
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 bg-emerald-500 text-white rounded-lg p-4 text-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <div className="flex-shrink-0 bg-emerald-500 text-white rounded-lg p-4 text-center
+                   shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <div className="text-2xl font-bold">
                       {event.date ? new Date(event.date).getDate() : '-'}
                     </div>
@@ -97,7 +99,8 @@ const Events = () => {
                     </div>
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-emerald-600 transition-colors">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2
+                     group-hover:text-emerald-600 transition-colors">
                       {event.title}
                     </h3>
                     <p className="text-gray-600 text-sm mb-3 line-clamp-2">
