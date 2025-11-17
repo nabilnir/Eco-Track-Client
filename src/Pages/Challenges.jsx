@@ -133,16 +133,12 @@ const Challenges = () => {
             >
               <FaFilter /> Filters
             </button>
-            {(user? <Link
-                to="/challenges/add"
-                className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
-              >
-                <FaPlus /> Add Challenge
-              </Link> : <Link to='/login'> 
-                      
-              </Link>) (
-              
-            )}
+            <Link
+              to="/challenges/add"
+              className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
+            >
+              <FaPlus /> Add Challenge
+            </Link>
           </div>
         </div>
 

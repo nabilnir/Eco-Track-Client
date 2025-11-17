@@ -1,36 +1,61 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router';
+import { useParams, Link, useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
 import useAuth from '../Hooks/useAuth';
 
 const ActivityDetail = () => {
   const { id } = useParams();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [activity, setActivity] = useState(null);
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState('');
   const [updating, setUpdating] = useState(false);
+  const [error, setError] = useState(false);
 
   const API_BASE = import.meta.env.VITE_API_URL || '';
 
   useEffect(() => {
-    fetchActivity();
-  }, [id]);
+    if (user && user.email) {
+      fetchActivity();
+    }
+  }, [id, user]);
 
   const fetchActivity = async () => {
     try {
-      const response = await fetch(`${API_BASE}/api/user-challenges/${user.email}`);
+      const response = await fetch(`${API_BASE}/api/user-challenges/${encodeURIComponent(user.email)}`);
+      
+      if (!response.ok) {
+        setError(true);
+        toast.error('Failed to load activities');
+        setTimeout(() => {
+          navigate('/my-activities', { replace: true });
+        }, 2000);
+        return;
+      }
+
       const data = await response.json();
       const foundActivity = data.find(item => item._id === id);
       
       if (foundActivity) {
         setActivity(foundActivity);
-        setProgress(foundActivity.progress);
-        setStatus(foundActivity.status);
+        setProgress(foundActivity.progress || 0);
+        setStatus(foundActivity.status || 'Not Started');
+      } else {
+        setError(true);
+        toast.error('Activity not found');
+        setTimeout(() => {
+          navigate('/my-activities', { replace: true });
+        }, 2000);
       }
     } catch (error) {
       console.error('Failed to fetch activity:', error);
+      setError(true);
+      toast.error('Failed to load activity');
+      setTimeout(() => {
+        navigate('/my-activities', { replace: true });
+      }, 2000);
     } finally {
       setLoading(false);
     }
@@ -69,10 +94,14 @@ const ActivityDetail = () => {
     );
   }
 
-  if (!activity) {
+  if (error || !activity) {
     return (
       <div className="min-h-screen bg-gray-50 py-12 flex items-center justify-center">
-        <p className="text-gray-500">Activity not found</p>
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Activity not found</h2>
+          <p className="text-gray-600 mb-4">Redirecting to My Activities...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mx-auto"></div>
+        </div>
       </div>
     );
   }
@@ -87,15 +116,18 @@ const ActivityDetail = () => {
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           <div className="relative h-64">
             <img
-              src={activity.challenge.imageUrl}
-              alt={activity.challenge.title}
+              src={activity.challenge?.imageUrl || 'https://via.placeholder.com/800x400?text=Challenge'}
+              alt={activity.challenge?.title || 'Challenge'}
               className="w-full h-full object-cover"
+              onError={(e) => {
+                e.target.src = 'https://via.placeholder.com/800x400?text=Challenge+Image';
+              }}
             />
           </div>
 
           <div className="p-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">{activity.challenge.title}</h1>
-            <p className="text-gray-600 mb-6">{activity.challenge.description}</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">{activity.challenge?.title || 'Challenge'}</h1>
+            <p className="text-gray-600 mb-6">{activity.challenge?.description || 'No description available'}</p>
 
             <div className="bg-gray-50 rounded-lg p-6 mb-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Update Progress</h2>
@@ -136,7 +168,7 @@ const ActivityDetail = () => {
               <button
                 onClick={handleUpdate}
                 disabled={updating}
-                className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-lg font-bold transition-colors disabled:opacity-50"
+                className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-lg font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {updating ? 'Updating...' : 'Update Progress'}
               </button>
@@ -146,20 +178,20 @@ const ActivityDetail = () => {
               <div className="bg-gray-50 rounded-lg p-4">
                 <p className="text-gray-600">Joined Date</p>
                 <p className="font-semibold text-gray-900">
-                  {new Date(activity.joinDate).toLocaleDateString()}
+                  {activity.joinDate ? new Date(activity.joinDate).toLocaleDateString() : '—'}
                 </p>
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
                 <p className="text-gray-600">Duration</p>
-                <p className="font-semibold text-gray-900">{activity.challenge.duration} days</p>
+                <p className="font-semibold text-gray-900">{activity.challenge?.duration || '—'} days</p>
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
                 <p className="text-gray-600">Target</p>
-                <p className="font-semibold text-gray-900">{activity.challenge.target}</p>
+                <p className="font-semibold text-gray-900">{activity.challenge?.target || '—'}</p>
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
                 <p className="text-gray-600">Impact Metric</p>
-                <p className="font-semibold text-gray-900">{activity.challenge.impactMetric}</p>
+                <p className="font-semibold text-gray-900">{activity.challenge?.impactMetric || '—'}</p>
               </div>
             </div>
           </div>

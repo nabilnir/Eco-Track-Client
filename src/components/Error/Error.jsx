@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router';
+import error from '/error.png'
 
 const Error = () => {
   const navigate = useNavigate();
@@ -7,8 +8,9 @@ const Error = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="text-center">
-        <h1 className="text-9xl font-bold text-emerald-500 mb-4">404</h1>
+        
         <h2 className="text-3xl font-bold text-gray-900 mb-4">Page Not Found</h2>
+        <img src={error} alt=""  className='justify-center mx-auto sm:w-10/12 lg:w-[60%]'/>
         <p className="text-gray-600 mb-8">
           The page you're looking for doesn't exist or has been moved.
         </p>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router';
+import { useParams, Link, useNavigate } from 'react-router';
 import { FaMapMarkerAlt, FaUsers, FaCalendar, FaClock } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import useAuth from '../Hooks/useAuth';
@@ -8,11 +8,12 @@ import useTitle from '../Hooks/useTitle';
 const EventDetails = () => {
   const { id } = useParams();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [registering, setRegistering] = useState(false);
+  const [error, setError] = useState(false);
 
-  
   useTitle(event ? event.title : 'Event Details');
 
   const API_BASE = import.meta.env.VITE_API_URL || '';
@@ -23,15 +24,51 @@ const EventDetails = () => {
 
   const fetchEvent = async () => {
     try {
-      const response = await fetch(`${API_BASE}/api/events/${id}`);
-      if (!response.ok) {
-        throw new Error('Event not found');
+      
+      const objectIdRegex = /^[0-9a-fA-F]{24}$/;
+      if (!objectIdRegex.test(id)) {
+        setError(true);
+        toast.error('Invalid event ID');
+        setTimeout(() => {
+          navigate('/events', { replace: true });
+        }, 1500);
+        return;
       }
+
+      const response = await fetch(`${API_BASE}/api/events/${id}`);
+      
+      if (!response.ok) {
+        setError(true);
+        if (response.status === 404) {
+          toast.error('Event not found');
+        } else {
+          toast.error('Failed to load event');
+        }
+        setTimeout(() => {
+          navigate('/events', { replace: true });
+        }, 1500);
+        return;
+      }
+      
       const data = await response.json();
+      
+      if (!data || !data._id) {
+        setError(true);
+        toast.error('Event not found');
+        setTimeout(() => {
+          navigate('/events', { replace: true });
+        }, 1500);
+        return;
+      }
+      
       setEvent(data);
     } catch (error) {
       console.error('Failed to fetch event:', error);
       toast.error('Failed to load event');
+      setError(true);
+      setTimeout(() => {
+        navigate('/events', { replace: true });
+      }, 1500);
     } finally {
       setLoading(false);
     }
@@ -53,7 +90,7 @@ const EventDetails = () => {
 
       if (response.ok) {
         toast.success('Registered for event successfully!');
-        fetchEvent(); // Refresh event data to update attendees count
+        fetchEvent();
       } else {
         const errorData = await response.json();
         toast.error(errorData.message || 'Failed to register for event');
@@ -74,12 +111,13 @@ const EventDetails = () => {
     );
   }
 
-  if (!event) {
+  if (error || !event) {
     return (
       <div className="min-h-screen bg-gray-50 py-12 flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Event Not Found</h2>
-          <Link to="/" className="text-emerald-600 hover:underline">Go back to home</Link>
+          <p className="text-gray-600 mb-4">Redirecting to error page...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mx-auto"></div>
         </div>
       </div>
     );

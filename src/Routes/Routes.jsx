@@ -21,6 +21,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     Component: Root,
+    errorElement: <Error />, 
     children: [
       {
         path: '/',
@@ -48,15 +49,22 @@ const router = createBrowserRouter([
       },
       {
         path: '/challenges/:id',
-        Component: ChallengeDetails
+        Component: ChallengeDetails,
+        errorElement: <Error />
       },
       {
         path: '/events/:id',
-        element: <EventDetails />
+        element: <EventDetails />,
+        errorElement: <Error />
+      },
+      {
+        path: '/error',
+        element: <Error />
       },
       // Protected routes group
       {
         element: <ProtectedRoutes />,
+        errorElement: <Error />,
         children: [
           {
             path: '/myprofile',
@@ -79,12 +87,13 @@ const router = createBrowserRouter([
             element: <ActivityDetail />
           }
         ]
+      },
+      
+      {
+        path: '*',
+        element: <Error />
       }
     ]
-  },
-  {
-    path: '*',
-    Component: Error
   }
 ]);
 
