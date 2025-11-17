@@ -14,19 +14,20 @@ const ProtectedRoutes = () => {
     }
   }, [loading, user, location.pathname]);
 
-  if (loading) {
-    
-    return null;
-  }
-
-  if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
-
   return (
     <>
+      {/* ToastContainer */}
       <ToastContainer position="top-center" autoClose={3000} hideProgressBar={false} />
-      <Outlet />
+
+      {loading ? (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-emerald-500" />
+        </div>
+      ) : !user ? (
+        <Navigate to="/login" state={{ from: location }} replace />
+      ) : (
+        <Outlet />
+      )}
     </>
   );
 };

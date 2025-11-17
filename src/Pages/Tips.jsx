@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { FaThumbsUp } from 'react-icons/fa';
 import heroImg from '../assets/colleagues.jpg'; 
+import useTitle from '../Hooks/useTitle';
 
 const Tips = () => {
+  useTitle('Tips')
   const [tips, setTips] = useState([]);
   const [loading, setLoading] = useState(true);
 

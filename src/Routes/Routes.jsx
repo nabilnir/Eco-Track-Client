@@ -2,10 +2,8 @@ import { createBrowserRouter } from "react-router";
 import Root from "../Root/Root";
 import Login from "../Pages/Login";
 import Register from "../Pages/Register";
-
 import Challenges from "../Pages/Challenges";
 import ChallengeDetails from "../Pages/ChallengeDetails";
-import ProtectedRoutes from "./ProtectedRoutes";
 import AddChallenge from "../Pages/AddChallenge";
 import MyActivities from "../Pages/MyActivities";
 import JoinChallenge from "../Pages/JoinChallenge";
@@ -16,67 +14,72 @@ import Tips from "../Pages/Tips";
 import HomeLayout from "../Layout/HomeLayout";
 import EventDetails from "../Pages/EventDetails";
 import Events from "../Pages/Events";
+import ProtectedRoutes from "./ProtectedRoutes";
 
 
 const router = createBrowserRouter([
   {
     path: "/",
     Component: Root,
-    children : [
+    children: [
       {
-           path : '/',
-           Component : HomeLayout
+        path: '/',
+        Component: HomeLayout
       },
       {
-        path : '/login',
-        Component : Login
+        path: '/login',
+        Component: Login
       },
       {
         path: '/register',
-        Component : Register
+        Component: Register
       },
       {
         path: '/challenges',
-        Component : Challenges
+        Component: Challenges
       },
       {
         path: '/tips',
-        element: <Tips />
+        Component : Tips
       },
       {
         path: '/events',
-        Component : Events
-      },
-      {
-        path:'/myprofile',
-        element: <MyProfile />
+        Component: Events
       },
       {
         path: '/challenges/:id',
         Component: ChallengeDetails
       },
-
-      {
-        path: 'challenges/add',
-        element : <AddChallenge />
-      },
-      {
-        path: '/my-activities',
-        element: <MyActivities />
-      },
-      {
-        path: '/challenges/join/:id',
-        element: <JoinChallenge />
-      },
-      {
-        path: '/my-activities/:id',
-        element: <ActivityDetail />
-      },
       {
         path: '/events/:id',
         element: <EventDetails />
+      },
+      // Protected routes group
+      {
+        element: <ProtectedRoutes />,
+        children: [
+          {
+            path: '/myprofile',
+            element: <MyProfile />
+          },
+          {
+            path: 'challenges/add',
+            element: <AddChallenge />
+          },
+          {
+            path: '/my-activities',
+            element: <MyActivities />
+          },
+          {
+            path: '/challenges/join/:id',
+            element: <JoinChallenge />
+          },
+          {
+            path: '/my-activities/:id',
+            element: <ActivityDetail />
+          }
+        ]
       }
-
     ]
   },
   {

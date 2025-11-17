@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router';
 import { FaMapMarkerAlt, FaUsers, FaCalendar, FaClock } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import useAuth from '../Hooks/useAuth';
-
+import useTitle from '../Hooks/useTitle';
 
 const EventDetails = () => {
   const { id } = useParams();
@@ -11,6 +11,9 @@ const EventDetails = () => {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [registering, setRegistering] = useState(false);
+
+  
+  useTitle(event ? event.title : 'Event Details');
 
   const API_BASE = import.meta.env.VITE_API_URL || '';
 
@@ -50,9 +53,10 @@ const EventDetails = () => {
 
       if (response.ok) {
         toast.success('Registered for event successfully!');
-        fetchEvent();
+        fetchEvent(); // Refresh event data to update attendees count
       } else {
-        toast.error('Failed to register for event');
+        const errorData = await response.json();
+        toast.error(errorData.message || 'Failed to register for event');
       }
     } catch (error) {
       console.error('Registration error:', error);
@@ -80,7 +84,7 @@ const EventDetails = () => {
       </div>
     );
   }
-
+  
   return (
     <div className="min-h-screen bg-gray-50 py-12 mt-15">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -175,7 +179,7 @@ const EventDetails = () => {
 
             <button 
               onClick={handleRegister} 
-              className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-4 rounded-lg font-bold text-lg transition-colors disabled:opacity-50"
+              className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-4 rounded-lg font-bold text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={registering}
             >
               {registering ? 'Registering...' : 'Register for Event'}

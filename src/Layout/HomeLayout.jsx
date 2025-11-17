@@ -7,9 +7,11 @@ import ActiveChallenges from "../components/Home/ActiveChallenges";
 import RecentTips from "../components/Home/RecentTips";
 import UpComingEvents from '../components/Home/UpComingEvents'
 import { Toaster } from "react-hot-toast";
+import useTitle from "../Hooks/useTitle";
 
 
 const HomeLayout = () => {
+  useTitle('Home')
   return (
     <div>
       <Toaster position="top-right" />

@@ -8,6 +8,14 @@ const MyActivities = () => {
   const [userChallenges, setUserChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  
+  const getStatusColor = (status) => {
+    const s = (status || '').toLowerCase();
+    if (s === 'ongoing' || s === 'in progress') return 'bg-blue-500';
+    if (s === 'finished' || s === 'completed') return 'bg-emerald-500';
+    return 'bg-gray-400';
+  };
+
   useEffect(() => {
     if (!user) {
       setUserChallenges([]);
@@ -75,6 +83,14 @@ const MyActivities = () => {
 
       {/* Page content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Your Active Challenges</h2>
+          <p className="text-lg text-gray-600 mb-4">Track your Sustainable Challenges Easily!</p>
+          <p className="text-sm text-emerald-600 font-semibold">
+            Total {userChallenges.length} challenge{userChallenges.length !== 1 ? 's' : ''} found
+          </p>
+        </div>
+
         {userChallenges.length === 0 ? (
           <div className="bg-white rounded-xl shadow-md p-12 text-center">
             <p className="text-gray-500 text-lg mb-6">You haven't joined any challenges yet</p>
@@ -99,8 +115,11 @@ const MyActivities = () => {
                     alt={uc.challenge?.title || "Challenge"}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute top-4 right-4 bg-emerald-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    {uc.status}
+                  
+                  <div
+                    className={`absolute top-4 right-4 text-white px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(uc.status)}`}
+                  >
+                    {uc.status ?? 'Not Started'}
                   </div>
                 </div>
                 <div className="p-6">

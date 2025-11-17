@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import { FaMapMarkerAlt, FaUsers, FaCalendar } from 'react-icons/fa';
 import bannerImg from '../assets/events.jpg';
+import useTitle from '../Hooks/useTitle';
 
 const Events = () => {
+  useTitle('Events');
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 

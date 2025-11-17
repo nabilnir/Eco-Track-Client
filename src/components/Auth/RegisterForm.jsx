@@ -96,10 +96,10 @@ const RegisterForm = () => {
 
     setLoading(true);
     try {
-      // Create user with email and password
+      
       await register(formData.email, formData.password);
       
-      // Update user profile with name and photo
+      
       await updateUserProfile(formData.name, formData.photoURL);
       
       toast.success('Registration successful! Welcome to EcoTrack!');
@@ -107,7 +107,7 @@ const RegisterForm = () => {
     } catch (error) {
       console.error('Registration failed:', error.message);
       
-      // Handle specific Firebase errors
+      
       if (error.code === 'auth/email-already-in-use') {
         toast.error('This email is already registered. Please login instead.');
       } else if (error.code === 'auth/weak-password') {
@@ -120,7 +120,7 @@ const RegisterForm = () => {
     }
   };
 
-  // Handle Google Sign In
+  
   const handleGoogleRegister = async () => {
     setLoading(true);
     try {
@@ -214,7 +214,7 @@ const RegisterForm = () => {
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition duration-200"
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
-              {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+              {showPassword ?  <FaEye size={20} />: <FaEyeSlash size={20} />}
             </button>
           </div>
           {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}

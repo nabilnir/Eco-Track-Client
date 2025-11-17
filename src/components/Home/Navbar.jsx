@@ -1,9 +1,9 @@
-// src/components/Navbar.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
 import { FaLeaf, FaBars, FaTimes, FaUserCircle } from 'react-icons/fa';
 import useAuth from '../../Hooks/useAuth';
+import logo from '/logo.png'
 
 
 
@@ -57,7 +57,7 @@ const Navbar = () => {
           
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 text-2xl font-bold text-green-600 hover:text-green-700">
-            <FaLeaf className="text-3xl" />
+            <img src={logo} className='w-12 h-12'  alt="" />
             <span>EcoTrack</span>
           </Link>
 
@@ -93,6 +93,16 @@ const Navbar = () => {
             >
               Events
             </NavLink>
+            <NavLink
+              to="Tips"
+              className={({ isActive }) =>
+                `text-gray-700 hover:text-green-600 transition duration-300 font-medium relative py-1 ${
+                  isActive ? 'text-green-600' : ''
+                }`
+              }
+            >
+              Tips
+            </NavLink>
             {user && (
               <NavLink
                 to="/my-activities"
@@ -121,20 +131,7 @@ const Navbar = () => {
               </NavLink>
               )
             }
-            {
-              user &&(
-                <NavLink
-                to="/tips"
-                className={({ isActive }) =>
-                  `text-gray-700 hover:text-green-600 transition duration-300 font-medium relative py-1 ${
-                    isActive ? 'text-green-600' : ''
-                  }`
-                }
-              >
-                Tips
-              </NavLink>
-              )
-            }
+            
           </div>
           
           {/* Right Section (Auth/User Menu) */}
@@ -167,6 +164,13 @@ const Navbar = () => {
                       onClick={() => setProfileDropdown(false)}
                     >
                       My Activities
+                    </Link>
+                    <Link
+                      to="/myprofile"
+                      className="block px-4 py-3 text-gray-700 hover:bg-gray-50 transition duration-150"
+                      onClick={() => setProfileDropdown(false)}
+                    >
+                      My Profile
                     </Link>
                     <button
                       className="block w-full text-left px-4 py-3 text-gray-700 hover:bg-gray-50 transition duration-150"
@@ -247,6 +251,13 @@ const Navbar = () => {
                   onClick={closeMenus}
                 >
                   My Activities
+                </NavLink>
+                <NavLink
+                  to="/myprofile"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-green-600 w-full text-left"
+                  onClick={closeMenus}
+                >
+                  My Profile
                 </NavLink>
                 
                 {/* User Info and Logout */}

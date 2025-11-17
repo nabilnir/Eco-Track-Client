@@ -3,8 +3,12 @@ import { Link } from 'react-router';
 import { FaFilter, FaPlus, FaUsers, FaCalendar, FaTimes } from 'react-icons/fa';
 import useAuth from '../Hooks/useAuth';
 import bannerImg from '../assets/coastsland.jpg'
+import useTitle from '../Hooks/useTitle';
 
 const Challenges = () => {
+  
+  useTitle('Challenges');
+
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
@@ -129,13 +133,15 @@ const Challenges = () => {
             >
               <FaFilter /> Filters
             </button>
-            {user && (
-              <Link
+            {(user? <Link
                 to="/challenges/add"
                 className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
               >
                 <FaPlus /> Add Challenge
-              </Link>
+              </Link> : <Link to='/login'> 
+                      
+              </Link>) (
+              
             )}
           </div>
         </div>

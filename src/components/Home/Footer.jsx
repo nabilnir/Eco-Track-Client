@@ -1,8 +1,8 @@
-// src/components/Footer.jsx
 import React from 'react';
 import { Link } from 'react-router';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaLeaf } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
+import logo from '/logo.png'
 
 
 const Footer = () => {
@@ -17,7 +17,7 @@ const Footer = () => {
           {/* Section 1: Logo & Description */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2 text-2xl font-bold text-green-400">
-              <FaLeaf className="text-3xl" />
+              <img src={logo} className='w-12 h-12'  alt="" />
               <span>EcoTrack</span>
             </div>
             <p className="text-sm">
