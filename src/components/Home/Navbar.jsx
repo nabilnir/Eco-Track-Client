@@ -61,7 +61,7 @@ const Navbar = () => {
             <span>EcoTrack</span>
           </Link>
 
-          {/* Main Navigation Menu (Desktop & Mobile) */}
+          {/* Main Navigation Menu  */}
           <div className="hidden md:flex md:items-center md:space-x-8">
             <NavLink
               to="/"

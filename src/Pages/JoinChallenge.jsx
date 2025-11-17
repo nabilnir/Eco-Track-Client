@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
 import useAuth from '../Hooks/useAuth';
+import useTitle from '../Hooks/useTitle';
 
 const JoinChallenge = () => {
+  useTitle("Join Challenges")
   const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();

@@ -4,8 +4,10 @@ import { FaUserCircle, FaEnvelope, FaCalendarAlt, FaSignOutAlt, FaLeaf,
 import { Link } from 'react-router';
 import toast from 'react-hot-toast';
 import useAuth from '../Hooks/useAuth';
+import useTitle from '../Hooks/useTitle';
 
 const MyProfile = () => {
+  useTitle("My Profile")
   const { user, loading, logout } = useAuth();
   const [userStats, setUserStats] = useState({
     totalChallenges: 0,

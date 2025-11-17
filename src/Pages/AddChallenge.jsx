@@ -3,8 +3,10 @@ import useAuth from "../Hooks/useAuth";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Toaster } from "react-hot-toast";
+import useTitle from "../Hooks/useTitle";
 
 const AddChallenge = () => {
+  useTitle("Add a Challenge")
   const navigate = useNavigate();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);

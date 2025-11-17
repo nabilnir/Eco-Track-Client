@@ -1,4 +1,3 @@
-// src/components/LiveStatistics.jsx
 import React, { useState, useEffect } from 'react';
 import { FaUsers, FaChartLine, FaBolt, FaRecycle, FaLeaf, FaWater } from 'react-icons/fa';
 
@@ -28,7 +27,7 @@ const LiveStatistics = () => {
     fetchStatistics();
 
     
-    const interval = setInterval(fetchStatistics, 3000);
+    const interval = setInterval(fetchStatistics, 30000);
     return () => clearInterval(interval);
   }, []);
 
@@ -66,8 +65,8 @@ const LiveStatistics = () => {
   useEffect(() => {
     if (loading) return;
 
-    const duration = 2000;
-    const steps = 60;
+    const duration = 3000;
+    const steps = 80;
     const interval = duration / steps;
 
     const timers = Object.keys(stats).map((key) => {

@@ -4,14 +4,18 @@ import toast from 'react-hot-toast';
 import { FaUsers, FaCalendar, FaClock } from 'react-icons/fa';
 import useAuth from '../Hooks/useAuth';
 import { FaDownLeftAndUpRightToCenter } from 'react-icons/fa6';
+import useTitle from '../Hooks/useTitle';
 
 const ChallengeDetails = () => {
+  
   const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  useTitle(challenge ? challenge.title : 'Challenge Details');
 
   useEffect(() => {
     fetchChallenge();

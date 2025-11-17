@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import useAuth from "../Hooks/useAuth";
 import heroImg from "../assets/men-women.pg.jpg"; 
+import useTitle from "../Hooks/useTitle";
 
 const MyActivities = () => {
+  useTitle("My Activities")
   const { user } = useAuth();
   const [userChallenges, setUserChallenges] = useState([]);
   const [loading, setLoading] = useState(true);

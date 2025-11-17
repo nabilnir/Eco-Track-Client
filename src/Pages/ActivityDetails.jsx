@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
 import useAuth from '../Hooks/useAuth';
+import useTitle from '../Hooks/useTitle';
 
 const ActivityDetail = () => {
   const { id } = useParams();
@@ -13,6 +14,8 @@ const ActivityDetail = () => {
   const [status, setStatus] = useState('');
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState(false);
+
+  useTitle(activity ? activity.title : 'Activity Details');
 
   const API_BASE = import.meta.env.VITE_API_URL || '';
 

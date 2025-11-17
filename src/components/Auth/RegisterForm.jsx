@@ -5,7 +5,9 @@ import toast from 'react-hot-toast';
 import { FaGoogle, FaEye, FaEyeSlash } from 'react-icons/fa';
 import useAuth from '../../Hooks/useAuth';
 
+
 const RegisterForm = () => {
+ 
   const { register, googleSignIn, updateUserProfile } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
