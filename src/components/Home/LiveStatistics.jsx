@@ -144,14 +144,14 @@ const LiveStatistics = () => {
 
   if (loading) {
     return (
-      <section className="py-16 bg-gradient-to-r from-emerald-500 to-emerald-600">
+      <section className="py-16 bg-gradient-to-r from-emerald-500 to-emerald-600 dark:from-emerald-700 dark:to-emerald-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
             Our Community Impact
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
             {[1, 2, 3, 4, 5, 6].map(i => (
-              <div key={i} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 animate-pulse">
+              <div key={i} className="bg-white/10 dark:bg-white/5 backdrop-blur-sm rounded-xl p-6 animate-pulse">
                 <div className="h-12 w-12 bg-white/20 rounded-full mx-auto mb-4"></div>
                 <div className="h-8 bg-white/20 rounded mb-2"></div>
                 <div className="h-4 bg-white/20 rounded"></div>
@@ -164,7 +164,7 @@ const LiveStatistics = () => {
   }
 
   return (
-    <section className="py-16 bg-gradient-to-r from-emerald-500 to-emerald-600 relative overflow-hidden">
+    <section className="py-16 bg-gradient-to-r from-emerald-500 to-emerald-600 dark:!bg-gradient-to-r dark:!from-emerald-700 dark:!to-emerald-800 relative overflow-hidden">
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
@@ -176,7 +176,7 @@ const LiveStatistics = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Our Community Impact
           </h2>
-          <p className="text-emerald-100 text-lg">
+          <p className="text-emerald-100 dark:text-emerald-200 text-lg">
             Real-time data from our growing community
           </p>
         </div>
@@ -187,17 +187,17 @@ const LiveStatistics = () => {
             return (
               <div 
                 key={index}
-                className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center hover:bg-white/20 transition-all duration-300 hover:scale-105 transform"
+                className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center hover:bg-white/20 transition-all duration-300 hover:scale-105 transform dark:bg-gray-800/20 dark:hover:bg-gray-700/30 dark:border dark:border-gray-600/30"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-full mb-4 shadow-lg">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-full mb-4 shadow-lg dark:bg-gray-800 dark:shadow-xl dark:border dark:border-gray-600/20">
                   <Icon className={`text-3xl ${stat.iconColor}`} />
                 </div>
                 <div className="text-white">
                   <p className="text-3xl md:text-4xl font-bold mb-2">
                     {stat.value.toLocaleString()}{stat.suffix}
                   </p>
-                  <p className="text-emerald-100 text-sm font-medium">
+                  <p className="text-emerald-100 text-sm font-medium dark:text-gray-300">
                     {stat.label}
                   </p>
                 </div>
@@ -210,7 +210,7 @@ const LiveStatistics = () => {
           <p className="text-white/90 text-lg">
              Join our growing community of environmental champions
           </p>
-          <p className="text-emerald-100 text-sm mt-2">
+          <p className="text-emerald-100 dark:text-emerald-200 text-sm mt-2">
             Updated live • Last synced: {new Date().toLocaleTimeString()}
           </p>
         </div>

@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
 import { FaLeaf, FaBars, FaTimes, FaUserCircle } from 'react-icons/fa';
 import useAuth from '../../Hooks/useAuth';
+import DarkModeToggle from '../UI/DarkModeToggle';
 import logo from '/logo.png'
 
 
@@ -51,7 +52,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
+    <nav className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-md z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           
@@ -66,7 +67,7 @@ const Navbar = () => {
             <NavLink
               to="/"
               className={({ isActive }) =>
-                `text-gray-700 hover:text-green-600 transition duration-300 font-medium relative py-1 ${
+                `text-gray-700 dark:text-gray-300 hover:text-green-600 transition duration-300 font-medium relative py-1 ${
                   isActive ? 'text-green-600' : ''
                 }`
               }
@@ -136,6 +137,9 @@ const Navbar = () => {
           
           {/* Right Section  */}
           <div className="flex items-center space-x-4" ref={menuRef}>
+            {/* Dark Mode Toggle */}
+            <DarkModeToggle />
+            
             {user ? (
               // User Menu
               <div className="relative hidden md:block">
@@ -153,27 +157,27 @@ const Navbar = () => {
 
                 {/* Dropdown Menu */}
                 {profileDropdown && (
-                  <div className="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-2xl overflow-hidden animate-fade-in z-50">
-                    <div className="p-4 border-b border-gray-100">
-                      <p className="font-semibold text-gray-800 truncate">{user.displayName || 'User'}</p>
-                      <p className="text-sm text-gray-500 truncate">{user.email}</p>
+                  <div className="absolute right-0 mt-3 w-56 bg-white dark:bg-gray-700 rounded-xl shadow-2xl overflow-hidden animate-fade-in z-50">
+                    <div className="p-4 border-b border-gray-100 dark:border-gray-600">
+                      <p className="font-semibold text-gray-800 dark:text-gray-200 truncate">{user.displayName || 'User'}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
                     </div>
                     <Link
                       to="/my-activities"
-                      className="block px-4 py-3 text-gray-700 hover:bg-gray-50 transition duration-150"
+                      className="block px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition duration-150"
                       onClick={() => setProfileDropdown(false)}
                     >
                       My Activities
                     </Link>
                     <Link
                       to="/myprofile"
-                      className="block px-4 py-3 text-gray-700 hover:bg-gray-50 transition duration-150"
+                      className="block px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition duration-150"
                       onClick={() => setProfileDropdown(false)}
                     >
                       My Profile
                     </Link>
                     <button
-                      className="block w-full text-left px-4 py-3 text-gray-700 hover:bg-gray-50 transition duration-150"
+                      className="block w-full text-left px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition duration-150"
                       onClick={handleLogout}
                     >
                       Logout
@@ -214,7 +218,7 @@ const Navbar = () => {
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
         <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col items-start bg-white shadow-lg absolute w-full z-40">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col items-start bg-white dark:bg-gray-800 shadow-lg absolute w-full z-40">
             <NavLink
               to="/"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-green-600 w-full text-left"

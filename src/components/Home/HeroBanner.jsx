@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const HeroBanner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -9,6 +11,13 @@ const HeroBanner = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Initialize AOS
+    AOS.init({
+      duration: 1000,
+      once: false,
+      offset: 50
+    });
+
     const fetchSlides = async () => {
       try {
         setLoading(true);
@@ -69,10 +78,10 @@ const HeroBanner = () => {
 
   if (loading) {
     return (
-      <div className="relative w-full h-[500px] lg:h-[70vh] flex items-center justify-center bg-gradient-to-r from-emerald-50 to-teal-50">
+      <div className="relative w-full h-[500px] lg:h-[70vh] flex items-center justify-center bg-gradient-to-r from-emerald-50 dark:from-gray-800 to-teal-50 dark:to-gray-700">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-600 font-medium">Loading slides...</p>
+          <p className="text-gray-600 dark:text-gray-300 font-medium">Loading slides...</p>
         </div>
       </div>
     );
@@ -80,9 +89,9 @@ const HeroBanner = () => {
 
   if (error || !slidesData.length) {
     return (
-      <div className="relative w-full h-[500px] lg:h-[70vh] flex items-center justify-center bg-gradient-to-r from-emerald-50 to-teal-50">
+      <div className="relative w-full h-[500px] lg:h-[70vh] flex items-center justify-center bg-gradient-to-r from-emerald-50 dark:from-gray-800 to-teal-50 dark:to-gray-700">
         <div className="text-center">
-          <p className="text-gray-600 text-lg mb-4">{error || 'No slides available'}</p>
+          <p className="text-gray-600 dark:text-gray-300 text-lg mb-4">{error || 'No slides available'}</p>
           <a 
             href="/challenges" 
             className="inline-flex items-center space-x-2 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg text-base font-semibold transition-all duration-300"
