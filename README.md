@@ -1,16 +1,105 @@
-# React + Vite
+# 🌐 Eco-Track
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Project Overview
 
-Currently, two official plugins are available:
+**Eco-Track** is an innovative environmental monitoring and tracking platform designed to help users, organizations, and communities track carbon footprints, waste management, and environmental impact. Built with React, Vite, and modern web technologies, it provides a comprehensive dashboard for sustainability metrics.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🎯 Live Demo
 
-## React Compiler
+[View Live Project](https://eco-track-8fe80.web.app/)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Technologies Used
 
-## Expanding the ESLint configuration
+- **Frontend Framework:** React 19
+- **Build Tool:** Vite
+- **Styling:** Tailwind CSS
+- **State Management:** Context API
+- **Authentication:** Firebase
+- **Database:** Firebase Firestore
+- **Deployment:** Firebase Hosting
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ✨ Core Features
+
+- **Carbon Footprint Calculator:** Track personal and organizational carbon emissions
+- **Waste Management Tracking:** Monitor waste generation, recycling, and disposal
+- **Environmental Impact Dashboard:** Real-time analytics and visualization of environmental metrics
+- **User Authentication:** Secure Firebase-based user registration and login
+- **Community Contributions:** Share sustainability tips and best practices
+- **Responsive Design:** Fully responsive interface for mobile and desktop
+- **Real-time Data Updates:** Live tracking of environmental data
+- **Export Reports:** Download sustainability reports in PDF format
+
+## 📦 Dependencies
+
+- React 19.x
+- Vite 4.x
+- Tailwind CSS
+- Firebase 9.x
+- React Router 6.x
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v16 or higher)
+- npm or yarn package manager
+- Firebase account
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/nabilnir/Eco-Track-Client.git
+   cd Eco-Track-Client
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Configure Firebase:**
+   - Create a `.env` file in the root directory
+   - Add your Firebase configuration
+
+4. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+
+5. **Open in browser:**
+   - Navigate to `http://localhost:5173`
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+### Deploy to Firebase
+
+```bash
+npm install -g firebase-tools
+firebase login
+firebase deploy
+```
+
+## 📁 Project Structure
+
+- `src/components/` - Reusable React components
+- `src/pages/` - Page components
+- `src/context/` - Context API providers
+- `src/assets/` - Static images and files
+- `public/` - Public assets
+
+## 👨‍💻 Author
+
+[Nabil Mahmud](https://github.com/nabilnir)
+
+## 🛑 License
+
+This project is open-source and available for educational purposes.
+
+---
+
+**Let's make the world greener! 🌿**
