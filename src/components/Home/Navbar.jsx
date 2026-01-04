@@ -57,7 +57,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 text-2xl font-bold text-green-600 hover:text-green-700">
+          <Link to="/" className="flex items-center space-x-2 text-2xl font-bold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
             <img src={logo} className='w-12 h-12'  alt="" />
             <span>EcoTrack</span>
           </Link>
@@ -67,8 +67,8 @@ const Navbar = () => {
             <NavLink
               to="/"
               className={({ isActive }) =>
-                `text-gray-700 dark:text-gray-300 hover:text-green-600 transition duration-300 font-medium relative py-1 ${
-                  isActive ? 'text-green-600' : ''
+                `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${
+                  isActive ? 'text-blue-600 dark:text-blue-400' : ''
                 }`
               }
             >
@@ -77,8 +77,8 @@ const Navbar = () => {
             <NavLink
               to="/challenges"
               className={({ isActive }) =>
-                `text-gray-700 hover:text-green-600 transition duration-300 font-medium relative py-1 ${
-                  isActive ? 'text-green-600' : ''
+                `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${
+                  isActive ? 'text-blue-600 dark:text-blue-400' : ''
                 }`
               }
             >
@@ -87,8 +87,8 @@ const Navbar = () => {
             <NavLink
               to="/events"
               className={({ isActive }) =>
-                `text-gray-700 hover:text-green-600 transition duration-300 font-medium relative py-1 ${
-                  isActive ? 'text-green-600' : ''
+                `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${
+                  isActive ? 'text-blue-600 dark:text-blue-400' : ''
                 }`
               }
             >
@@ -97,8 +97,8 @@ const Navbar = () => {
             <NavLink
               to="Tips"
               className={({ isActive }) =>
-                `text-gray-700 hover:text-green-600 transition duration-300 font-medium relative py-1 ${
-                  isActive ? 'text-green-600' : ''
+                `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${
+                  isActive ? 'text-blue-600 dark:text-blue-400' : ''
                 }`
               }
             >
@@ -108,23 +108,21 @@ const Navbar = () => {
               <NavLink
                 to="/my-activities"
                 className={({ isActive }) =>
-                  `text-gray-700 hover:text-green-600 transition duration-300 font-medium relative py-1 ${
-                    isActive ? 'text-green-600' : ''
+                  `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${
+                    isActive ? 'text-blue-600 dark:text-blue-400' : ''
                   }`
                 }
               >
                 My Activities
               </NavLink>
-              
-              
             )}
             {
               user &&(
                 <NavLink
                 to="/myprofile"
                 className={({ isActive }) =>
-                  `text-gray-700 hover:text-green-600 transition duration-300 font-medium relative py-1 ${
-                    isActive ? 'text-green-600' : ''
+                  `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${
+                    isActive ? 'text-blue-600 dark:text-blue-400' : ''
                   }`
                 }
               >
