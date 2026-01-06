@@ -1,6 +1,10 @@
 import React from 'react';
 import { Navigation, HeroSection, Section, Card, Button, Badge } from '../components/UI';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
+import Testimonials from '../components/Home/Testimonials';
+import BrandCarousel from '../components/Home/BrandCarousel';
+import BlogSection from '../components/Home/BlogSection';
+
 
 const HomePage = () => {
   const navItems = [
@@ -8,6 +12,7 @@ const HomePage = () => {
     { label: 'Challenges', href: '/challenges' },
     { label: 'Activities', href: '/activities' },
     { label: 'Events', href: '/events' },
+    { label: 'Blogs', href: '/blogs' },
     { label: 'Tips', href: '/tips' },
   ];
 
@@ -37,27 +42,6 @@ const HomePage = () => {
     { number: '500+', label: 'Eco Activities' },
     { number: '50K', label: 'CO₂ Saved (kg)' },
     { number: '100+', label: 'Challenges' },
-  ];
-
-  const testimonials = [
-    {
-      name: 'Sarah Johnson',
-      role: 'Environmental Enthusiast',
-      content: 'EcoTrack has completely changed how I approach sustainability. I love seeing my impact grow!',
-      rating: 5
-    },
-    {
-      name: 'Mike Chen',
-      role: 'Community Leader',
-      content: 'The challenges feature keeps our community engaged and motivated to make a difference.',
-      rating: 5
-    },
-    {
-      name: 'Emma Davis',
-      role: 'Student',
-      content: 'Perfect for tracking my environmental footprint and learning new ways to be eco-friendly.',
-      rating: 5
-    },
   ];
 
   return (
@@ -145,30 +129,13 @@ const HomePage = () => {
       </Section>
 
       {/* Testimonials */}
-      <Section 
-        title="What Our Users Say"
-        subtitle="Join thousands of satisfied eco-warriors"
-        variant="dark"
-      >
-        <div className="grid-auto">
-          {testimonials.map((testimonial, index) => (
-            <Card key={index} variant="dark" hover={true}>
-              <div className="flex mb-4">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <span key={i} className="text-accent-green text-xl">★</span>
-                ))}
-              </div>
-              <p className="text-text-light/90 mb-4 italic">
-                "{testimonial.content}"
-              </p>
-              <div>
-                <div className="font-semibold text-text-light">{testimonial.name}</div>
-                <div className="text-text-muted text-sm">{testimonial.role}</div>
-              </div>
-            </Card>
-          ))}
-        </div>
-      </Section>
+      <Testimonials />
+
+      {/* Brand Carousel */}
+      <BrandCarousel />
+
+      {/* Blog Section */}
+      <BlogSection />
 
       {/* CTA Section */}
       <Section variant="gradient">

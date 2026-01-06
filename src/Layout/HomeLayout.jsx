@@ -9,6 +9,10 @@ import UpComingEvents from '../components/Home/UpComingEvents';
 import FAQ from '../components/Home/Static/FAQ';
 import { Toaster } from "react-hot-toast";
 import useTitle from "../Hooks/useTitle";
+import Testimonials from "../components/Home/Testimonials";
+import BrandCarousel from "../components/Home/BrandCarousel";
+import BlogSection from "../components/Home/BlogSection";
+
 
 
 const HomeLayout = () => {
@@ -23,6 +27,9 @@ const HomeLayout = () => {
       <UpComingEvents />
       <WhyGoGreen />
       <HowItWorks />
+      <BrandCarousel />
+      <Testimonials />
+      <BlogSection />
       <FAQ />
     </div>
   );

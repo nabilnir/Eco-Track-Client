@@ -1,0 +1,302 @@
+import React, { useState } from 'react';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router';
+import { 
+  FaHome, 
+  FaUser, 
+  FaChartBar, 
+  FaCog, 
+  FaSignOutAlt, 
+  FaBars, 
+  FaTimes,
+  FaLeaf,
+  FaTrophy,
+  FaCalendarAlt,
+  FaUsers,
+  FaBlog,
+  FaChartLine,
+  FaChartPie,
+  FaBell
+} from 'react-icons/fa';
+import useAuth from '../Hooks/useAuth';
+
+const DashboardLayout = () => {
+  const { user, logout } = useAuth();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Determine user role (you can enhance this based on your auth system)
+  const userRole = user?.email?.includes('admin') ? 'admin' : 'user';
+
+  // Menu items based on user role
+  const userMenuItems = [
+    {
+      name: 'Dashboard',
+      path: '/dashboard',
+      icon: FaHome,
+      label: 'Overview'
+    },
+    {
+      name: 'My Activities',
+      path: '/dashboard/activities',
+      icon: FaLeaf,
+      label: 'Activities'
+    },
+    {
+      name: 'Challenges',
+      path: '/dashboard/challenges',
+      icon: FaTrophy,
+      label: 'Challenges'
+    },
+    {
+      name: 'Events',
+      path: '/dashboard/events',
+      icon: FaCalendarAlt,
+      label: 'Events'
+    },
+    {
+      name: 'Profile',
+      path: '/dashboard/profile',
+      icon: FaUser,
+      label: 'Profile'
+    }
+  ];
+
+  const adminMenuItems = [
+    {
+      name: 'Dashboard',
+      path: '/dashboard',
+      icon: FaHome,
+      label: 'Overview'
+    },
+    {
+      name: 'User Management',
+      path: '/dashboard/users',
+      icon: FaUsers,
+      label: 'Users'
+    },
+    {
+      name: 'Blog Management',
+      path: '/dashboard/blogs',
+      icon: FaBlog,
+      label: 'Blogs'
+    },
+    {
+      name: 'Analytics',
+      path: '/dashboard/analytics',
+      icon: FaChartLine,
+      label: 'Analytics'
+    },
+    {
+      name: 'Settings',
+      path: '/dashboard/settings',
+      icon: FaCog,
+      label: 'Settings'
+    }
+  ];
+
+  const menuItems = userRole === 'admin' ? adminMenuItems : userMenuItems;
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
+  const isActivePath = (path) => {
+    if (path === '/dashboard') {
+      return location.pathname === '/dashboard';
+    }
+    return location.pathname.startsWith(path);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex">
+      {/* Sidebar */}
+      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
+        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+      }`}>
+        {/* Sidebar Header */}
+        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+                <FaLeaf className="text-white" />
+              </div>
+            </div>
+            <div className="ml-3">
+              <h1 className="text-xl font-bold text-gray-900">EcoTrack</h1>
+              <p className="text-xs text-gray-500 capitalize">{userRole} Dashboard</p>
+            </div>
+          </div>
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="lg:hidden text-gray-400 hover:text-gray-600"
+          >
+            <FaTimes size={20} />
+          </button>
+        </div>
+
+        {/* Sidebar Navigation */}
+        <nav className="mt-6 px-3">
+          <div className="space-y-1">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = isActivePath(item.path);
+              
+              return (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={`group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                    isActive
+                      ? 'bg-green-50 text-green-700 border-r-2 border-green-700'
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
+                >
+                  <Icon className={`mr-3 h-5 w-5 ${isActive ? 'text-green-700' : 'text-gray-400 group-hover:text-gray-500'}`} />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+
+        {/* Sidebar Footer */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <img
+                className="h-8 w-8 rounded-full"
+                src={user?.photoURL || 'https://picsum.photos/seed/user/200/200.jpg'}
+                alt="User avatar"
+              />
+            </div>
+            <div className="ml-3 flex-1">
+              <p className="text-sm font-medium text-gray-900 truncate">
+                {user?.displayName || 'User'}
+              </p>
+              <p className="text-xs text-gray-500 truncate capitalize">
+                {userRole}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 lg:ml-0">
+        {/* Top Navbar */}
+        <header className="bg-white shadow-sm border-b border-gray-200">
+          <div className="px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16">
+              {/* Mobile menu button */}
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="lg:hidden text-gray-400 hover:text-gray-600"
+              >
+                <FaBars size={20} />
+              </button>
+
+              {/* Search Bar */}
+              <div className="flex-1 max-w-lg mx-4">
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  />
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right side items */}
+              <div className="flex items-center space-x-4">
+                {/* Notifications */}
+                <button className="relative p-2 text-gray-400 hover:text-gray-600">
+                  <FaBell size={18} />
+                  <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
+                </button>
+
+                {/* Profile Dropdown */}
+                <div className="relative">
+                  <button
+                    onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                    className="flex items-center space-x-3 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 p-2"
+                  >
+                    <img
+                      className="h-8 w-8 rounded-full"
+                      src={user?.photoURL || 'https://picsum.photos/seed/user/200/200.jpg'}
+                      alt="User avatar"
+                    />
+                    <div className="hidden md:block text-left">
+                      <p className="text-sm font-medium text-gray-900">
+                        {user?.displayName || 'User'}
+                      </p>
+                      <p className="text-xs text-gray-500 capitalize">{userRole}</p>
+                    </div>
+                    <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {profileDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-50">
+                      <Link
+                        to="/dashboard/profile"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setProfileDropdownOpen(false)}
+                      >
+                        <FaUser className="inline mr-2" />
+                        Profile
+                      </Link>
+                      <Link
+                        to="/dashboard"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setProfileDropdownOpen(false)}
+                      >
+                        <FaHome className="inline mr-2" />
+                        Dashboard Home
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        <FaSignOutAlt className="inline mr-2" />
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Page Content */}
+        <main className="flex-1">
+          <Outlet />
+        </main>
+      </div>
+
+      {/* Mobile sidebar overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-gray-600 bg-opacity-75 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+    </div>
+  );
+};
+
+export default DashboardLayout;

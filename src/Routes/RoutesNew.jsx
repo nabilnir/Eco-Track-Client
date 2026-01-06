@@ -25,7 +25,6 @@ import ChallengesDashboard from "../Pages/Dashboard/Challenges";
 import UserManagement from "../Pages/Dashboard/UserManagement";
 import BlogManagement from "../Pages/Dashboard/BlogManagement";
 
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -103,6 +102,37 @@ const router = createBrowserRouter([
           {
             path: '/my-activities/:id',
             element: <ActivityDetail />
+          },
+          // Dashboard routes
+          {
+            path: '/dashboard',
+            element: <DashboardLayout />,
+            children: [
+              {
+                index: true,
+                element: <DashboardOverview />
+              },
+              {
+                path: 'profile',
+                element: <Profile />
+              },
+              {
+                path: 'activities',
+                element: <Activities />
+              },
+              {
+                path: 'challenges',
+                element: <ChallengesDashboard />
+              },
+              {
+                path: 'users',
+                element: <UserManagement />
+              },
+              {
+                path: 'blogs',
+                element: <BlogManagement />
+              }
+            ]
           }
         ]
       },
@@ -114,6 +144,5 @@ const router = createBrowserRouter([
     ]
   }
 ]);
-
 
 export default router;

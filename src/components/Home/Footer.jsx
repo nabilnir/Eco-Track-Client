@@ -92,6 +92,7 @@ const Footer = () => {
           <p className="text-center md:text-right">
             Committed to accessibility and environmental sustainability
           </p>
+          
         </div>
       </div>
     </footer>
