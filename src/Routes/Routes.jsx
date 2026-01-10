@@ -30,7 +30,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     Component: Root,
-    errorElement: <Error />, 
+    errorElement: <Error />,
     children: [
       {
         path: '/',
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/tips',
-        Component : Tips
+        Component: Tips
       },
       {
         path: '/events',
@@ -106,7 +106,88 @@ const router = createBrowserRouter([
           }
         ]
       },
-      
+
+      // Dashboard Routes
+      {
+        path: '/dashboard',
+        element: <ProtectedRoutes />,
+        children: [
+          {
+            path: '',
+            element: <DashboardLayout />,
+            children: [
+              {
+                index: true,
+                element: <DashboardOverview />
+              },
+              {
+                path: 'profile',
+                element: <Profile />
+              },
+              {
+                path: 'activities',
+                element: <Activities />
+              },
+              {
+                path: 'challenges',
+                element: <ChallengesDashboard />
+              },
+              // Admin Routes
+              {
+                path: 'users',
+                element: <ProtectedRoutes allowedRoles={['admin']}><UserManagement /></ProtectedRoutes>
+              },
+              {
+                path: 'blogs',
+                element: <ProtectedRoutes allowedRoles={['admin']}><BlogManagement /></ProtectedRoutes>
+              },
+              // User Blogs (User Only)
+              {
+                path: 'my-blogs',
+                element: <ProtectedRoutes allowedRoles={['user']} />,
+                children: [
+                  {
+                    index: true,
+                    async lazy() {
+                      const { default: UserBlogManagement } = await import("../Pages/Dashboard/UserBlogManagement");
+                      return { Component: UserBlogManagement };
+                    }
+                  }
+                ]
+              },
+              // Analytics (Admin Only)
+              {
+                path: 'analytics',
+                element: <ProtectedRoutes allowedRoles={['admin']} />,
+                children: [
+                  {
+                    index: true,
+                    async lazy() {
+                      const { default: Analytics } = await import("../Pages/Dashboard/Analytics");
+                      return { Component: Analytics };
+                    }
+                  }
+                ]
+              },
+              // Settings (Admin Only)
+              {
+                path: 'settings',
+                element: <ProtectedRoutes allowedRoles={['admin']} />,
+                children: [
+                  {
+                    index: true,
+                    async lazy() {
+                      const { default: Settings } = await import("../Pages/Dashboard/Settings");
+                      return { Component: Settings };
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+
       {
         path: '*',
         element: <Error />

@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router';
 import toast from 'react-hot-toast';
 import { FaGoogle, FaFacebook, FaTwitter, FaGithub, FaUser, FaLock, FaEnvelope } from 'react-icons/fa';
 import useAuth from '../../Hooks/useAuth';
+import axiosPublic from '../../api/axiosPublic';
 
 const LoginForm = () => {
   const { login, googleSignIn } = useAuth();
@@ -30,19 +31,19 @@ const LoginForm = () => {
 
   const validate = () => {
     const newErrors = {};
-    
+
     if (!email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = 'Please enter a valid email address';
     }
-    
+
     if (!password.trim()) {
       newErrors.password = 'Password is required';
     } else if (password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters long';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -53,12 +54,21 @@ const LoginForm = () => {
 
     setLoading(true);
     try {
-      await login(email, password);
-      toast.success('Logged in successfully! Welcome back to EcoTrack'); 
+      const result = await login(email, password);
+      // Sync user data to backend (just in case they missed registration sync)
+      const user = result.user;
+      await axiosPublic.post('/users', {
+        name: user.displayName || 'User',
+        email: user.email,
+        photoURL: user.photoURL,
+        role: user.email === 'admin@ecotrack.com' ? 'admin' : 'user'
+      });
+
+      toast.success('Logged in successfully! Welcome back to EcoTrack');
       navigate(from, { replace: true });
     } catch (error) {
       console.error('Login failed:', error.message);
-      
+
       // Handle specific Firebase errors
       if (error.code === 'auth/user-not-found') {
         toast.error('No account found with this email address');
@@ -72,14 +82,24 @@ const LoginForm = () => {
         toast.error('Login failed. Please check your credentials and try again');
       }
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   const handleGoogleLogin = async () => {
     setLoading(true);
     try {
-      await googleSignIn();
+      const result = await googleSignIn();
+      const user = result.user;
+
+      // Sync user data to backend
+      await axiosPublic.post('/users', {
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        role: 'user'
+      });
+
       toast.success('Signed in with Google successfully!');
       navigate(from, { replace: true });
     } catch (error) {
@@ -170,7 +190,7 @@ const LoginForm = () => {
               </button>
             </div>
           </div>
-          
+
           <form onSubmit={handleLogin} className="space-y-5">
             {/* Email Field */}
             <div>

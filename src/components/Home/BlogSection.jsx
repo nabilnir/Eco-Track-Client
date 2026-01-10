@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import BlogCard from '../Blog/BlogCard';
 import Button from '../UI/Button';
-import axios from 'axios';
+import axiosPublic from '../../api/axiosPublic';
 
 const BlogSection = () => {
   const [blogs, setBlogs] = useState([]);
@@ -11,61 +11,15 @@ const BlogSection = () => {
   useEffect(() => {
     const fetchLatestBlogs = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/blogs/latest?limit=3');
-        setBlogs(response.data);
+        // Try to fetch from /api/blogs with limit
+        const response = await axiosPublic.get('/blogs?limit=3&sort=newest');
+        // Handle both array and object responses
+        const blogsData = Array.isArray(response.data) ? response.data : (response.data.blogs || []);
+        setBlogs(blogsData.slice(0, 3));
       } catch (error) {
-        console.log('Using fallback blog data');
-        // Fallback data if API fails
-        setBlogs([
-          {
-            _id: '1',
-            title: '10 Simple Ways to Reduce Your Carbon Footprint Today',
-            excerpt: 'Discover easy and practical steps you can take right now to make a positive impact on the environment.',
-            content: 'In today\'s world, taking care of our planet is more important than ever. Here are 10 simple ways you can reduce your carbon footprint starting today...',
-            author: 'Sarah Green',
-            category: 'Sustainability',
-            createdAt: new Date('2024-01-15'),
-            readTime: 5,
-            views: 1250,
-            likes: 89,
-            comments: [],
-            featured: true,
-            status: 'Published',
-            rating: 4.8
-          },
-          {
-            _id: '2',
-            title: 'The Future of Renewable Energy: What to Expect in 2024',
-            excerpt: 'Explore the latest innovations and trends in renewable energy that are shaping our sustainable future.',
-            content: 'Renewable energy is rapidly evolving, with new technologies and breakthroughs happening every day. Let\'s explore what\'s coming in 2024...',
-            author: 'Mike Chen',
-            category: 'Renewable Energy',
-            createdAt: new Date('2024-01-12'),
-            readTime: 7,
-            views: 980,
-            likes: 67,
-            comments: [],
-            featured: false,
-            status: 'Published',
-            rating: 4.6
-          },
-          {
-            _id: '3',
-            title: 'Urban Gardening: Growing Food in Small Spaces',
-            excerpt: 'Learn how to start your own urban garden and grow fresh food even with limited space.',
-            content: 'Living in a city doesn\'t mean you can\'t grow your own food. Urban gardening is becoming increasingly popular...',
-            author: 'Emma Davis',
-            category: 'Eco-Tips',
-            createdAt: new Date('2024-01-10'),
-            readTime: 4,
-            views: 756,
-            likes: 45,
-            comments: [],
-            featured: false,
-            status: 'Published',
-            rating: 4.5
-          }
-        ]);
+        console.error('Failed to fetch latest blogs:', error);
+        // Set empty array on error
+        setBlogs([]);
       } finally {
         setLoading(false);
       }
@@ -96,9 +50,9 @@ const BlogSection = () => {
             skeletonCards
           ) : (
             blogs.map((blog, index) => (
-              <BlogCard 
-                key={blog._id} 
-                blog={blog} 
+              <BlogCard
+                key={blog._id}
+                blog={blog}
                 variant={index === 0 && blog.featured ? 'featured' : 'default'}
               />
             ))
@@ -108,8 +62,8 @@ const BlogSection = () => {
         {/* View All Blogs Button */}
         <div className="text-center">
           <Link to="/blogs">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg"
             >
               View All Blogs

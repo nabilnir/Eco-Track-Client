@@ -47,7 +47,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen">
       {/* Navigation */}
-      <Navigation 
+      <Navigation
         logo="EcoTrack"
         navItems={navItems}
       />
@@ -62,7 +62,7 @@ const HomePage = () => {
       />
 
       {/* Features Section */}
-      <Section 
+      <Section
         title="Powerful Features"
         subtitle="Everything you need to track and improve your environmental impact"
         variant="light"
@@ -98,7 +98,7 @@ const HomePage = () => {
       </Section>
 
       {/* How It Works */}
-      <Section 
+      <Section
         title="How It Works"
         subtitle="Get started in three simple steps"
         variant="light"
@@ -136,6 +136,69 @@ const HomePage = () => {
 
       {/* Blog Section */}
       <BlogSection />
+
+      {/* Featured Challenges */}
+      <Section
+        title="Featured Challenges"
+        subtitle="Join our most popular eco-challenges"
+        variant="light"
+      >
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[1, 2, 3, 4].map((item) => (
+            <Card key={item} className="h-full flex flex-col">
+              <div className="h-48 bg-gray-200 rounded-lg mb-4 bg-cover bg-center" style={{ backgroundImage: `url(https://picsum.photos/seed/challenge${item}/400/300)` }}></div>
+              <Badge variant="green" className="self-start mb-2">Active</Badge>
+              <h4 className="text-xl font-bold mb-2">Zero Waste Week {item}</h4>
+              <p className="text-gray-600 mb-4 flex-grow">Reduce your plastic consumption to zero for one week.</p>
+              <Button size="sm" className="w-full mt-auto">Join Challenge</Button>
+            </Card>
+          ))}
+        </div>
+        <div className="text-center mt-8">
+          <Link to="/challenges">
+            <Button variant="outline">View All Challenges</Button>
+          </Link>
+        </div>
+      </Section>
+
+      {/* FAQ Section */}
+      <Section title="Frequently Asked Questions" subtitle="Got questions? We have answers.">
+        <div className="max-w-3xl mx-auto space-y-4">
+          {[
+            { q: "How do I track my activities?", a: "Simply log in to your dashboard and click on 'Add Activity'. You can choose from various categories and metrics." },
+            { q: "Is EcoTrack free?", a: "Yes, EcoTrack is completely free for individual users. We also offer premium features for organizations." },
+            { q: "Can I compete with friends?", a: "Absolutely! You can join challenges, create teams, and compare your eco-impact on the leaderboard." },
+            { q: "How is the CO2 saved calculated?", a: "We use standard environmental data APIs to estimate the carbon footprint reduction based on your activities." }
+          ].map((faq, idx) => (
+            <div key={idx} className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+              <h4 className="font-bold text-lg mb-2 text-gray-800">{faq.q}</h4>
+              <p className="text-gray-600">{faq.a}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* Newsletter Section */}
+      <Section variant="light" className="py-20">
+        <div className="max-w-4xl mx-auto text-center bg-emerald-900 rounded-3xl p-12 text-white relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+          <div className="relative z-10">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Subscribe to Our Newsletter</h2>
+            <p className="text-emerald-100 mb-8 max-w-2xl mx-auto">Get the latest eco-tips, challenge updates, and success stories delivered straight to your inbox.</p>
+            <form className="flex flex-col sm:flex-row gap-4 justify-center max-w-lg mx-auto" onSubmit={(e) => e.preventDefault()}>
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                className="px-6 py-4 rounded-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-400 w-full"
+                required
+              />
+              <button className="px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-bold rounded-full transition-colors duration-300 shadow-lg">
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+      </Section>
 
       {/* CTA Section */}
       <Section variant="gradient">

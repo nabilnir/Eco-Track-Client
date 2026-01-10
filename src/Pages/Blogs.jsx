@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import BlogCard from '../components/Blog/BlogCard';
 import Button from '../components/UI/Button';
-import axios from 'axios';
+import axiosPublic from '../api/axiosPublic';
 import { Search, Filter, ChevronDown, X, Grid, List } from 'lucide-react';
 
 const Blogs = () => {
@@ -11,7 +11,7 @@ const Blogs = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
-  
+
   // Filter states
   const [filters, setFilters] = useState({
     category: 'all',
@@ -23,7 +23,7 @@ const Blogs = () => {
     tags: [],
     difficulty: 'all'
   });
-  
+
   // Sorting state
   const [sortBy, setSortBy] = useState('newest');
   const [showFilters, setShowFilters] = useState(false);
@@ -47,17 +47,19 @@ const Blogs = () => {
           page: currentPage,
           limit: 12 // Changed to 12 for 4 cards per row * 3 rows
         };
-        
+
         if (selectedCategory !== 'all') {
           params.category = selectedCategory;
         }
 
-        const response = await axios.get('http://localhost:5000/api/blogs', { params });
+        const response = await axiosPublic.get('/blogs', { params });
         setBlogs(response.data.blogs);
         setTotalPages(response.data.pagination.pages);
       } catch (error) {
-        console.log('Using fallback blog data');
-        // Fallback data if API fails
+        console.error('Failed to fetch blogs:', error);
+        // Removed fallback data to prevent confusion
+        setBlogs([]);
+        setTotalPages(1);
         const fallbackBlogs = [
           {
             _id: '1',
@@ -188,12 +190,12 @@ const Blogs = () => {
             rating: 4.6
           }
         ];
-        
+
         // Filter by category if selected
-        const filteredBlogs = selectedCategory === 'all' 
-          ? fallbackBlogs 
+        const filteredBlogs = selectedCategory === 'all'
+          ? fallbackBlogs
           : fallbackBlogs.filter(blog => blog.category === selectedCategory);
-        
+
         setBlogs(filteredBlogs);
         setTotalPages(Math.ceil(filteredBlogs.length / 12));
       } finally {
@@ -292,11 +294,10 @@ const Blogs = () => {
                   onClick={() => handleCategoryChange(category.value)}
                   variant={selectedCategory === category.value ? 'default' : 'ghost'}
                   size="sm"
-                  className={`${
-                    selectedCategory === category.value
-                      ? 'bg-green-600 text-white'
-                      : 'bg-white text-gray-700 hover:bg-gray-100'
-                  } border border-gray-300`}
+                  className={`${selectedCategory === category.value
+                    ? 'bg-green-600 text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-100'
+                    } border border-gray-300`}
                 >
                   {category.label}
                 </Button>
@@ -317,9 +318,9 @@ const Blogs = () => {
         {filteredBlogs.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
             {filteredBlogs.map((blog, index) => (
-              <BlogCard 
-                key={blog._id} 
-                blog={blog} 
+              <BlogCard
+                key={blog._id}
+                blog={blog}
                 variant={index === 0 && blog.featured ? 'featured' : 'default'}
               />
             ))}
@@ -329,7 +330,7 @@ const Blogs = () => {
             <div className="text-6xl mb-4">📝</div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No blogs found</h3>
             <p className="text-gray-600">
-              {searchTerm 
+              {searchTerm
                 ? 'Try adjusting your search terms'
                 : 'No blogs available in this category yet'
               }
@@ -349,7 +350,7 @@ const Blogs = () => {
             >
               Previous
             </Button>
-            
+
             <div className="flex gap-1">
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                 <Button
@@ -357,17 +358,16 @@ const Blogs = () => {
                   onClick={() => setCurrentPage(page)}
                   variant={currentPage === page ? 'default' : 'ghost'}
                   size="sm"
-                  className={`${
-                    currentPage === page
-                      ? 'bg-green-600 text-white'
-                      : 'bg-white text-gray-700 hover:bg-gray-100'
-                  } border border-gray-300`}
+                  className={`${currentPage === page
+                    ? 'bg-green-600 text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-100'
+                    } border border-gray-300`}
                 >
                   {page}
                 </Button>
               ))}
             </div>
-            
+
             <Button
               onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}

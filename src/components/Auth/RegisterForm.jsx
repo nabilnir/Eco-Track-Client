@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router';
 import toast from 'react-hot-toast';
 import { FaGoogle, FaFacebook, FaTwitter, FaGithub, FaEye, FaEyeSlash, FaUser, FaEnvelope, FaLock, FaImage } from 'react-icons/fa';
 import useAuth from '../../Hooks/useAuth';
+import axiosPublic from '../../api/axiosPublic';
 
 const RegisterForm = () => {
   const { register, googleSignIn, updateUserProfile } = useAuth();
@@ -41,30 +42,30 @@ const RegisterForm = () => {
   // Form validation
   const validate = () => {
     const newErrors = {};
-    
+
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
     } else if (formData.name.trim().length < 2) {
       newErrors.name = 'Name must be at least 2 characters long';
     }
-    
+
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
     }
-    
+
     if (!formData.photoURL.trim()) {
       newErrors.photoURL = 'Photo URL is required';
     } else if (!/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i.test(formData.photoURL)) {
       newErrors.photoURL = 'Please enter a valid image URL';
     }
-    
+
     const passwordErrors = validatePassword(formData.password);
     if (passwordErrors.length > 0) {
-      newErrors.password = passwordErrors[0]; 
+      newErrors.password = passwordErrors[0];
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -72,11 +73,11 @@ const RegisterForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
+
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
-    
+
     if (name === 'password') {
       const passwordErrors = validatePassword(value);
       if (passwordErrors.length > 0) {
@@ -96,11 +97,20 @@ const RegisterForm = () => {
     try {
       await register(formData.email, formData.password);
       await updateUserProfile(formData.name, formData.photoURL);
+
+      // Save user to backend
+      await axiosPublic.post('/users', {
+        name: formData.name,
+        email: formData.email,
+        photoURL: formData.photoURL,
+        role: 'user'
+      });
+
       toast.success('Registration successful! Welcome to EcoTrack! 🌱');
       navigate(from, { replace: true });
     } catch (error) {
       console.error('Registration failed:', error.message);
-      
+
       // Handle specific Firebase errors
       if (error.code === 'auth/email-already-in-use') {
         toast.error('This email is already registered. Please login instead.');
@@ -121,7 +131,17 @@ const RegisterForm = () => {
   const handleGoogleRegister = async () => {
     setLoading(true);
     try {
-      await googleSignIn();
+      const result = await googleSignIn();
+      const user = result.user;
+
+      // Save user to backend
+      await axiosPublic.post('/users', {
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        role: 'user'
+      });
+
       toast.success('Signed up with Google successfully! 🎉');
       navigate(from, { replace: true });
     } catch (error) {
@@ -207,7 +227,7 @@ const RegisterForm = () => {
               Fill Demo Data
             </button>
           </div>
-          
+
           <form onSubmit={handleRegister} className="space-y-5">
             {/* Name Field */}
             <div>
@@ -312,7 +332,7 @@ const RegisterForm = () => {
               {errors.password && <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
                 <span className="text-red-500">⚠</span> {errors.password}
               </p>}
-              
+
               {/* Password Requirements */}
               <div className="mt-2 text-xs text-gray-600 space-y-1">
                 <p>Password must contain:</p>

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router';
-import { 
-  FaHome, 
-  FaUser, 
-  FaChartBar, 
-  FaCog, 
-  FaSignOutAlt, 
-  FaBars, 
+import {
+  FaHome,
+  FaUser,
+  FaChartBar,
+  FaCog,
+  FaSignOutAlt,
+  FaBars,
   FaTimes,
   FaLeaf,
   FaTrophy,
@@ -17,17 +17,20 @@ import {
   FaChartPie,
   FaBell
 } from 'react-icons/fa';
+import DarkModeToggle from '../components/UI/DarkModeToggle';
 import useAuth from '../Hooks/useAuth';
 
 const DashboardLayout = () => {
   const { user, logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Determine user role (you can enhance this based on your auth system)
-  const userRole = user?.email?.includes('admin') ? 'admin' : 'user';
+  // Determine user role from AuthContext
+  // Optional: fallback to email check if role is mission for some reason
+  const userRole = user?.role || (user?.email?.includes('admin') ? 'admin' : 'user');
 
   // Menu items based on user role
   const userMenuItems = [
@@ -60,6 +63,12 @@ const DashboardLayout = () => {
       path: '/dashboard/profile',
       icon: FaUser,
       label: 'Profile'
+    },
+    {
+      name: 'My Blogs',
+      path: '/dashboard/my-blogs',
+      icon: FaBlog,
+      label: 'My Blogs'
     }
   ];
 
@@ -117,27 +126,41 @@ const DashboardLayout = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
+      <div className={`fixed inset-y-0 left-0 z-50 bg-white shadow-lg transform transition-all duration-300 ease-in-out 
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
+        lg:translate-x-0 
+        ${collapsed ? 'w-20' : 'w-64'}
+      `}>
         {/* Sidebar Header */}
-        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
+        <div className={`flex items-center ${collapsed ? 'justify-center' : 'justify-between'} h-16 px-4 border-b border-gray-200`}>
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
                 <FaLeaf className="text-white" />
               </div>
             </div>
-            <div className="ml-3">
-              <h1 className="text-xl font-bold text-gray-900">EcoTrack</h1>
-              <p className="text-xs text-gray-500 capitalize">{userRole} Dashboard</p>
-            </div>
+            {!collapsed && (
+              <div className="ml-3 fade-in">
+                <h1 className="text-xl font-bold text-gray-900">EcoTrack</h1>
+                <p className="text-xs text-gray-500 capitalize">{userRole} Dashboard</p>
+              </div>
+            )}
           </div>
+
+          {/* Mobile Close Button */}
           <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden text-gray-400 hover:text-gray-600"
           >
             <FaTimes size={20} />
+          </button>
+
+          {/* Desktop Collapse Toggle */}
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className={`hidden lg:block text-gray-400 hover:text-gray-600 ${collapsed ? 'absolute -right-3 top-6 bg-white rounded-full p-1 shadow-md border border-gray-200' : ''}`}
+          >
+            {collapsed ? <FaBars size={12} /> : <FaBars size={20} />}
           </button>
         </div>
 
@@ -147,19 +170,19 @@ const DashboardLayout = () => {
             {menuItems.map((item) => {
               const Icon = item.icon;
               const isActive = isActivePath(item.path);
-              
+
               return (
                 <Link
                   key={item.name}
                   to={item.path}
-                  className={`group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                    isActive
-                      ? 'bg-green-50 text-green-700 border-r-2 border-green-700'
-                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                  }`}
+                  className={`group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${isActive
+                    ? 'bg-green-50 text-green-700 border-r-2 border-green-700'
+                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                    } ${collapsed ? 'justify-center' : ''}`}
+                  title={collapsed ? item.label : ''}
                 >
-                  <Icon className={`mr-3 h-5 w-5 ${isActive ? 'text-green-700' : 'text-gray-400 group-hover:text-gray-500'}`} />
-                  {item.label}
+                  <Icon className={`h-5 w-5 ${isActive ? 'text-green-700' : 'text-gray-400 group-hover:text-gray-500'} ${collapsed ? '' : 'mr-3'}`} />
+                  {!collapsed && <span className="fade-in">{item.label}</span>}
                 </Link>
               );
             })}
@@ -168,7 +191,7 @@ const DashboardLayout = () => {
 
         {/* Sidebar Footer */}
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
-          <div className="flex items-center">
+          <div className={`flex items-center ${collapsed ? 'justify-center' : ''}`}>
             <div className="flex-shrink-0">
               <img
                 className="h-8 w-8 rounded-full"
@@ -176,20 +199,22 @@ const DashboardLayout = () => {
                 alt="User avatar"
               />
             </div>
-            <div className="ml-3 flex-1">
-              <p className="text-sm font-medium text-gray-900 truncate">
-                {user?.displayName || 'User'}
-              </p>
-              <p className="text-xs text-gray-500 truncate capitalize">
-                {userRole}
-              </p>
-            </div>
+            {!collapsed && (
+              <div className="ml-3 flex-1 fade-in">
+                <p className="text-sm font-medium text-gray-900 truncate">
+                  {user?.displayName || 'User'}
+                </p>
+                <p className="text-xs text-gray-500 truncate capitalize">
+                  {userRole}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 lg:ml-0">
+      <div className={`flex-1 min-w-0 transition-all duration-300 ease-in-out ${collapsed ? 'lg:ml-20' : 'lg:ml-64'}`}>
         {/* Top Navbar */}
         <header className="bg-white shadow-sm border-b border-gray-200">
           <div className="px-4 sm:px-6 lg:px-8">
@@ -197,13 +222,13 @@ const DashboardLayout = () => {
               {/* Mobile menu button */}
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="lg:hidden text-gray-400 hover:text-gray-600"
+                className="lg:hidden text-gray-400 hover:text-gray-600 focus:outline-none"
               >
                 <FaBars size={20} />
               </button>
 
-              {/* Search Bar */}
-              <div className="flex-1 max-w-lg mx-4">
+              {/* Search Bar - hidden on mobile to save space if needed, or adjust width */}
+              <div className="flex-1 max-w-lg mx-4 hidden md:block">
                 <div className="relative">
                   <input
                     type="text"
@@ -220,6 +245,7 @@ const DashboardLayout = () => {
 
               {/* Right side items */}
               <div className="flex items-center space-x-4">
+                <DarkModeToggle />
                 {/* Notifications */}
                 <button className="relative p-2 text-gray-400 hover:text-gray-600">
                   <FaBell size={18} />

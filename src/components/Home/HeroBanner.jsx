@@ -3,45 +3,64 @@ import { FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
+// Fallback slides data
+const defaultSlides = [
+  {
+    _id: '1',
+    title: 'Join the Eco Revolution',
+    subtitle: 'Track your environmental impact and make a real difference',
+    imageSrc: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2574&auto=format&fit=crop',
+    ctaText: 'Get Started',
+    ctaLink: '/register'
+  },
+  {
+    _id: '2',
+    title: 'Take on Eco Challenges',
+    subtitle: 'Compete with friends and earn rewards for sustainable living',
+    imageSrc: 'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?q=80&w=2670&auto=format&fit=crop',
+    ctaText: 'View Challenges',
+    ctaLink: '/challenges'
+  },
+  {
+    _id: '3',
+    title: 'Make Every Action Count',
+    subtitle: 'Small changes lead to big environmental impact',
+    imageSrc: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?q=80&w=2670&auto=format&fit=crop',
+    ctaText: 'Learn More',
+    ctaLink: '/about'
+  }
+];
+
 const HeroBanner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [slidesData, setSlidesData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [slidesData, setSlidesData] = useState(defaultSlides);
+  const [loading, setLoading] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Initialize AOS
     AOS.init({
       duration: 1000,
       once: false,
       offset: 50
     });
 
+    // Try to fetch slides from API, but use fallback if it fails
     const fetchSlides = async () => {
       try {
-        setLoading(true);
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/slides`);
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch slides');
-        }
-        
-        const data = await response.json();
-        
-        if (data && data.length > 0) {
-          setSlidesData(data);
-        } else {
-          setError('No slides available');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/slides`);
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data && Array.isArray(data) && data.length > 0) {
+            setSlidesData(data);
+          }
         }
       } catch (error) {
-        console.error('Failed to load slides:', error);
-        setError('Failed to load slides');
-      } finally {
-        setLoading(false);
+        console.log('Using default slides');
+        // Keep using defaultSlides
       }
     };
-    
+
     fetchSlides();
   }, []);
 
@@ -50,7 +69,7 @@ const HeroBanner = () => {
 
     const interval = setInterval(() => {
       nextSlide();
-    }, 5000); 
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [currentSlide, slidesData.length]);
@@ -76,34 +95,6 @@ const HeroBanner = () => {
     setTimeout(() => setIsAnimating(false), 600);
   };
 
-  if (loading) {
-    return (
-      <div className="relative w-full h-[500px] lg:h-[70vh] flex items-center justify-center bg-gradient-to-r from-emerald-50 dark:from-gray-800 to-teal-50 dark:to-gray-700">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-600 dark:text-gray-300 font-medium">Loading slides...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error || !slidesData.length) {
-    return (
-      <div className="relative w-full h-[500px] lg:h-[70vh] flex items-center justify-center bg-gradient-to-r from-emerald-50 dark:from-gray-800 to-teal-50 dark:to-gray-700">
-        <div className="text-center">
-          <p className="text-gray-600 dark:text-gray-300 text-lg mb-4">{error || 'No slides available'}</p>
-          <a 
-            href="/challenges" 
-            className="inline-flex items-center space-x-2 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg text-base font-semibold transition-all duration-300"
-          >
-            <span>View Challenges</span>
-            <FaArrowRight />
-          </a>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="relative w-full h-[500px] lg:h-[70vh] overflow-hidden shadow-lg">
       {/* Slides */}
@@ -111,11 +102,10 @@ const HeroBanner = () => {
         {slidesData.map((slide, index) => (
           <div
             key={slide._id}
-            className={`absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-700 ease-in-out ${
-              index === currentSlide 
-                ? 'opacity-100 scale-100 z-10' 
+            className={`absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-700 ease-in-out ${index === currentSlide
+                ? 'opacity-100 scale-100 z-10'
                 : 'opacity-0 scale-110 z-0'
-            }`}
+              }`}
             style={{ backgroundImage: `url(${slide.imageSrc || slide.imageUrl})` }}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30 flex items-center">
@@ -127,9 +117,9 @@ const HeroBanner = () => {
                   <p className="text-white text-lg sm:text-xl mb-8 font-light drop-shadow-md animate-fade-in-up animation-delay-200">
                     {slide.subtitle || slide.description}
                   </p>
-                  <a 
-                    href={slide.ctaLink || '/challenges'} 
-                    className="inline-flex items-center space-x-2 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg text-base font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg animate-fade-in-up animation-delay-400"
+                  <a
+                    href={slide.ctaLink || '/challenges'}
+                    className="btn-primary btn-lg inline-flex items-center gap-2 transform hover:scale-105 shadow-lg animate-fade-in-up animation-delay-400"
                   >
                     <span>{slide.ctaText || 'View More'}</span>
                     <FaArrowRight />
@@ -144,7 +134,7 @@ const HeroBanner = () => {
       {/* Navigation Arrows */}
       {slidesData.length > 1 && (
         <>
-          <button 
+          <button
             onClick={prevSlide}
             disabled={isAnimating}
             className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -152,7 +142,7 @@ const HeroBanner = () => {
           >
             <FaChevronLeft size={20} />
           </button>
-          <button 
+          <button
             onClick={nextSlide}
             disabled={isAnimating}
             className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -171,11 +161,10 @@ const HeroBanner = () => {
               key={index}
               onClick={() => goToSlide(index)}
               disabled={isAnimating}
-              className={`transition-all duration-300 rounded-full ${
-                index === currentSlide 
-                  ? 'w-10 h-3 bg-emerald-500' 
+              className={`transition-all duration-300 rounded-full ${index === currentSlide
+                  ? 'w-10 h-3 bg-emerald-500'
                   : 'w-3 h-3 bg-white/50 hover:bg-white/80'
-              } disabled:cursor-not-allowed`}
+                } disabled:cursor-not-allowed`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}

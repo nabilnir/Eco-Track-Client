@@ -7,7 +7,7 @@ import { FaDownLeftAndUpRightToCenter } from 'react-icons/fa6';
 import useTitle from '../Hooks/useTitle';
 
 const ChallengeDetails = () => {
-  
+
   const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const ChallengeDetails = () => {
 
   const fetchChallenge = async () => {
     try {
-     
+
       const objectIdRegex = /^[0-9a-fA-F]{24}$/;
       if (!objectIdRegex.test(id)) {
         setError(true);
@@ -35,7 +35,7 @@ const ChallengeDetails = () => {
       }
 
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/challenges/${id}`);
-      
+
       if (!response.ok) {
         setError(true);
         if (response.status === 404) {
@@ -48,9 +48,9 @@ const ChallengeDetails = () => {
         }, 1500);
         return;
       }
-      
+
       const data = await response.json();
-      
+
       if (!data || !data._id) {
         setError(true);
         toast.error('Challenge not found');
@@ -59,7 +59,7 @@ const ChallengeDetails = () => {
         }, 1500);
         return;
       }
-      
+
       setChallenge(data);
     } catch (error) {
       console.error('Failed to fetch challenge:', error);
@@ -169,6 +169,42 @@ const ChallengeDetails = () => {
             >
               Join This Challenge
             </button>
+
+            {/* Reviews Section */}
+            <div className="mt-12 border-t pt-8">
+              <h2 className="text-2xl font-bold mb-6 text-gray-900">Community Reviews</h2>
+              <div className="space-y-6">
+                {[1, 2].map(review => (
+                  <div key={review} className="bg-gray-50 p-4 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <img src={`https://i.pravatar.cc/150?u=${review}`} alt="User" className="w-8 h-8 rounded-full" />
+                      <span className="font-semibold text-gray-800">EcoWarrior {review}</span>
+                      <div className="flex text-yellow-500">
+                        {[...Array(5)].map((_, i) => <span key={i}>★</span>)}
+                      </div>
+                    </div>
+                    <p className="text-gray-600">This challenge really helped me reduce my plastic waste! Highly recommended.</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Related Challenges */}
+        <div className="mt-12">
+          <h2 className="text-2xl font-bold mb-6 text-gray-900">You Might Also Like</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[1, 2, 3].map(item => (
+              <Link key={item} to="/challenges" className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                <div className="h-40 bg-gray-200 bg-cover bg-center" style={{ backgroundImage: `url(https://picsum.photos/seed/related${item}/400/200)` }}></div>
+                <div className="p-4">
+                  <span className="text-xs font-bold text-emerald-600 uppercase tracking-wide">Category</span>
+                  <h3 className="font-bold text-lg mb-1 mt-1">Similar Challenge {item}</h3>
+                  <button className="text-emerald-500 font-semibold text-sm hover:underline">View Details</button>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </div>

@@ -48,6 +48,15 @@ export const AuthProvider = ({ children }) => {
   // Observer
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        // Assign role based on email for demo purposes
+        // In a real app, this would come from a database or custom claims
+        if (currentUser.email === 'admin@ecotrack.com') {
+          currentUser.role = 'admin';
+        } else {
+          currentUser.role = 'user';
+        }
+      }
       setUser(currentUser);
       setLoading(false);
     });

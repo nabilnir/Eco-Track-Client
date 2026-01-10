@@ -1,3 +1,5 @@
+import daisyui from "daisyui";
+
 /** @type {import('tailwindcss').Config} */
 const config = {
   content: [
@@ -19,30 +21,37 @@ const config = {
         primary: {
           bg: '#9A9A99',
           DEFAULT: '#9A9A99',
+          dark: '#059669', // Emerald 600
+          light: '#34D399', // Emerald 400
         },
         dark: {
-          bg: '#4A4A49',
-          DEFAULT: '#4A4A49',
+          bg: '#1F2937', // Gray 800
+          DEFAULT: '#111827', // Gray 900
+          surface: '#374151', // Gray 700
         },
         accent: {
-          green: '#22C55E',
-          DEFAULT: '#22C55E',
+          green: '#10B981', // Emerald 500
+          DEFAULT: '#10B981',
+          hover: '#059669',
         },
         text: {
-          dark: '#1F2937',
+          primary: '#1F2937', // Gray 800
+          secondary: '#4B5563', // Gray 600
           light: '#F5F5F2',
-          muted: '#A0A099',
+          muted: '#9CA3AF',
+        },
+        background: {
+          light: '#F9FAFB', // Gray 50
+          dark: '#111827',
         },
         border: {
-          light: '#E5E5E0',
-          DEFAULT: '#E5E5E0',
+          light: '#E5E7EB', // Gray 200
+          dark: '#374151',
+          DEFAULT: '#E5E7EB',
         },
         'taupe': '#E8DDD0',
-        'dark-gray': '#2D3748',
-        'accent-green': '#10B981',
-        'text-dark': '#1A202C',
-        'text-light': '#718096',
-        'muted-gray': '#F7FAFC',
+        'eco-green': '#059669',
+        'eco-light': '#D1FAE5',
       },
       borderRadius: {
         'xl': '32px',
@@ -200,7 +209,7 @@ const config = {
       },
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [daisyui],
 }
 
 export default config

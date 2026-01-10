@@ -14,10 +14,10 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileDropdown, setProfileDropdown] = useState(false);
 
-  
+
   const menuRef = useRef(null);
 
- 
+
   useEffect(() => {
     const handler = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -35,8 +35,8 @@ const Navbar = () => {
       await logout();
       toast.success('Logged out successfully');
       navigate('/');
-      setProfileDropdown(false); 
-      setMobileMenuOpen(false); 
+      setProfileDropdown(false);
+      setMobileMenuOpen(false);
     } catch (error) {
       toast.error('Failed to log out', error);
     }
@@ -55,10 +55,10 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-md z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          
+
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 text-2xl font-bold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
-            <img src={logo} className='w-12 h-12'  alt="" />
+            <img src={logo} className='w-12 h-12' alt="" />
             <span>EcoTrack</span>
           </Link>
 
@@ -67,8 +67,7 @@ const Navbar = () => {
             <NavLink
               to="/"
               className={({ isActive }) =>
-                `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${
-                  isActive ? 'text-blue-600 dark:text-blue-400' : ''
+                `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${isActive ? 'text-blue-600 dark:text-blue-400' : ''
                 }`
               }
             >
@@ -77,8 +76,7 @@ const Navbar = () => {
             <NavLink
               to="/challenges"
               className={({ isActive }) =>
-                `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${
-                  isActive ? 'text-blue-600 dark:text-blue-400' : ''
+                `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${isActive ? 'text-blue-600 dark:text-blue-400' : ''
                 }`
               }
             >
@@ -87,8 +85,7 @@ const Navbar = () => {
             <NavLink
               to="/events"
               className={({ isActive }) =>
-                `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${
-                  isActive ? 'text-blue-600 dark:text-blue-400' : ''
+                `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${isActive ? 'text-blue-600 dark:text-blue-400' : ''
                 }`
               }
             >
@@ -97,8 +94,7 @@ const Navbar = () => {
             <NavLink
               to="Tips"
               className={({ isActive }) =>
-                `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${
-                  isActive ? 'text-blue-600 dark:text-blue-400' : ''
+                `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${isActive ? 'text-blue-600 dark:text-blue-400' : ''
                 }`
               }
             >
@@ -108,8 +104,7 @@ const Navbar = () => {
               <NavLink
                 to="/my-activities"
                 className={({ isActive }) =>
-                  `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${
-                    isActive ? 'text-blue-600 dark:text-blue-400' : ''
+                  `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${isActive ? 'text-blue-600 dark:text-blue-400' : ''
                   }`
                 }
               >
@@ -117,27 +112,26 @@ const Navbar = () => {
               </NavLink>
             )}
             {
-              user &&(
+              user && (
                 <NavLink
-                to="/myprofile"
-                className={({ isActive }) =>
-                  `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${
-                    isActive ? 'text-blue-600 dark:text-blue-400' : ''
-                  }`
-                }
-              >
-                My Profile
-              </NavLink>
+                  to="/myprofile"
+                  className={({ isActive }) =>
+                    `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${isActive ? 'text-blue-600 dark:text-blue-400' : ''
+                    }`
+                  }
+                >
+                  My Profile
+                </NavLink>
               )
             }
-            
+
           </div>
-          
+
           {/* Right Section  */}
           <div className="flex items-center space-x-4" ref={menuRef}>
             {/* Dark Mode Toggle */}
             <DarkModeToggle />
-            
+
             {user ? (
               // User Menu
               <div className="relative hidden md:block">
@@ -160,6 +154,13 @@ const Navbar = () => {
                       <p className="font-semibold text-gray-800 dark:text-gray-200 truncate">{user.displayName || 'User'}</p>
                       <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
                     </div>
+                    <Link
+                      to="/dashboard"
+                      className="block px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition duration-150"
+                      onClick={() => setProfileDropdown(false)}
+                    >
+                      Dashboard
+                    </Link>
                     <Link
                       to="/my-activities"
                       className="block px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition duration-150"
@@ -212,7 +213,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
         <div className="md:hidden">
@@ -248,6 +249,13 @@ const Navbar = () => {
             {user && (
               <>
                 <NavLink
+                  to="/dashboard"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-green-600 w-full text-left"
+                  onClick={closeMenus}
+                >
+                  Dashboard
+                </NavLink>
+                <NavLink
                   to="/my-activities"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-green-600 w-full text-left"
                   onClick={closeMenus}
@@ -261,21 +269,21 @@ const Navbar = () => {
                 >
                   My Profile
                 </NavLink>
-                
+
                 {/* User Info and Logout */}
                 <div className="w-full pt-2 mt-2 border-t border-gray-100">
-                    <p className="px-3 text-sm font-semibold text-gray-800 truncate">{user.displayName || 'User'}</p>
-                    <p className="px-3 pb-2 text-xs text-gray-500 truncate">{user.email}</p>
-                    <button
-                        className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-50"
-                        onClick={handleLogout}
-                    >
-                        Logout
-                    </button>
+                  <p className="px-3 text-sm font-semibold text-gray-800 truncate">{user.displayName || 'User'}</p>
+                  <p className="px-3 pb-2 text-xs text-gray-500 truncate">{user.email}</p>
+                  <button
+                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-50"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
                 </div>
               </>
             )}
-            
+
             {!user && (
               <div className="w-full pt-2 mt-2 border-t border-gray-100 flex flex-col space-y-2">
                 <Link

@@ -1,29 +1,29 @@
 import React from 'react';
 
-const Card = ({ 
-  children, 
-  variant = 'default', 
-  hover = true, 
-  className = '', 
+const Card = ({
+  children,
+  variant = 'default',
+  hover = true,
+  className = '',
   padding = 'lg',
-  ...props 
+  ...props
 }) => {
-  const baseClasses = 'rounded-2xl transition-all duration-300';
-  
+  const baseClasses = 'bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 transition-all duration-300';
+
   const variants = {
-    default: 'bg-white shadow-card',
-    dark: 'bg-white/10 backdrop-blur-sm text-text-light border border-white/10',
-    elevated: 'bg-white shadow-lg'
+    default: '',
+    elevated: 'shadow-sm hover:shadow-lg',
+    interactive: 'hover:scale-[1.02] hover:-translate-y-1 cursor-pointer shadow-sm hover:shadow-lg'
   };
 
   const paddings = {
     sm: 'p-4',
-    md: 'p-6', 
-    lg: 'p-10',
-    xl: 'p-12'
+    md: 'p-6',
+    lg: 'p-8',
+    xl: 'p-10'
   };
 
-  const hoverClasses = hover ? 'hover:-translate-y-2 hover:shadow-card-hover' : '';
+  const hoverClasses = hover && variant !== 'interactive' ? 'hover:-translate-y-1 hover:shadow-lg' : '';
 
   return (
     <div

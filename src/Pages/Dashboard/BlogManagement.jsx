@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaPlus, FaEdit, FaTrash, FaEye, FaBlog, FaSearch, FaFilter, FaCalendarAlt, FaEye as FaViews, FaHeart, FaComment } from 'react-icons/fa';
-import axios from 'axios';
+import axiosPublic from '../../api/axiosPublic';
 
 const BlogManagement = () => {
   const [blogs, setBlogs] = useState([]);
@@ -36,14 +36,14 @@ const BlogManagement = () => {
   const fetchBlogs = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/blogs');
+      const response = await axiosPublic.get('/blogs');
       setBlogs(response.data.blogs || []);
     } catch (error) {
       console.error('Failed to fetch blogs:', error);
       // Fallback data
       const fallbackBlogs = [
-        { 
-          _id: '1', 
+        {
+          _id: '1',
           title: '10 Simple Ways to Reduce Your Carbon Footprint Today',
           excerpt: 'Discover easy and practical steps you can take right now to make a positive impact on the environment.',
           content: 'In today\'s world, taking care of our planet is more important than ever...',
@@ -58,8 +58,8 @@ const BlogManagement = () => {
           comments: 12,
           createdAt: '2024-01-15'
         },
-        { 
-          _id: '2', 
+        {
+          _id: '2',
           title: 'The Future of Renewable Energy: What to Expect in 2024',
           excerpt: 'Explore the latest innovations and trends in renewable energy that are shaping our sustainable future.',
           content: 'Renewable energy is rapidly evolving...',
@@ -74,8 +74,8 @@ const BlogManagement = () => {
           comments: 8,
           createdAt: '2024-01-12'
         },
-        { 
-          _id: '3', 
+        {
+          _id: '3',
           title: 'Urban Gardening: Growing Food in Small Spaces',
           excerpt: 'Learn how to start your own urban garden and grow fresh food even with limited space.',
           content: 'Living in a city doesn\'t mean you can\'t grow your own food...',
@@ -90,8 +90,8 @@ const BlogManagement = () => {
           comments: 0,
           createdAt: '2024-01-10'
         },
-        { 
-          _id: '4', 
+        {
+          _id: '4',
           title: 'Climate Change: Understanding the Science Behind Global Warming',
           excerpt: 'A comprehensive look at the scientific evidence for climate change and what it means for our future.',
           content: 'Climate change is one of the most pressing issues of our time...',
@@ -106,8 +106,8 @@ const BlogManagement = () => {
           comments: 23,
           createdAt: '2024-01-08'
         },
-        { 
-          _id: '5', 
+        {
+          _id: '5',
           title: 'Wildlife Conservation: Protecting Endangered Species',
           excerpt: 'Discover the challenges and successes in wildlife conservation efforts around the world.',
           content: 'Wildlife conservation is critical for maintaining biodiversity...',
@@ -133,10 +133,10 @@ const BlogManagement = () => {
     e.preventDefault();
     try {
       if (editingBlog) {
-        await axios.put(`http://localhost:5000/api/blogs/${editingBlog._id}`, formData);
+        await axiosPublic.put(`/blogs/${editingBlog._id}`, formData);
         toast.success('Blog updated successfully!');
       } else {
-        await axios.post('http://localhost:5000/api/blogs', formData);
+        await axiosPublic.post('/blogs', formData);
         toast.success('Blog created successfully!');
       }
       fetchBlogs();
@@ -159,7 +159,7 @@ const BlogManagement = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this blog? This action cannot be undone.')) {
       try {
-        await axios.delete(`http://localhost:5000/api/blogs/${id}`);
+        await axiosPublic.delete(`/blogs/${id}`);
         toast.success('Blog deleted successfully!');
         fetchBlogs();
       } catch (error) {
@@ -171,7 +171,7 @@ const BlogManagement = () => {
 
   const handleStatusChange = async (blogId, newStatus) => {
     try {
-      await axios.patch(`http://localhost:5000/api/blogs/${blogId}/status`, { status: newStatus });
+      await axiosPublic.patch(`/blogs/${blogId}/status`, { status: newStatus });
       toast.success(`Blog status updated to ${newStatus}!`);
       fetchBlogs();
     } catch (error) {
@@ -183,7 +183,7 @@ const BlogManagement = () => {
   const handleToggleFeatured = async (blogId) => {
     try {
       const blog = blogs.find(b => b._id === blogId);
-      await axios.patch(`http://localhost:5000/api/blogs/${blogId}/featured`, { featured: !blog.featured });
+      await axiosPublic.patch(`/blogs/${blogId}/featured`, { featured: !blog.featured });
       toast.success(`Blog ${blog.featured ? 'unfeatured' : 'featured'} successfully!`);
       fetchBlogs();
     } catch (error) {
@@ -222,8 +222,8 @@ const BlogManagement = () => {
 
   const filteredBlogs = blogs.filter(blog => {
     const matchesSearch = blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         blog.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         blog.author.toLowerCase().includes(searchTerm.toLowerCase());
+      blog.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      blog.author.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = filterCategory === 'all' || blog.category === filterCategory;
     const matchesStatus = filterStatus === 'all' || blog.status === filterStatus;
     return matchesSearch && matchesCategory && matchesStatus;
@@ -492,7 +492,7 @@ const BlogManagement = () => {
                     type="text"
                     required
                     value={formData.title}
-                    onChange={(e) => setFormData({...formData, title: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   />
                 </div>
@@ -503,7 +503,7 @@ const BlogManagement = () => {
                     type="text"
                     required
                     value={formData.author}
-                    onChange={(e) => setFormData({...formData, author: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, author: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   />
                 </div>
@@ -515,7 +515,7 @@ const BlogManagement = () => {
                   required
                   rows={2}
                   value={formData.excerpt}
-                  onChange={(e) => setFormData({...formData, excerpt: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 />
               </div>
@@ -526,7 +526,7 @@ const BlogManagement = () => {
                   required
                   rows={8}
                   value={formData.content}
-                  onChange={(e) => setFormData({...formData, content: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 />
               </div>
@@ -536,7 +536,7 @@ const BlogManagement = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
                   <select
                     value={formData.category}
-                    onChange={(e) => setFormData({...formData, category: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   >
                     {categories.map(category => (
@@ -549,7 +549,7 @@ const BlogManagement = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
                   <select
                     value={formData.status}
-                    onChange={(e) => setFormData({...formData, status: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   >
                     {statuses.map(status => (
@@ -564,7 +564,7 @@ const BlogManagement = () => {
                     type="number"
                     min="1"
                     value={formData.readTime}
-                    onChange={(e) => setFormData({...formData, readTime: parseInt(e.target.value)})}
+                    onChange={(e) => setFormData({ ...formData, readTime: parseInt(e.target.value) })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   />
                 </div>
@@ -578,11 +578,10 @@ const BlogManagement = () => {
                       key={tag}
                       type="button"
                       onClick={() => handleTagToggle(tag)}
-                      className={`px-3 py-1 rounded-full text-sm border transition-colors ${
-                        formData.tags.includes(tag)
-                          ? 'bg-green-600 text-white border-green-600'
-                          : 'bg-white text-gray-700 border-gray-300 hover:border-green-500'
-                      }`}
+                      className={`px-3 py-1 rounded-full text-sm border transition-colors ${formData.tags.includes(tag)
+                        ? 'bg-green-600 text-white border-green-600'
+                        : 'bg-white text-gray-700 border-gray-300 hover:border-green-500'
+                        }`}
                     >
                       #{tag}
                     </button>
@@ -595,7 +594,7 @@ const BlogManagement = () => {
                   type="checkbox"
                   id="featured"
                   checked={formData.featured}
-                  onChange={(e) => setFormData({...formData, featured: e.target.checked})}
+                  onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
                   className="mr-2"
                 />
                 <label htmlFor="featured" className="text-sm font-medium text-gray-700">
