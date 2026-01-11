@@ -83,15 +83,6 @@ const Navbar = () => {
               Challenges
             </NavLink>
             <NavLink
-              to="/events"
-              className={({ isActive }) =>
-                `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${isActive ? 'text-blue-600 dark:text-blue-400' : ''
-                }`
-              }
-            >
-              Events
-            </NavLink>
-            <NavLink
               to="Tips"
               className={({ isActive }) =>
                 `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${isActive ? 'text-blue-600 dark:text-blue-400' : ''
@@ -102,29 +93,15 @@ const Navbar = () => {
             </NavLink>
             {user && (
               <NavLink
-                to="/my-activities"
+                to="/dashboard"
                 className={({ isActive }) =>
                   `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${isActive ? 'text-blue-600 dark:text-blue-400' : ''
                   }`
                 }
               >
-                My Activities
+                Dashboard
               </NavLink>
             )}
-            {
-              user && (
-                <NavLink
-                  to="/myprofile"
-                  className={({ isActive }) =>
-                    `text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 font-medium relative py-1 ${isActive ? 'text-blue-600 dark:text-blue-400' : ''
-                    }`
-                  }
-                >
-                  My Profile
-                </NavLink>
-              )
-            }
-
           </div>
 
           {/* Right Section  */}
@@ -160,20 +137,6 @@ const Navbar = () => {
                       onClick={() => setProfileDropdown(false)}
                     >
                       Dashboard
-                    </Link>
-                    <Link
-                      to="/my-activities"
-                      className="block px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition duration-150"
-                      onClick={() => setProfileDropdown(false)}
-                    >
-                      My Activities
-                    </Link>
-                    <Link
-                      to="/myprofile"
-                      className="block px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition duration-150"
-                      onClick={() => setProfileDropdown(false)}
-                    >
-                      My Profile
                     </Link>
                     <button
                       className="block w-full text-left px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition duration-150"
@@ -254,20 +217,6 @@ const Navbar = () => {
                   onClick={closeMenus}
                 >
                   Dashboard
-                </NavLink>
-                <NavLink
-                  to="/my-activities"
-                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-green-600 w-full text-left"
-                  onClick={closeMenus}
-                >
-                  My Activities
-                </NavLink>
-                <NavLink
-                  to="/myprofile"
-                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-green-600 w-full text-left"
-                  onClick={closeMenus}
-                >
-                  My Profile
                 </NavLink>
 
                 {/* User Info and Logout */}

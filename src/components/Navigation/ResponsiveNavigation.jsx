@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router';
 import { useDarkMode } from '../../Context/DarkModeContext';
 import { useResponsive } from '../../Hooks/useResponsive';
-import { 
-  FaBars, 
-  FaTimes, 
-  FaHome, 
-  FaLeaf, 
-  FaTrophy, 
-  FaCalendarAlt, 
-  FaBlog, 
+import {
+  FaBars,
+  FaTimes,
+  FaHome,
+  FaLeaf,
+  FaTrophy,
+  FaCalendarAlt,
   FaUser,
   FaSun,
   FaMoon,
@@ -30,8 +29,6 @@ const ResponsiveNavigation = () => {
     { label: 'Home', href: '/', icon: FaHome },
     { label: 'Challenges', href: '/challenges', icon: FaTrophy },
     { label: 'Activities', href: '/activities', icon: FaLeaf },
-    { label: 'Events', href: '/events', icon: FaCalendarAlt },
-    { label: 'Blogs', href: '/blogs', icon: FaBlog },
   ];
 
   useEffect(() => {
@@ -88,16 +85,15 @@ const ResponsiveNavigation = () => {
                 {navItems.map((item) => {
                   const Icon = item.icon;
                   const isActive = location.pathname === item.href;
-                  
+
                   return (
                     <Link
                       key={item.href}
                       to={item.href}
-                      className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        isActive
-                          ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20'
-                          : 'text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-800'
-                      }`}
+                      className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isActive
+                        ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20'
+                        : 'text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                        }`}
                     >
                       <Icon className="text-lg" />
                       <span>{item.label}</span>
@@ -224,17 +220,16 @@ const ResponsiveNavigation = () => {
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.href;
-                
+
                 return (
                   <Link
                     key={item.href}
                     to={item.href}
                     onClick={closeMenu}
-                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                      isActive
-                        ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20'
-                        : 'text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-100 dark:hover:bg-gray-800'
-                    }`}
+                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${isActive
+                      ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20'
+                      : 'text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+                      }`}
                   >
                     <Icon className="text-lg" />
                     <span>{item.label}</span>
@@ -270,7 +265,7 @@ const ResponsiveNavigation = () => {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search for activities, challenges, blogs..."
+                    placeholder="Search for activities, challenges..."
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     autoFocus
                   />
@@ -280,7 +275,7 @@ const ResponsiveNavigation = () => {
                 </ResponsiveButton>
               </form>
             </div>
-            
+
             {/* Search Results */}
             <div className="max-h-96 overflow-y-auto p-4">
               {/* Add search results here */}

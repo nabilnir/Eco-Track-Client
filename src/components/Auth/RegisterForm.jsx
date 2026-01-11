@@ -197,10 +197,10 @@ const RegisterForm = () => {
       name: 'Demo User',
       email: 'user@ecotrack.com',
       photoURL: 'https://picsum.photos/seed/user/200/200.jpg',
-      password: 'user123'
+      password: 'User@123'
     });
     setErrors({});
-    toast.info('Demo data filled! Password: user123');
+    toast.info('Demo data filled! Password: User@123');
   };
 
   return (

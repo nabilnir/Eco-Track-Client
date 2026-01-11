@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import useAuth from "../Hooks/useAuth";
 import heroImg from "../assets/men-women.pg.jpg";
 import useTitle from "../Hooks/useTitle";
@@ -9,6 +9,8 @@ const MyActivities = () => {
   const { user } = useAuth();
   const [userChallenges, setUserChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const isDashboard = location.pathname.includes('/dashboard');
 
 
   const getStatusColor = (status) => {
@@ -64,24 +66,26 @@ const MyActivities = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-0 mt-18 transition-colors duration-300">
+    <div className={`min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 ${isDashboard ? 'py-6' : 'py-0 mt-18'}`}>
 
-      <header className="w-full overflow-hidden">
-        <div
-          className="relative w-full h-[260px] md:h-[340px] lg:h-[420px] bg-cover bg-center"
-          style={{ backgroundImage: `url(${heroImg})` }}
-        >
-          <div className="absolute inset-0 bg-black/40" />
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white drop-shadow-lg">
-              My Activities
-            </h1>
-            <p className="mt-3 text-lg md:text-xl text-white/90 max-w-3xl">
-              Track your joined challenges and monitor progress
-            </p>
+      {!isDashboard && (
+        <header className="w-full overflow-hidden">
+          <div
+            className="relative w-full h-[260px] md:h-[340px] lg:h-[420px] bg-cover bg-center"
+            style={{ backgroundImage: `url(${heroImg})` }}
+          >
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white drop-shadow-lg">
+                My Activities
+              </h1>
+              <p className="mt-3 text-lg md:text-xl text-white/90 max-w-3xl">
+                Track your joined challenges and monitor progress
+              </p>
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
+      )}
 
       {/* Page content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

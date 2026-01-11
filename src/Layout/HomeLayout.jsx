@@ -11,7 +11,7 @@ import { Toaster } from "react-hot-toast";
 import useTitle from "../Hooks/useTitle";
 import Testimonials from "../components/Home/Testimonials";
 import BrandCarousel from "../components/Home/BrandCarousel";
-import BlogSection from "../components/Home/BlogSection";
+import ProjectOverview from "../components/Home/ProjectOverview";
 
 
 
@@ -29,7 +29,7 @@ const HomeLayout = () => {
       <HowItWorks />
       <BrandCarousel />
       <Testimonials />
-      <BlogSection />
+      <ProjectOverview />
       <FAQ />
     </div>
   );

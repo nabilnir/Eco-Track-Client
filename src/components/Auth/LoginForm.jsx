@@ -22,7 +22,7 @@ const LoginForm = () => {
   const demoCredentials = {
     user: {
       email: 'user@ecotrack.com',
-      password: 'user123'
+      password: 'User@123'
     },
     admin: {
       email: 'admin@ecotrack.com',

@@ -12,7 +12,6 @@ import {
   FaTrophy,
   FaCalendarAlt,
   FaUsers,
-  FaBlog,
   FaChartLine,
   FaChartPie,
   FaGlobe
@@ -44,7 +43,7 @@ const DashboardLayout = () => {
       name: 'My Activities',
       path: '/dashboard/activities',
       icon: FaLeaf,
-      label: 'Activities'
+      label: 'My Activities'
     },
     {
       name: 'Challenges',
@@ -63,12 +62,6 @@ const DashboardLayout = () => {
       path: '/dashboard/profile',
       icon: FaUser,
       label: 'Profile'
-    },
-    {
-      name: 'My Blogs',
-      path: '/dashboard/my-blogs',
-      icon: FaBlog,
-      label: 'My Blogs'
     }
   ];
 
@@ -84,12 +77,6 @@ const DashboardLayout = () => {
       path: '/dashboard/users',
       icon: FaUsers,
       label: 'Users'
-    },
-    {
-      name: 'Blog Management',
-      path: '/dashboard/blogs',
-      icon: FaBlog,
-      label: 'Blogs'
     },
     {
       name: 'Analytics',

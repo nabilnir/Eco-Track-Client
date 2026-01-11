@@ -3,7 +3,7 @@ import { Navigation, HeroSection, Section, Card, Button, Badge } from '../compon
 import { Link } from 'react-router';
 import Testimonials from '../components/Home/Testimonials';
 import BrandCarousel from '../components/Home/BrandCarousel';
-import BlogSection from '../components/Home/BlogSection';
+import ProjectOverview from '../components/Home/ProjectOverview';
 import { Sprout, Trophy, Gift } from 'lucide-react';
 
 
@@ -13,7 +13,6 @@ const HomePage = () => {
     { label: 'Challenges', href: '/challenges' },
     { label: 'Activities', href: '/activities' },
     { label: 'Events', href: '/events' },
-    { label: 'Blogs', href: '/blogs' },
     { label: 'Tips', href: '/tips' },
   ];
 
@@ -135,8 +134,8 @@ const HomePage = () => {
       {/* Brand Carousel */}
       <BrandCarousel />
 
-      {/* Blog Section */}
-      <BlogSection />
+      {/* Project Overview Section */}
+      <ProjectOverview />
 
       {/* Featured Challenges */}
       <Section
@@ -241,7 +240,6 @@ const HomePage = () => {
               <h4 className="text-lg font-semibold mb-4">Company</h4>
               <ul className="space-y-2">
                 <li><Link to="/about" className="text-text-muted hover:text-text-light">About</Link></li>
-                <li><Link to="/blog" className="text-text-muted hover:text-text-light">Blog</Link></li>
                 <li><Link to="/contact" className="text-text-muted hover:text-text-light">Contact</Link></li>
               </ul>
             </div>

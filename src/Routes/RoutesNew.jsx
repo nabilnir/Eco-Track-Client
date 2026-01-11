@@ -14,8 +14,7 @@ import Tips from "../Pages/Tips";
 import HomeLayout from "../Layout/HomeLayout";
 import EventDetails from "../Pages/EventDetails";
 import Events from "../Pages/Events";
-import Blogs from "../Pages/Blogs";
-import BlogDetails from "../Pages/BlogDetails";
+import Events from "../Pages/Events";
 import ProtectedRoutes from "./ProtectedRoutes";
 import DashboardLayout from "../Layout/DashboardLayout";
 import DashboardOverview from "../Pages/Dashboard/DashboardOverview";
@@ -23,13 +22,13 @@ import Profile from "../Pages/Dashboard/Profile";
 import Activities from "../Pages/Dashboard/Activities";
 import ChallengesDashboard from "../Pages/Dashboard/Challenges";
 import UserManagement from "../Pages/Dashboard/UserManagement";
-import BlogManagement from "../Pages/Dashboard/BlogManagement";
+import UserManagement from "../Pages/Dashboard/UserManagement";
 
 const router = createBrowserRouter([
   {
     path: "/",
     Component: Root,
-    errorElement: <Error />, 
+    errorElement: <Error />,
     children: [
       {
         path: '/',
@@ -49,20 +48,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/tips',
-        Component : Tips
+        Component: Tips
       },
       {
         path: '/events',
         Component: Events
-      },
-      {
-        path: '/blogs',
-        Component: Blogs
-      },
-      {
-        path: '/blog/:id',
-        Component: BlogDetails,
-        errorElement: <Error />
       },
       {
         path: '/challenges/:id',
@@ -127,16 +117,12 @@ const router = createBrowserRouter([
               {
                 path: 'users',
                 element: <UserManagement />
-              },
-              {
-                path: 'blogs',
-                element: <BlogManagement />
               }
             ]
           }
         ]
       },
-      
+
       {
         path: '*',
         element: <Error />

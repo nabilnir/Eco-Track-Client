@@ -90,8 +90,8 @@ const ResponsiveLayout = () => {
                     </a>
                   </li>
                   <li>
-                    <a href="/blogs" className="text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors">
-                      Blog
+                    <a href="/impact" className="text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors">
+                      Impact
                     </a>
                   </li>
                 </ul>

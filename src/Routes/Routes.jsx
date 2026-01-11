@@ -14,8 +14,6 @@ import Tips from "../Pages/Tips";
 import HomeLayout from "../Layout/HomeLayout";
 import EventDetails from "../Pages/EventDetails";
 import Events from "../Pages/Events";
-import Blogs from "../Pages/Blogs";
-import BlogDetails from "../Pages/BlogDetails";
 import ProtectedRoutes from "./ProtectedRoutes";
 import DashboardLayout from "../Layout/DashboardLayout";
 import DashboardOverview from "../Pages/Dashboard/DashboardOverview";
@@ -23,7 +21,7 @@ import Profile from "../Pages/Dashboard/Profile";
 import Activities from "../Pages/Dashboard/Activities";
 import ChallengesDashboard from "../Pages/Dashboard/Challenges";
 import UserManagement from "../Pages/Dashboard/UserManagement";
-import BlogManagement from "../Pages/Dashboard/BlogManagement";
+import JoinedEvents from "../Pages/Dashboard/JoinedEvents";
 
 
 const router = createBrowserRouter([
@@ -55,15 +53,6 @@ const router = createBrowserRouter([
       {
         path: '/events',
         Component: Events
-      },
-      {
-        path: '/blogs',
-        Component: Blogs
-      },
-      {
-        path: '/blog/:id',
-        Component: BlogDetails,
-        errorElement: <Error />
       },
       {
         path: '/challenges/:id',
@@ -122,38 +111,23 @@ const router = createBrowserRouter([
               },
               {
                 path: 'profile',
-                element: <Profile />
+                element: <MyProfile />
               },
               {
                 path: 'activities',
-                element: <Activities />
+                element: <MyActivities />
               },
               {
                 path: 'challenges',
                 element: <ChallengesDashboard />
               },
-              // Admin Routes
+              {
+                path: 'events',
+                element: <JoinedEvents />
+              },
               {
                 path: 'users',
                 element: <ProtectedRoutes allowedRoles={['admin']}><UserManagement /></ProtectedRoutes>
-              },
-              {
-                path: 'blogs',
-                element: <ProtectedRoutes allowedRoles={['admin']}><BlogManagement /></ProtectedRoutes>
-              },
-              // User Blogs (User Only)
-              {
-                path: 'my-blogs',
-                element: <ProtectedRoutes allowedRoles={['user']} />,
-                children: [
-                  {
-                    index: true,
-                    async lazy() {
-                      const { default: UserBlogManagement } = await import("../Pages/Dashboard/UserBlogManagement");
-                      return { Component: UserBlogManagement };
-                    }
-                  }
-                ]
               },
               // Analytics (Admin Only)
               {
