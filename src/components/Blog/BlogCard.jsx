@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { Calendar, Clock, Heart, MessageCircle, User, Star, MapPin, DollarSign } from 'lucide-react';
+import { Calendar, Clock, Heart, MessageCircle, User, Star, MapPin, DollarSign, Eye, Sprout, ArrowRight } from 'lucide-react';
 
 const BlogCard = ({ blog, variant = 'default', loading = false }) => {
   // Skeleton loader
@@ -85,7 +85,7 @@ const BlogCard = ({ blog, variant = 'default', loading = false }) => {
   };
 
   // Standard card dimensions and styling
-  const cardStyles = variant === 'featured' 
+  const cardStyles = variant === 'featured'
     ? 'md:col-span-2 lg:col-span-3 bg-gradient-to-br from-green-50 to-blue-50 border-2 border-green-200'
     : 'bg-white border border-gray-200';
 
@@ -94,24 +94,24 @@ const BlogCard = ({ blog, variant = 'default', loading = false }) => {
       {/* Image Section - Fixed Height */}
       <div className="relative h-48 bg-gradient-to-br from-green-400 to-blue-500 flex-shrink-0">
         {image ? (
-          <img 
-            src={image} 
+          <img
+            src={image}
             alt={title}
             className="w-full h-full object-cover"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
-            <span className="text-6xl text-white/80">🌱</span>
+            <Sprout size={64} className="text-white/80" />
           </div>
         )}
-        
+
         {/* Featured Badge */}
         {featured && (
           <div className="absolute top-3 left-3 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
             Featured
           </div>
         )}
-        
+
         {/* Category Badge */}
         <div className="absolute top-3 right-3">
           <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getCategoryColor(category)}`}>
@@ -184,7 +184,7 @@ const BlogCard = ({ blog, variant = 'default', loading = false }) => {
           <div className="flex items-center gap-3">
             {views && (
               <div className="flex items-center gap-1">
-                <span className="w-3 h-3 bg-gray-300 rounded-full flex items-center justify-center text-xs">👁</span>
+                <Eye size={14} className="text-gray-400" />
                 <span>{views}</span>
               </div>
             )}
@@ -205,12 +205,12 @@ const BlogCard = ({ blog, variant = 'default', loading = false }) => {
 
         {/* View Details Button - Fixed at Bottom */}
         <div className="mt-auto pt-4 border-t border-gray-100">
-          <Link 
+          <Link
             to={`/blog/${_id}`}
             className="inline-flex items-center justify-center w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
           >
             View Details
-            <span className="ml-1">→</span>
+            <ArrowRight size={16} className="ml-1" />
           </Link>
         </div>
       </div>

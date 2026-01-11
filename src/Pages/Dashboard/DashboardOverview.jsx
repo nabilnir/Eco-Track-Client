@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router';
-import { 
-  FaLeaf, 
-  FaTrophy, 
-  FaCalendarAlt, 
-  FaUsers, 
-  FaChartLine, 
+import {
+  FaLeaf,
+  FaTrophy,
+  FaCalendarAlt,
+  FaUsers,
+  FaChartLine,
   FaArrowUp,
   FaArrowDown,
   FaEye,
@@ -13,7 +13,7 @@ import {
   FaTrash
 } from 'react-icons/fa';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import axios from 'axios';
+import axiosPublic from '../../api/axiosPublic';
 
 const DashboardOverview = () => {
   const [loading, setLoading] = useState(true);
@@ -40,26 +40,26 @@ const DashboardOverview = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      
+
       // Fetch statistics
-      const statsResponse = await axios.get('http://localhost:5000/api/dashboard/stats');
+      const statsResponse = await axiosPublic.get('/dashboard/stats');
       setStats(statsResponse.data);
 
       // Fetch chart data
-      const chartResponse = await axios.get('http://localhost:5000/api/dashboard/charts');
+      const chartResponse = await axiosPublic.get('/dashboard/charts');
       setChartData(chartResponse.data);
 
       // Fetch recent activities
-      const activitiesResponse = await axios.get('http://localhost:5000/api/activities?limit=5');
+      const activitiesResponse = await axiosPublic.get('/activities?limit=5');
       setRecentActivities(activitiesResponse.data.activities || []);
 
       // Fetch upcoming events
-      const eventsResponse = await axios.get('http://localhost:5000/api/events?limit=5');
+      const eventsResponse = await axiosPublic.get('/events?limit=5');
       setUpcomingEvents(eventsResponse.data.events || []);
 
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error);
-      
+
       // Fallback data for demonstration
       const fallbackStats = {
         totalUsers: 1250,
@@ -122,15 +122,14 @@ const DashboardOverview = () => {
   };
 
   const StatCard = ({ title, value, icon: Icon, change, changeType, color }) => (
-    <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 hover:shadow-lg transition-shadow border border-transparent dark:border-gray-700">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-600">{title}</p>
-          <p className="text-2xl font-bold text-gray-900">{value.toLocaleString()}</p>
+          <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{title}</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">{value.toLocaleString()}</p>
           {change && (
-            <div className={`flex items-center mt-2 text-sm ${
-              changeType === 'increase' ? 'text-green-600' : 'text-red-600'
-            }`}>
+            <div className={`flex items-center mt-2 text-sm ${changeType === 'increase' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+              }`}>
               {changeType === 'increase' ? <FaArrowUp className="mr-1" /> : <FaArrowDown className="mr-1" />}
               {change}% from last month
             </div>
@@ -166,8 +165,8 @@ const DashboardOverview = () => {
     <div className="p-6">
       {/* Page Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard Overview</h1>
-        <p className="text-gray-600 mt-2">Welcome back! Here's what's happening with your eco-activities today.</p>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Dashboard Overview</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">Welcome back! Here's what's happening with your eco-activities today.</p>
       </div>
 
       {/* Stats Cards */}
@@ -205,8 +204,8 @@ const DashboardOverview = () => {
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Line Chart - User Growth */}
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">User & Activity Growth</h3>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-transparent dark:border-gray-700">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">User & Activity Growth</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={chartData.monthlyData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -221,8 +220,8 @@ const DashboardOverview = () => {
         </div>
 
         {/* Pie Chart - Activity Categories */}
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Activity Categories</h3>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-transparent dark:border-gray-700">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Activity Categories</h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
@@ -246,8 +245,8 @@ const DashboardOverview = () => {
       </div>
 
       {/* Bar Chart - Weekly Activities */}
-      <div className="bg-white p-6 rounded-lg shadow mb-8">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Weekly Activity Trend</h3>
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mb-8 border border-transparent dark:border-gray-700">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Weekly Activity Trend</h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={chartData.activityData}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -262,41 +261,41 @@ const DashboardOverview = () => {
       {/* Data Tables */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Activities Table */}
-        <div className="bg-white rounded-lg shadow">
-          <div className="p-6 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">Recent Activities</h3>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-transparent dark:border-gray-700">
+          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Activities</h3>
           </div>
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead className="bg-gray-50 dark:bg-gray-900/50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Activity
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     User
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Date
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 {recentActivities.map((activity) => (
-                  <tr key={activity._id} className="hover:bg-gray-50">
+                  <tr key={activity._id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-                        <div className="text-sm font-medium text-gray-900">{activity.title}</div>
-                        <div className="text-sm text-gray-500">{activity.type}</div>
+                        <div className="text-sm font-medium text-gray-900 dark:text-white">{activity.title}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">{activity.type}</div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
                       {activity.user}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       {new Date(activity.date).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -317,10 +316,10 @@ const DashboardOverview = () => {
               </tbody>
             </table>
           </div>
-          <div className="p-4 border-t border-gray-200">
+          <div className="p-4 border-t border-gray-200 dark:border-gray-700">
             <Link
               to="/dashboard/activities"
-              className="text-sm font-medium text-green-600 hover:text-green-900"
+              className="text-sm font-medium text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 transition-colors"
             >
               View all activities →
             </Link>
@@ -328,51 +327,51 @@ const DashboardOverview = () => {
         </div>
 
         {/* Upcoming Events Table */}
-        <div className="bg-white rounded-lg shadow">
-          <div className="p-6 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">Upcoming Events</h3>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-transparent dark:border-gray-700">
+          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Upcoming Events</h3>
           </div>
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead className="bg-gray-50 dark:bg-gray-900/50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Event
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Date
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Participants
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {upcomingEvents.map((event) => (
-                  <tr key={event._id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  <tr key={event._id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
                       {event.title}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       {new Date(event.date).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400">
                         {event.participants} participants
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
-                        <button className="text-blue-600 hover:text-blue-900">
+                        <button className="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 transition-colors">
                           <FaEye />
                         </button>
-                        <button className="text-green-600 hover:text-green-900">
+                        <button className="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 transition-colors">
                           <FaEdit />
                         </button>
-                        <button className="text-red-600 hover:text-red-900">
+                        <button className="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors">
                           <FaTrash />
                         </button>
                       </div>
@@ -382,10 +381,10 @@ const DashboardOverview = () => {
               </tbody>
             </table>
           </div>
-          <div className="p-4 border-t border-gray-200">
+          <div className="p-4 border-t border-gray-200 dark:border-gray-700">
             <Link
               to="/dashboard/events"
-              className="text-sm font-medium text-green-600 hover:text-green-900"
+              className="text-sm font-medium text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 transition-colors"
             >
               View all events →
             </Link>

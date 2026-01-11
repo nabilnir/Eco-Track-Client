@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import useAuth from "../Hooks/useAuth";
-import heroImg from "../assets/men-women.pg.jpg"; 
+import heroImg from "../assets/men-women.pg.jpg";
 import useTitle from "../Hooks/useTitle";
 
 const MyActivities = () => {
@@ -10,7 +10,7 @@ const MyActivities = () => {
   const [userChallenges, setUserChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  
+
   const getStatusColor = (status) => {
     const s = (status || '').toLowerCase();
     if (s === 'ongoing' || s === 'in progress') return 'bg-blue-500';
@@ -25,7 +25,7 @@ const MyActivities = () => {
       return;
     }
     fetchUserChallenges();
-   
+
   }, [user]);
 
   const fetchUserChallenges = async () => {
@@ -64,8 +64,8 @@ const MyActivities = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-0 mt-18">
-     
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-0 mt-18 transition-colors duration-300">
+
       <header className="w-full overflow-hidden">
         <div
           className="relative w-full h-[260px] md:h-[340px] lg:h-[420px] bg-cover bg-center"
@@ -86,16 +86,16 @@ const MyActivities = () => {
       {/* Page content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Your Active Challenges</h2>
-          <p className="text-lg text-gray-600 mb-4">Track your Sustainable Challenges Easily!</p>
-          <p className="text-sm text-emerald-600 font-semibold">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">Your Active Challenges</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-400 mb-4">Track your Sustainable Challenges Easily!</p>
+          <p className="text-sm text-emerald-600 dark:text-emerald-400 font-semibold">
             Total {userChallenges.length} challenge{userChallenges.length !== 1 ? 's' : ''} found
           </p>
         </div>
 
         {userChallenges.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-md p-12 text-center">
-            <p className="text-gray-500 text-lg mb-6">You haven't joined any challenges yet</p>
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-12 text-center border border-transparent dark:border-gray-700">
+            <p className="text-gray-500 dark:text-gray-400 text-lg mb-6">You haven't joined any challenges yet</p>
             <Link
               to="/challenges"
               className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-semibold inline-block"
@@ -109,7 +109,7 @@ const MyActivities = () => {
               <Link
                 key={uc._id}
                 to={`/my-activities/${uc._id}`}
-                className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-transparent dark:border-gray-700"
               >
                 <div className="relative h-48">
                   <img
@@ -117,7 +117,7 @@ const MyActivities = () => {
                     alt={uc.challenge?.title || "Challenge"}
                     className="w-full h-full object-cover"
                   />
-                  
+
                   <div
                     className={`absolute top-4 right-4 text-white px-3 py-1 rounded-full 
                       text-sm font-semibold ${getStatusColor(uc.status)}`}
@@ -126,20 +126,20 @@ const MyActivities = () => {
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{uc.challenge?.title}</h3>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{uc.challenge?.title}</h3>
                   <div className="mb-4">
-                    <div className="flex justify-between text-sm text-gray-600 mb-1">
+                    <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-1">
                       <span>Progress</span>
                       <span>{uc.progress ?? 0}%</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                       <div
-                        className="bg-emerald-500 h-2 rounded-full transition-all duration-300"
+                        className="bg-emerald-500 h-2 rounded-full transition-all duration-300 shadow-[0_0_8px_rgba(16,185,129,0.4)]"
                         style={{ width: `${uc.progress ?? 0}%` }}
                       />
                     </div>
                   </div>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     Joined: {uc.joinDate ? new Date(uc.joinDate).toLocaleDateString() : "—"}
                   </p>
                 </div>

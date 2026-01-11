@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { FaGoogle, FaFacebook, FaTwitter, FaGithub, FaEye, FaEyeSlash, FaUser, FaEnvelope, FaLock, FaImage } from 'react-icons/fa';
 import useAuth from '../../Hooks/useAuth';
 import axiosPublic from '../../api/axiosPublic';
+import { Sprout, AlertCircle } from 'lucide-react';
 
 const RegisterForm = () => {
   const { register, googleSignIn, updateUserProfile } = useAuth();
@@ -106,7 +107,7 @@ const RegisterForm = () => {
         role: 'user'
       });
 
-      toast.success('Registration successful! Welcome to EcoTrack! 🌱');
+      toast.success('Registration successful! Welcome to EcoTrack!');
       navigate(from, { replace: true });
     } catch (error) {
       console.error('Registration failed:', error.message);
@@ -142,7 +143,7 @@ const RegisterForm = () => {
         role: 'user'
       });
 
-      toast.success('Signed up with Google successfully! 🎉');
+      toast.success('Signed up with Google successfully!');
       navigate(from, { replace: true });
     } catch (error) {
       console.error('Google Sign In failed:', error.message);
@@ -208,7 +209,7 @@ const RegisterForm = () => {
         {/* Logo/Brand */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-green-600 rounded-full mb-4">
-            <span className="text-2xl text-white font-bold">🌱</span>
+            <Sprout className="text-white" size={32} />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Join EcoTrack
@@ -249,7 +250,7 @@ const RegisterForm = () => {
                 />
               </div>
               {errors.name && <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
-                <span className="text-red-500">⚠</span> {errors.name}
+                <AlertCircle size={14} /> {errors.name}
               </p>}
             </div>
 
@@ -273,7 +274,7 @@ const RegisterForm = () => {
                 />
               </div>
               {errors.email && <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
-                <span className="text-red-500">⚠</span> {errors.email}
+                <AlertCircle size={14} /> {errors.email}
               </p>}
             </div>
 
@@ -297,7 +298,7 @@ const RegisterForm = () => {
                 />
               </div>
               {errors.photoURL && <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
-                <span className="text-red-500">⚠</span> {errors.photoURL}
+                <AlertCircle size={14} /> {errors.photoURL}
               </p>}
             </div>
 
@@ -325,12 +326,12 @@ const RegisterForm = () => {
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 >
                   <span className="text-gray-400 hover:text-gray-600 cursor-pointer">
-                    {showPassword ? '👁️' : '👁️‍🗨️'}
+                    {showPassword ? <FaEye size={18} /> : <FaEyeSlash size={18} />}
                   </span>
                 </button>
               </div>
               {errors.password && <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
-                <span className="text-red-500">⚠</span> {errors.password}
+                <AlertCircle size={14} /> {errors.password}
               </p>}
 
               {/* Password Requirements */}

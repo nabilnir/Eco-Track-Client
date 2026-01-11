@@ -15,7 +15,7 @@ import {
   FaBlog,
   FaChartLine,
   FaChartPie,
-  FaBell
+  FaGlobe
 } from 'react-icons/fa';
 import DarkModeToggle from '../components/UI/DarkModeToggle';
 import useAuth from '../Hooks/useAuth';
@@ -124,15 +124,16 @@ const DashboardLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg flex transition-colors duration-300">
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 bg-white shadow-lg transform transition-all duration-300 ease-in-out 
+      <div className={`fixed inset-y-0 left-0 z-50 bg-white dark:bg-gray-800 shadow-lg transform transition-all duration-300 ease-in-out 
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
         lg:translate-x-0 
         ${collapsed ? 'w-20' : 'w-64'}
+        border-r border-gray-200 dark:border-gray-700
       `}>
         {/* Sidebar Header */}
-        <div className={`flex items-center ${collapsed ? 'justify-center' : 'justify-between'} h-16 px-4 border-b border-gray-200`}>
+        <div className={`flex items-center ${collapsed ? 'justify-center' : 'justify-between'} h-16 px-4 border-b border-gray-200 dark:border-gray-700`}>
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
@@ -141,8 +142,8 @@ const DashboardLayout = () => {
             </div>
             {!collapsed && (
               <div className="ml-3 fade-in">
-                <h1 className="text-xl font-bold text-gray-900">EcoTrack</h1>
-                <p className="text-xs text-gray-500 capitalize">{userRole} Dashboard</p>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">EcoTrack</h1>
+                <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">{userRole} Dashboard</p>
               </div>
             )}
           </div>
@@ -158,7 +159,7 @@ const DashboardLayout = () => {
           {/* Desktop Collapse Toggle */}
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className={`hidden lg:block text-gray-400 hover:text-gray-600 ${collapsed ? 'absolute -right-3 top-6 bg-white rounded-full p-1 shadow-md border border-gray-200' : ''}`}
+            className={`hidden lg:block text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 ${collapsed ? 'absolute -right-3 top-6 bg-white dark:bg-gray-800 rounded-full p-1 shadow-md border border-gray-200 dark:border-gray-700' : ''}`}
           >
             {collapsed ? <FaBars size={12} /> : <FaBars size={20} />}
           </button>
@@ -176,21 +177,31 @@ const DashboardLayout = () => {
                   key={item.name}
                   to={item.path}
                   className={`group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${isActive
-                    ? 'bg-green-50 text-green-700 border-r-2 border-green-700'
-                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                    ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border-r-2 border-green-700'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
                     } ${collapsed ? 'justify-center' : ''}`}
                   title={collapsed ? item.label : ''}
                 >
-                  <Icon className={`h-5 w-5 ${isActive ? 'text-green-700' : 'text-gray-400 group-hover:text-gray-500'} ${collapsed ? '' : 'mr-3'}`} />
+                  <Icon className={`h-5 w-5 ${isActive ? 'text-green-700 dark:text-green-400' : 'text-gray-400 group-hover:text-gray-500 dark:group-hover:text-gray-300'} ${collapsed ? '' : 'mr-3'}`} />
                   {!collapsed && <span className="fade-in">{item.label}</span>}
                 </Link>
               );
             })}
           </div>
+          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <Link
+              to="/"
+              className={`group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white ${collapsed ? 'justify-center' : ''}`}
+              title={collapsed ? "Back to Home" : ""}
+            >
+              <FaGlobe className={`h-5 w-5 text-gray-400 group-hover:text-gray-500 dark:group-hover:text-gray-300 ${collapsed ? '' : 'mr-3'}`} />
+              {!collapsed && <span className="fade-in">Back to Home</span>}
+            </Link>
+          </div>
         </nav>
 
         {/* Sidebar Footer */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
           <div className={`flex items-center ${collapsed ? 'justify-center' : ''}`}>
             <div className="flex-shrink-0">
               <img
@@ -201,10 +212,10 @@ const DashboardLayout = () => {
             </div>
             {!collapsed && (
               <div className="ml-3 flex-1 fade-in">
-                <p className="text-sm font-medium text-gray-900 truncate">
+                <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
                   {user?.displayName || 'User'}
                 </p>
-                <p className="text-xs text-gray-500 truncate capitalize">
+                <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">
                   {userRole}
                 </p>
               </div>
@@ -216,13 +227,13 @@ const DashboardLayout = () => {
       {/* Main Content */}
       <div className={`flex-1 min-w-0 transition-all duration-300 ease-in-out ${collapsed ? 'lg:ml-20' : 'lg:ml-64'}`}>
         {/* Top Navbar */}
-        <header className="bg-white shadow-sm border-b border-gray-200">
+        <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
           <div className="px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               {/* Mobile menu button */}
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="lg:hidden text-gray-400 hover:text-gray-600 focus:outline-none"
+                className="lg:hidden text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 focus:outline-none"
               >
                 <FaBars size={20} />
               </button>
@@ -233,7 +244,7 @@ const DashboardLayout = () => {
                   <input
                     type="text"
                     placeholder="Search..."
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
                   />
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -246,11 +257,7 @@ const DashboardLayout = () => {
               {/* Right side items */}
               <div className="flex items-center space-x-4">
                 <DarkModeToggle />
-                {/* Notifications */}
-                <button className="relative p-2 text-gray-400 hover:text-gray-600">
-                  <FaBell size={18} />
-                  <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
-                </button>
+
 
                 {/* Profile Dropdown */}
                 <div className="relative">
@@ -264,10 +271,10 @@ const DashboardLayout = () => {
                       alt="User avatar"
                     />
                     <div className="hidden md:block text-left">
-                      <p className="text-sm font-medium text-gray-900">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">
                         {user?.displayName || 'User'}
                       </p>
-                      <p className="text-xs text-gray-500 capitalize">{userRole}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">{userRole}</p>
                     </div>
                     <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -276,10 +283,18 @@ const DashboardLayout = () => {
 
                   {/* Dropdown Menu */}
                   {profileDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-50">
+                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-1 z-50 border border-gray-200 dark:border-gray-700">
+                      <Link
+                        to="/"
+                        className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700"
+                        onClick={() => setProfileDropdownOpen(false)}
+                      >
+                        <FaGlobe className="inline mr-2 text-green-600" />
+                        Main Home Site
+                      </Link>
                       <Link
                         to="/dashboard/profile"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         onClick={() => setProfileDropdownOpen(false)}
                       >
                         <FaUser className="inline mr-2" />
@@ -287,7 +302,7 @@ const DashboardLayout = () => {
                       </Link>
                       <Link
                         to="/dashboard"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         onClick={() => setProfileDropdownOpen(false)}
                       >
                         <FaHome className="inline mr-2" />
@@ -295,7 +310,7 @@ const DashboardLayout = () => {
                       </Link>
                       <button
                         onClick={handleLogout}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
                         <FaSignOutAlt className="inline mr-2" />
                         Logout

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router';
-import { FaFilter, FaPlus, FaUsers, FaCalendar, FaTimes } from 'react-icons/fa';
+import { FaFilter, FaPlus, FaUsers, FaCalendar, FaTimes, FaSearch } from 'react-icons/fa';
 import useAuth from '../Hooks/useAuth';
 import bannerImg from '../assets/coastsland.jpg'
 import useTitle from '../Hooks/useTitle';
@@ -159,7 +159,7 @@ const Challenges = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && fetchChallenges()} // Optional: search on enter
               />
-              <span className="absolute right-3 top-3 text-gray-400">🔍</span>
+              <span className="absolute right-3 top-3 text-gray-400"><FaSearch /></span>
             </div>
 
             {/* Sort Dropdown */}

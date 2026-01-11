@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlus, FaEdit, FaTrash, FaEye, FaBlog, FaSearch, FaFilter, FaCalendarAlt, FaEye as FaViews, FaHeart, FaComment } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaEye, FaBlog, FaSearch, FaFilter, FaCalendarAlt, FaEye as FaViews, FaHeart, FaComment, FaStar, FaTimes } from 'react-icons/fa';
 import axiosPublic from '../../api/axiosPublic';
+import toast from 'react-hot-toast';
 
 const BlogManagement = () => {
   const [blogs, setBlogs] = useState([]);
@@ -132,11 +133,13 @@ const BlogManagement = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Assuming 'blogData' refers to 'formData' in this context
+      const blogData = formData;
       if (editingBlog) {
-        await axiosPublic.put(`/blogs/${editingBlog._id}`, formData);
+        await axiosPublic.patch(`/blogs/${editingBlog._id}`, blogData);
         toast.success('Blog updated successfully!');
       } else {
-        await axiosPublic.post('/blogs', formData);
+        await axiosPublic.post('/blogs', blogData);
         toast.success('Blog created successfully!');
       }
       fetchBlogs();
@@ -254,8 +257,8 @@ const BlogManagement = () => {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Blog Management</h1>
-          <p className="text-gray-600 mt-2">Manage blog posts, content, and publications</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Blog Management</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">Manage blog posts, content, and publications</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
@@ -267,42 +270,42 @@ const BlogManagement = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border border-transparent dark:border-gray-700">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Total Blogs</p>
-              <p className="text-2xl font-bold text-gray-900">{blogs.length}</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Blogs</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{blogs.length}</p>
             </div>
             <FaBlog className="text-blue-500 text-2xl" />
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border border-transparent dark:border-gray-700">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Published</p>
-              <p className="text-2xl font-bold text-green-900">
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Published</p>
+              <p className="text-2xl font-bold text-green-900 dark:text-green-400">
                 {blogs.filter(b => b.status === 'published').length}
               </p>
             </div>
             <FaEye className="text-green-500 text-2xl" />
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border border-transparent dark:border-gray-700">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Drafts</p>
-              <p className="text-2xl font-bold text-yellow-900">
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Drafts</p>
+              <p className="text-2xl font-bold text-yellow-900 dark:text-yellow-400">
                 {blogs.filter(b => b.status === 'draft').length}
               </p>
             </div>
             <FaEdit className="text-yellow-500 text-2xl" />
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border border-transparent dark:border-gray-700">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Featured</p>
-              <p className="text-2xl font-bold text-purple-900">
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Featured</p>
+              <p className="text-2xl font-bold text-purple-900 dark:text-purple-400">
                 {blogs.filter(b => b.featured).length}
               </p>
             </div>
@@ -312,7 +315,7 @@ const BlogManagement = () => {
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white rounded-lg shadow p-4 mb-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 mb-6 border border-transparent dark:border-gray-700">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1 relative">
             <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -321,7 +324,7 @@ const BlogManagement = () => {
               placeholder="Search blogs..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
             />
           </div>
           <div className="flex items-center gap-4">
@@ -330,7 +333,7 @@ const BlogManagement = () => {
               <select
                 value={filterCategory}
                 onChange={(e) => setFilterCategory(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
               >
                 <option value="all">All Categories</option>
                 {categories.map(category => (
@@ -341,7 +344,7 @@ const BlogManagement = () => {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
             >
               <option value="all">All Status</option>
               {statuses.map(status => (
@@ -353,58 +356,58 @@ const BlogManagement = () => {
       </div>
 
       {/* Blogs Table */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden border border-transparent dark:border-gray-700">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-900/50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Blog
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Author
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Category
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Engagement
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Created
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
               {filteredBlogs.map((blog) => (
-                <tr key={blog._id} className="hover:bg-gray-50">
+                <tr key={blog._id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div>
-                      <div className="text-sm font-medium text-gray-900 flex items-center">
+                      <div className="text-sm font-medium text-gray-900 dark:text-white flex items-center">
                         {blog.title}
                         {blog.featured && <FaStar className="ml-2 text-yellow-400" />}
                       </div>
-                      <div className="text-sm text-gray-500">{blog.excerpt}</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">{blog.excerpt}</div>
                       <div className="flex flex-wrap gap-1 mt-1">
                         {blog.tags.map((tag, index) => (
-                          <span key={index} className="px-1 py-0.5 text-xs bg-gray-100 text-gray-600 rounded">
+                          <span key={index} className="px-1 py-0.5 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded">
                             #{tag}
                           </span>
                         ))}
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
                     {blog.author}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400">
                       {blog.category}
                     </span>
                   </td>
@@ -413,7 +416,7 @@ const BlogManagement = () => {
                       {blog.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                     <div className="flex space-x-3">
                       <span className="flex items-center">
                         <FaViews className="mr-1" />
@@ -429,7 +432,7 @@ const BlogManagement = () => {
                       </span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                     <div className="flex items-center">
                       <FaCalendarAlt className="mr-2" />
                       {new Date(blog.createdAt).toLocaleDateString()}
@@ -437,24 +440,24 @@ const BlogManagement = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex items-center space-x-2">
-                      <button className="text-blue-600 hover:text-blue-900">
+                      <button className="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 transition-colors">
                         <FaEye />
                       </button>
                       <button
                         onClick={() => handleEdit(blog)}
-                        className="text-green-600 hover:text-green-900"
+                        className="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 transition-colors"
                       >
                         <FaEdit />
                       </button>
                       <button
                         onClick={() => handleDelete(blog._id)}
-                        className="text-red-600 hover:text-red-900"
+                        className="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors"
                       >
                         <FaTrash />
                       </button>
                       <button
                         onClick={() => handleToggleFeatured(blog._id)}
-                        className={`hover:text-yellow-600 ${blog.featured ? 'text-yellow-500' : 'text-gray-400'}`}
+                        className={`hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors ${blog.featured ? 'text-yellow-500' : 'text-gray-400 dark:text-gray-500'}`}
                         title={blog.featured ? 'Unfeature' : 'Feature'}
                       >
                         <FaStar />
@@ -470,74 +473,74 @@ const BlogManagement = () => {
 
       {/* Add/Edit Blog Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-lg bg-white max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold text-gray-900">
+        <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4">
+          <div className="relative mx-auto p-6 border dark:border-gray-700 w-full max-w-4xl shadow-2xl rounded-xl bg-white dark:bg-gray-800 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                 {editingBlog ? 'Edit Blog' : 'Create New Blog'}
               </h3>
               <button
                 onClick={handleCloseModal}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
               >
-                <FaTimes />
+                <FaTimes size={20} />
               </button>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title</label>
                   <input
                     type="text"
                     required
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Author</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Author</label>
                   <input
                     type="text"
                     required
                     value={formData.author}
                     onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Excerpt</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Excerpt</label>
                 <textarea
                   required
                   rows={2}
                   value={formData.excerpt}
                   onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Content</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Content</label>
                 <textarea
                   required
                   rows={8}
                   value={formData.content}
                   onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
                   <select
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
                   >
                     {categories.map(category => (
                       <option key={category} value={category}>{category}</option>
@@ -546,11 +549,11 @@ const BlogManagement = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
                   <select
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
                   >
                     {statuses.map(status => (
                       <option key={status} value={status}>{status}</option>
@@ -559,19 +562,19 @@ const BlogManagement = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Read Time (min)</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Read Time (min)</label>
                   <input
                     type="number"
                     min="1"
                     value={formData.readTime}
                     onChange={(e) => setFormData({ ...formData, readTime: parseInt(e.target.value) })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tags</label>
                 <div className="flex flex-wrap gap-2">
                   {availableTags.map(tag => (
                     <button
@@ -579,8 +582,8 @@ const BlogManagement = () => {
                       type="button"
                       onClick={() => handleTagToggle(tag)}
                       className={`px-3 py-1 rounded-full text-sm border transition-colors ${formData.tags.includes(tag)
-                        ? 'bg-green-600 text-white border-green-600'
-                        : 'bg-white text-gray-700 border-gray-300 hover:border-green-500'
+                        ? 'bg-green-600 text-white border-green-600 shadow-md shadow-green-600/20'
+                        : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-green-500'
                         }`}
                     >
                       #{tag}
@@ -597,7 +600,7 @@ const BlogManagement = () => {
                   onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
                   className="mr-2"
                 />
-                <label htmlFor="featured" className="text-sm font-medium text-gray-700">
+                <label htmlFor="featured" className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Featured Blog
                 </label>
               </div>
@@ -606,15 +609,15 @@ const BlogManagement = () => {
                 <button
                   type="button"
                   onClick={handleCloseModal}
-                  className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                  className="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-lg shadow-green-600/20"
                 >
-                  {editingBlog ? 'Update' : 'Create'}
+                  {editingBlog ? 'Update Blog' : 'Create Blog'}
                 </button>
               </div>
             </form>

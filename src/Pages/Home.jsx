@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import Testimonials from '../components/Home/Testimonials';
 import BrandCarousel from '../components/Home/BrandCarousel';
 import BlogSection from '../components/Home/BlogSection';
+import { Sprout, Trophy, Gift } from 'lucide-react';
 
 
 const HomePage = () => {
@@ -20,19 +21,19 @@ const HomePage = () => {
     {
       title: 'Track Activities',
       description: 'Monitor your daily eco-friendly activities and see your environmental impact in real-time.',
-      icon: '🌱',
+      icon: <Sprout size={48} className="text-emerald-500" />,
       badge: 'Popular'
     },
     {
       title: 'Join Challenges',
       description: 'Participate in community challenges and compete with friends to make a bigger impact.',
-      icon: '🏆',
+      icon: <Trophy size={48} className="text-yellow-500" />,
       badge: 'New'
     },
     {
       title: 'Earn Rewards',
       description: 'Get recognized for your contributions and earn rewards for sustainable living.',
-      icon: '🎁',
+      icon: <Gift size={48} className="text-purple-500" />,
       badge: null
     },
   ];
@@ -70,7 +71,7 @@ const HomePage = () => {
         <div className="grid-auto">
           {features.map((feature, index) => (
             <Card key={index} hover={true}>
-              <div className="text-4xl mb-4">{feature.icon}</div>
+              <div className="mb-4">{feature.icon}</div>
               {feature.badge && (
                 <Badge variant="green" size="sm" className="mb-3">
                   {feature.badge}

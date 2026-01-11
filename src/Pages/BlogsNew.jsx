@@ -11,7 +11,7 @@ const Blogs = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
-  
+
   // Filter states
   const [filters, setFilters] = useState({
     category: 'all',
@@ -23,7 +23,7 @@ const Blogs = () => {
     tags: [],
     difficulty: 'all'
   });
-  
+
   // Sorting state
   const [sortBy, setSortBy] = useState('newest');
   const [showFilters, setShowFilters] = useState(false);
@@ -93,7 +93,7 @@ const Blogs = () => {
           page: currentPage,
           limit: 12
         };
-        
+
         // Apply filters to API call
         if (filters.category !== 'all') params.category = filters.category;
         if (filters.minRating > 0) params.minRating = filters.minRating;
@@ -324,7 +324,7 @@ const Blogs = () => {
             language: 'English'
           }
         ];
-        
+
         setBlogs(fallbackBlogs);
         setTotalPages(Math.ceil(fallbackBlogs.length / 12));
       } finally {
@@ -366,7 +366,7 @@ const Blogs = () => {
       filtered = filtered.filter(blog => blog.location === filters.location);
     }
     if (filters.author) {
-      filtered = filtered.filter(blog => 
+      filtered = filtered.filter(blog =>
         blog.author.toLowerCase().includes(filters.author.toLowerCase())
       );
     }
@@ -374,7 +374,7 @@ const Blogs = () => {
       filtered = filtered.filter(blog => blog.difficulty === filters.difficulty);
     }
     if (filters.tags.length > 0) {
-      filtered = filtered.filter(blog => 
+      filtered = filtered.filter(blog =>
         blog.tags && filters.tags.some(tag => blog.tags.includes(tag))
       );
     }
@@ -383,7 +383,7 @@ const Blogs = () => {
     if (filters.dateRange !== 'all') {
       const now = new Date();
       const filterDate = new Date();
-      
+
       switch (filters.dateRange) {
         case 'today':
           filterDate.setHours(0, 0, 0, 0);
@@ -398,7 +398,7 @@ const Blogs = () => {
           filterDate.setFullYear(now.getFullYear() - 1);
           break;
       }
-      
+
       filtered = filtered.filter(blog => new Date(blog.createdAt) >= filterDate);
     }
 
@@ -577,7 +577,7 @@ const Blogs = () => {
                 </span>
               )}
             </Button>
-            
+
             {/* Sort Dropdown */}
             <div className="relative">
               <select
@@ -728,11 +728,10 @@ const Blogs = () => {
                   <button
                     key={tag}
                     onClick={() => handleTagToggle(tag)}
-                    className={`px-3 py-1 rounded-full text-sm border transition-colors ${
-                      filters.tags.includes(tag)
+                    className={`px-3 py-1 rounded-full text-sm border transition-colors ${filters.tags.includes(tag)
                         ? 'bg-green-600 text-white border-green-600'
                         : 'bg-white text-gray-700 border-gray-300 hover:border-green-500'
-                    }`}
+                      }`}
                   >
                     #{tag}
                   </button>
@@ -758,21 +757,21 @@ const Blogs = () => {
 
         {/* Blog Grid/List */}
         {filteredAndSortedBlogs.length > 0 ? (
-          <div className={viewMode === 'grid' 
+          <div className={viewMode === 'grid'
             ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12'
             : 'space-y-6 mb-12'
           }>
             {filteredAndSortedBlogs.map((blog, index) => (
-              <BlogCard 
-                key={blog._id} 
-                blog={blog} 
+              <BlogCard
+                key={blog._id}
+                blog={blog}
                 variant={index === 0 && blog.featured ? 'featured' : 'default'}
               />
             ))}
           </div>
         ) : (
           <div className="text-center py-12">
-            <div className="text-6xl mb-4">🔍</div>
+            <div className="text-6xl mb-4 text-emerald-500"><Search size={64} /></div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No blogs found</h3>
             <p className="text-gray-600 mb-4">
               {searchTerm || getActiveFiltersCount() > 0
@@ -800,7 +799,7 @@ const Blogs = () => {
             >
               Previous
             </Button>
-            
+
             <div className="flex gap-1">
               {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
                 let pageNum;
@@ -813,25 +812,24 @@ const Blogs = () => {
                 } else {
                   pageNum = currentPage - 3 + i;
                 }
-                
+
                 return (
                   <Button
                     key={pageNum}
                     onClick={() => setCurrentPage(pageNum)}
                     variant={currentPage === pageNum ? 'default' : 'ghost'}
                     size="sm"
-                    className={`${
-                      currentPage === pageNum
+                    className={`${currentPage === pageNum
                         ? 'bg-green-600 text-white'
                         : 'bg-white text-gray-700 hover:bg-gray-100'
-                    } border border-gray-300`}
+                      } border border-gray-300`}
                   >
                     {pageNum}
                   </Button>
                 );
               })}
             </div>
-            
+
             <Button
               onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}

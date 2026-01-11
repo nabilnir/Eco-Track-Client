@@ -39,187 +39,139 @@ const Blogs = () => {
     { value: 'Eco-Tips', label: 'Eco-Tips' }
   ];
 
+  const sortOptions = [
+    { value: 'newest', label: 'Newest First' },
+    { value: 'oldest', label: 'Oldest First' },
+    { value: 'most-liked', label: 'Most Liked' },
+    { value: 'most-viewed', label: 'Most Viewed' },
+    { value: 'highest-rated', label: 'Highest Rated' },
+    { value: 'title-az', label: 'Title (A-Z)' },
+    { value: 'title-za', label: 'Title (Z-A)' }
+  ];
+
+  const dateRanges = [
+    { value: 'all', label: 'All Time' },
+    { value: 'today', label: 'Today' },
+    { value: 'week', label: 'This Week' },
+    { value: 'month', label: 'This Month' },
+    { value: 'year', label: 'This Year' }
+  ];
+
+  const difficulties = [
+    { value: 'all', label: 'All Levels' },
+    { value: 'Beginner', label: 'Beginner' },
+    { value: 'Intermediate', label: 'Intermediate' },
+    { value: 'Advanced', label: 'Advanced' }
+  ];
+
+  const locations = [
+    { value: 'all', label: 'All Locations' },
+    { value: 'Global', label: 'Global' },
+    { value: 'Local', label: 'Local' },
+    { value: 'Online', label: 'Online' }
+  ];
+
+  const priceRanges = [
+    { value: '', label: 'Any Price' },
+    { value: '0', label: 'Free' },
+    { value: '10', label: 'Under $10' },
+    { value: '50', label: 'Under $50' },
+    { value: '100', label: 'Under $100' }
+  ];
+
+  const availableTags = [
+    'sustainability', 'eco-friendly', 'climate-change', 'green-living',
+    'renewable-energy', 'conservation', 'recycling', 'wildlife',
+    'carbon-footprint', 'environment', 'nature', 'pollution'
+  ];
+
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
         setLoading(true);
         const params = {
           page: currentPage,
-          limit: 12 // Changed to 12 for 4 cards per row * 3 rows
+          limit: 12
         };
 
-        if (selectedCategory !== 'all') {
-          params.category = selectedCategory;
-        }
+        // Apply filters to API call
+        if (filters.category !== 'all') params.category = filters.category;
+        if (filters.minRating > 0) params.minRating = filters.minRating;
+        if (filters.maxPrice) params.maxPrice = filters.maxPrice;
+        if (filters.dateRange !== 'all') params.dateRange = filters.dateRange;
+        if (filters.location !== 'all') params.location = filters.location;
+        if (filters.author) params.author = filters.author;
+        if (filters.difficulty !== 'all') params.difficulty = filters.difficulty;
+        if (filters.tags.length > 0) params.tags = filters.tags.join(',');
+        if (searchTerm) params.search = searchTerm;
+        params.sort = sortBy;
 
         const response = await axiosPublic.get('/blogs', { params });
-        setBlogs(response.data.blogs);
-        setTotalPages(response.data.pagination.pages);
+        if (response.data.blogs) {
+          setBlogs(response.data.blogs);
+          setTotalPages(response.data.pagination?.pages || 1);
+        }
       } catch (error) {
         console.error('Failed to fetch blogs:', error);
-        // Removed fallback data to prevent confusion
+        // Fallback data for demonstration if API fails or returns empty
         setBlogs([]);
         setTotalPages(1);
-        const fallbackBlogs = [
-          {
-            _id: '1',
-            title: '10 Simple Ways to Reduce Your Carbon Footprint Today',
-            excerpt: 'Discover easy and practical steps you can take right now to make a positive impact on the environment.',
-            content: 'In today\'s world, taking care of our planet is more important than ever. Here are 10 simple ways you can reduce your carbon footprint starting today...',
-            author: 'Sarah Green',
-            category: 'Sustainability',
-            createdAt: new Date('2024-01-15'),
-            readTime: 5,
-            views: 1250,
-            likes: 89,
-            comments: [],
-            featured: true,
-            status: 'Published',
-            rating: 4.8
-          },
-          {
-            _id: '2',
-            title: 'The Future of Renewable Energy: What to Expect in 2024',
-            excerpt: 'Explore the latest innovations and trends in renewable energy that are shaping our sustainable future.',
-            content: 'Renewable energy is rapidly evolving, with new technologies and breakthroughs happening every day. Let\'s explore what\'s coming in 2024...',
-            author: 'Mike Chen',
-            category: 'Renewable Energy',
-            createdAt: new Date('2024-01-12'),
-            readTime: 7,
-            views: 980,
-            likes: 67,
-            comments: [],
-            featured: false,
-            status: 'Published',
-            rating: 4.6
-          },
-          {
-            _id: '3',
-            title: 'Urban Gardening: Growing Food in Small Spaces',
-            excerpt: 'Learn how to start your own urban garden and grow fresh food even with limited space.',
-            content: 'Living in a city doesn\'t mean you can\'t grow your own food. Urban gardening is becoming increasingly popular...',
-            author: 'Emma Davis',
-            category: 'Eco-Tips',
-            createdAt: new Date('2024-01-10'),
-            readTime: 4,
-            views: 756,
-            likes: 45,
-            comments: [],
-            featured: false,
-            status: 'Published',
-            rating: 4.5
-          },
-          {
-            _id: '4',
-            title: 'Climate Change: Understanding the Science Behind Global Warming',
-            excerpt: 'A comprehensive look at the scientific evidence for climate change and what it means for our future.',
-            content: 'Climate change is one of the most pressing issues of our time. Understanding the science behind it is crucial...',
-            author: 'Dr. James Wilson',
-            category: 'Climate Change',
-            createdAt: new Date('2024-01-08'),
-            readTime: 10,
-            views: 1450,
-            likes: 112,
-            comments: [],
-            featured: false,
-            status: 'Published',
-            rating: 4.9
-          },
-          {
-            _id: '5',
-            title: 'Wildlife Conservation: Protecting Endangered Species',
-            excerpt: 'Discover the challenges and successes in wildlife conservation efforts around the world.',
-            content: 'Wildlife conservation is critical for maintaining biodiversity and ecosystem health...',
-            author: 'Lisa Anderson',
-            category: 'Wildlife',
-            createdAt: new Date('2024-01-05'),
-            readTime: 6,
-            views: 890,
-            likes: 78,
-            comments: [],
-            featured: false,
-            status: 'Published',
-            rating: 4.7
-          },
-          {
-            _id: '6',
-            title: 'The Ultimate Guide to Recycling: Do\'s and Don\'ts',
-            excerpt: 'Everything you need to know about recycling properly and making a real environmental impact.',
-            content: 'Recycling is one of the easiest ways to reduce your environmental footprint, but many people do it incorrectly...',
-            author: 'Tom Roberts',
-            category: 'Recycling',
-            createdAt: new Date('2024-01-03'),
-            readTime: 8,
-            views: 1100,
-            likes: 95,
-            comments: [],
-            featured: false,
-            status: 'Published',
-            rating: 4.4
-          },
-          {
-            _id: '7',
-            title: 'Sustainable Living: Small Changes, Big Impact',
-            excerpt: 'How small lifestyle changes can lead to significant environmental benefits over time.',
-            content: 'Sustainable living doesn\'t require drastic changes. Small, consistent actions can make a big difference...',
-            author: 'Rachel Park',
-            category: 'Sustainability',
-            createdAt: new Date('2024-01-01'),
-            readTime: 6,
-            views: 678,
-            likes: 52,
-            comments: [],
-            featured: false,
-            status: 'Published',
-            rating: 4.3
-          },
-          {
-            _id: '8',
-            title: 'Ocean Conservation: Protecting Marine Life',
-            excerpt: 'The importance of ocean conservation and steps we can take to protect marine ecosystems.',
-            content: 'Oceans cover 71% of our planet and are vital for life on Earth. Protecting them is crucial...',
-            author: 'Dr. Maria Santos',
-            category: 'Conservation',
-            createdAt: new Date('2023-12-28'),
-            readTime: 9,
-            views: 923,
-            likes: 71,
-            comments: [],
-            featured: false,
-            status: 'Published',
-            rating: 4.6
-          }
-        ];
-
-        // Filter by category if selected
-        const filteredBlogs = selectedCategory === 'all'
-          ? fallbackBlogs
-          : fallbackBlogs.filter(blog => blog.category === selectedCategory);
-
-        setBlogs(filteredBlogs);
-        setTotalPages(Math.ceil(filteredBlogs.length / 12));
       } finally {
         setLoading(false);
       }
     };
 
     fetchBlogs();
-  }, [currentPage, selectedCategory]);
+  }, [currentPage, filters, sortBy, searchTerm]);
 
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category);
+  const filteredAndSortedBlogs = useMemo(() => {
+    // When API is working, this primarily handles client-side refinements if needed
+    // or provides a predictable UI behavior for empty states
+    return blogs;
+  }, [blogs]);
+
+  const handleFilterChange = (filterName, value) => {
+    setFilters(prev => ({ ...prev, [filterName]: value }));
     setCurrentPage(1);
   };
 
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
+  const handleTagToggle = (tag) => {
+    setFilters(prev => ({
+      ...prev,
+      tags: prev.tags.includes(tag)
+        ? prev.tags.filter(t => t !== tag)
+        : [...prev.tags, tag]
+    }));
+    setCurrentPage(1);
   };
 
-  const filteredBlogs = blogs.filter(blog =>
-    blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    blog.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    blog.author.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const clearFilters = () => {
+    setFilters({
+      category: 'all',
+      minRating: 0,
+      maxPrice: '',
+      dateRange: 'all',
+      location: 'all',
+      author: '',
+      tags: [],
+      difficulty: 'all'
+    });
+    setSearchTerm('');
+    setCurrentPage(1);
+  };
+
+  const getActiveFiltersCount = () => {
+    let count = 0;
+    if (filters.category !== 'all') count++;
+    if (filters.minRating > 0) count++;
+    if (filters.maxPrice) count++;
+    if (filters.dateRange !== 'all') count++;
+    if (filters.location !== 'all') count++;
+    if (filters.author) count++;
+    if (filters.difficulty !== 'all') count++;
+    if (filters.tags.length > 0) count++;
+    return count;
+  };
 
   // Create skeleton cards for loading state
   const skeletonCards = Array.from({ length: 8 }, (_, index) => (
@@ -231,28 +183,25 @@ const Blogs = () => {
       <div className="min-h-screen bg-gray-50 py-16">
         <div className="max-w-7xl mx-auto px-5">
           <div className="text-center mb-12">
-            <h1 className="heading-1 mb-4 text-gray-900">EcoTrack Blog</h1>
+            <h1 className="heading-1 mb-4 text-gray-900">Explore Blogs</h1>
             <div className="animate-pulse">
               <div className="h-4 bg-gray-300 rounded w-3/4 mx-auto mb-4"></div>
               <div className="h-4 bg-gray-300 rounded w-1/2 mx-auto"></div>
             </div>
           </div>
 
-          {/* Skeleton filters */}
           <div className="mb-12">
             <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
               <div className="w-full lg:w-96">
                 <div className="h-12 bg-gray-300 rounded-lg animate-pulse"></div>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {Array.from({ length: 5 }, (_, i) => (
-                  <div key={i} className="h-8 bg-gray-300 rounded w-24 animate-pulse"></div>
-                ))}
+              <div className="flex gap-2">
+                <div className="h-10 bg-gray-300 rounded w-24 animate-pulse"></div>
+                <div className="h-10 bg-gray-300 rounded w-24 animate-pulse"></div>
               </div>
             </div>
           </div>
 
-          {/* Skeleton cards grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
             {skeletonCards}
           </div>
@@ -266,58 +215,232 @@ const Blogs = () => {
       <div className="max-w-7xl mx-auto px-5">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="heading-1 mb-4 text-gray-900">EcoTrack Blog</h1>
+          <h1 className="heading-1 mb-4 text-gray-900">Explore Blogs</h1>
           <p className="text-large text-gray-600 mb-8">
-            Insights, tips, and stories about sustainable living and environmental conservation
+            Discover insights, tips, and stories about sustainable living and environmental conservation
           </p>
         </div>
 
-        {/* Search and Filters */}
-        <div className="mb-12">
-          <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
-            {/* Search Bar */}
-            <div className="w-full lg:w-96">
-              <input
-                type="text"
-                placeholder="Search blogs..."
-                value={searchTerm}
-                onChange={handleSearch}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              />
-            </div>
+        {/* Search Bar */}
+        <div className="mb-8">
+          <div className="relative max-w-2xl mx-auto">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="text"
+              placeholder="Search blogs, authors, tags..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            />
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm('')}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <X size={20} />
+              </button>
+            )}
+          </div>
+        </div>
 
-            {/* Category Filter */}
-            <div className="flex flex-wrap gap-2">
-              {categories.map((category) => (
-                <Button
-                  key={category.value}
-                  onClick={() => handleCategoryChange(category.value)}
-                  variant={selectedCategory === category.value ? 'default' : 'ghost'}
-                  size="sm"
-                  className={`${selectedCategory === category.value
-                    ? 'bg-green-600 text-white'
-                    : 'bg-white text-gray-700 hover:bg-gray-100'
-                    } border border-gray-300`}
-                >
-                  {category.label}
-                </Button>
-              ))}
+        {/* Controls Bar */}
+        <div className="flex flex-col lg:flex-row gap-4 items-center justify-between mb-8">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">View:</span>
+            <div className="flex border border-gray-300 rounded-lg">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-2 ${viewMode === 'grid' ? 'bg-green-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+              >
+                <Grid size={16} />
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-2 ${viewMode === 'list' ? 'bg-green-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+              >
+                <List size={16} />
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <Button
+              onClick={() => setShowFilters(!showFilters)}
+              variant="ghost"
+              className="flex items-center gap-2 border border-gray-300"
+            >
+              <Filter size={16} />
+              Filters
+              {getActiveFiltersCount() > 0 && (
+                <span className="bg-green-600 text-white text-xs px-2 py-1 rounded-full">
+                  {getActiveFiltersCount()}
+                </span>
+              )}
+            </Button>
+
+            <div className="relative">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              >
+                {sortOptions.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
             </div>
           </div>
         </div>
 
-        {/* Blog Stats */}
+        {/* Filters Panel */}
+        {showFilters && (
+          <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="heading-3">Filters</h3>
+              <Button
+                onClick={clearFilters}
+                variant="ghost"
+                size="sm"
+                className="text-gray-600 hover:text-gray-900"
+              >
+                Clear All
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                <select
+                  value={filters.category}
+                  onChange={(e) => handleFilterChange('category', e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                >
+                  {categories.map(category => (
+                    <option key={category.value} value={category.value}>
+                      {category.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Minimum Rating</label>
+                <select
+                  value={filters.minRating}
+                  onChange={(e) => handleFilterChange('minRating', parseInt(e.target.value))}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                >
+                  <option value="0">Any Rating</option>
+                  <option value="3">3+ Stars</option>
+                  <option value="4">4+ Stars</option>
+                  <option value="4.5">4.5+ Stars</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Max Price</label>
+                <select
+                  value={filters.maxPrice}
+                  onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                >
+                  {priceRanges.map(range => (
+                    <option key={range.value} value={range.value}>
+                      {range.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+                <select
+                  value={filters.dateRange}
+                  onChange={(e) => handleFilterChange('dateRange', e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                >
+                  {dateRanges.map(range => (
+                    <option key={range.value} value={range.value}>
+                      {range.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                <select
+                  value={filters.location}
+                  onChange={(e) => handleFilterChange('location', e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                >
+                  {locations.map(location => (
+                    <option key={location.value} value={location.value}>
+                      {location.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Difficulty</label>
+                <select
+                  value={filters.difficulty}
+                  onChange={(e) => handleFilterChange('difficulty', e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                >
+                  {difficulties.map(difficulty => (
+                    <option key={difficulty.value} value={difficulty.value}>
+                      {difficulty.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+              <div className="flex flex-wrap gap-2">
+                {availableTags.map(tag => (
+                  <button
+                    key={tag}
+                    onClick={() => handleTagToggle(tag)}
+                    className={`px-3 py-1 rounded-full text-sm border transition-colors ${filters.tags.includes(tag)
+                      ? 'bg-green-600 text-white border-green-600'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-green-500'
+                      }`}
+                  >
+                    #{tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Results Summary */}
         <div className="mb-8">
-          <p className="text-gray-600">
-            Showing {filteredBlogs.length} blog{filteredBlogs.length !== 1 ? 's' : ''}
-            {selectedCategory !== 'all' && ` in ${selectedCategory}`}
-          </p>
+          <div className="flex items-center justify-between">
+            <p className="text-gray-600">
+              Showing <span className="font-semibold">{blogs.length}</span> blog{blogs.length !== 1 ? 's' : ''}
+              {searchTerm && ` for "${searchTerm}"`}
+            </p>
+            <div className="text-sm text-gray-500">
+              Page {currentPage} of {totalPages}
+            </div>
+          </div>
         </div>
 
-        {/* Blog Grid - 4 cards per row on desktop */}
-        {filteredBlogs.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
-            {filteredBlogs.map((blog, index) => (
+        {/* Blog Grid/List */}
+        {blogs.length > 0 ? (
+          <div className={viewMode === 'grid'
+            ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12'
+            : 'space-y-6 mb-12'
+          }>
+            {blogs.map((blog, index) => (
               <BlogCard
                 key={blog._id}
                 blog={blog}
@@ -327,14 +450,19 @@ const Blogs = () => {
           </div>
         ) : (
           <div className="text-center py-12">
-            <div className="text-6xl mb-4">📝</div>
+            <div className="text-6xl mb-4 text-emerald-500"><Search size={64} /></div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No blogs found</h3>
-            <p className="text-gray-600">
-              {searchTerm
-                ? 'Try adjusting your search terms'
-                : 'No blogs available in this category yet'
+            <p className="text-gray-600 mb-4">
+              {searchTerm || getActiveFiltersCount() > 0
+                ? 'Try adjusting your search terms or filters'
+                : 'No blogs available yet'
               }
             </p>
+            {(searchTerm || getActiveFiltersCount() > 0) && (
+              <Button onClick={clearFilters}>
+                Clear Filters & Search
+              </Button>
+            )}
           </div>
         )}
 

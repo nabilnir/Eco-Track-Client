@@ -67,13 +67,13 @@ const Settings = () => {
     return (
         <div className="p-6 max-w-6xl mx-auto">
             <div className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
-                <p className="text-gray-600 mt-2">Manage your account and system preferences</p>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Settings</h1>
+                <p className="text-gray-600 dark:text-gray-400 mt-2">Manage your account and system preferences</p>
             </div>
 
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row min-h-[600px]">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row min-h-[600px] border border-transparent dark:border-gray-700">
                 {/* Sidebar Tabs */}
-                <div className="w-full md:w-64 bg-gray-50 border-r border-gray-200">
+                <div className="w-full md:w-64 bg-gray-50 dark:bg-gray-900/50 border-r border-gray-200 dark:border-gray-700">
                     <nav className="p-4 space-y-1">
                         {tabs.map((tab) => {
                             const Icon = tab.icon;
@@ -82,11 +82,11 @@ const Settings = () => {
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
                                     className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${activeTab === tab.id
-                                            ? 'bg-green-50 text-green-700 border-l-4 border-green-700'
-                                            : 'text-gray-600 hover:bg-gray-100'
+                                        ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border-l-4 border-green-700 dark:border-green-400'
+                                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
                                         }`}
                                 >
-                                    <Icon className={`mr-3 h-5 w-5 ${activeTab === tab.id ? 'text-green-600' : 'text-gray-400'}`} />
+                                    <Icon className={`mr-3 h-5 w-5 ${activeTab === tab.id ? 'text-green-600 dark:text-green-400' : 'text-gray-400 dark:text-gray-500'}`} />
                                     {tab.label}
                                 </button>
                             );
@@ -98,37 +98,37 @@ const Settings = () => {
                 <div className="flex-1 p-8">
                     {activeTab === 'profile' && (
                         <div className="space-y-6 animate-fade-in">
-                            <h2 className="text-xl font-bold text-gray-900 mb-6 border-b pb-2">Profile Information</h2>
+                            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 border-b dark:border-gray-700 pb-2">Profile Information</h2>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Display Name</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Display Name</label>
                                     <input
                                         type="text"
                                         name="displayName"
                                         value={settings.profile.displayName}
                                         onChange={handleProfileChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
                                     <input
                                         type="email"
                                         name="email"
                                         value={settings.profile.email}
                                         disabled
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 cursor-not-allowed"
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bio</label>
                                     <textarea
                                         name="bio"
                                         rows="4"
                                         value={settings.profile.bio}
                                         onChange={handleProfileChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
                                     />
                                 </div>
                             </div>
@@ -137,13 +137,13 @@ const Settings = () => {
 
                     {activeTab === 'notifications' && (
                         <div className="space-y-6 animate-fade-in">
-                            <h2 className="text-xl font-bold text-gray-900 mb-6 border-b pb-2">Notification Preferences</h2>
+                            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 border-b dark:border-gray-700 pb-2">Notification Preferences</h2>
 
                             <div className="space-y-4">
-                                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
                                     <div>
-                                        <p className="font-medium text-gray-900">Email Alerts</p>
-                                        <p className="text-sm text-gray-500">Receive daily summaries and critical alerts</p>
+                                        <p className="font-medium text-gray-900 dark:text-white">Email Alerts</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Receive daily summaries and critical alerts</p>
                                     </div>
                                     <label className="relative inline-flex items-center cursor-pointer">
                                         <input type="checkbox" className="sr-only peer" checked={settings.notifications.emailAlerts} onChange={() => handleToggle('notifications', 'emailAlerts')} />
@@ -151,10 +151,10 @@ const Settings = () => {
                                     </label>
                                 </div>
 
-                                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
                                     <div>
-                                        <p className="font-medium text-gray-900">New User Alerts</p>
-                                        <p className="text-sm text-gray-500">Get notified when new users register</p>
+                                        <p className="font-medium text-gray-900 dark:text-white">New User Alerts</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Get notified when new users register</p>
                                     </div>
                                     <label className="relative inline-flex items-center cursor-pointer">
                                         <input type="checkbox" className="sr-only peer" checked={settings.notifications.newUserAlert} onChange={() => handleToggle('notifications', 'newUserAlert')} />
@@ -166,7 +166,7 @@ const Settings = () => {
                     )}
 
                     {/* Save Button (Global) */}
-                    <div className="mt-8 pt-6 border-t border-gray-200 flex justify-end">
+                    <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 flex justify-end">
                         <button
                             onClick={handleSave}
                             disabled={loading}

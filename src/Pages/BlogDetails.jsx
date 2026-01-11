@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router';
-import { 
-  Calendar, Clock, Heart, MessageCircle, User, Star, 
-  Share2, Bookmark, ChevronLeft, ChevronRight, 
+import {
+  Calendar, Clock, Heart, MessageCircle, User, Star,
+  Share2, Bookmark, ChevronLeft, ChevronRight,
   MapPin, DollarSign, Award, Tag, Globe
 } from 'lucide-react';
 import Button from '../components/UI/Button';
-import axios from 'axios';
+import axiosPublic from '../api/axiosPublic';
 
 const BlogDetails = () => {
   const { id } = useParams();
@@ -23,21 +23,21 @@ const BlogDetails = () => {
     const fetchBlogDetails = async () => {
       try {
         setLoading(true);
-        
+
         // Fetch blog details
-        const response = await axios.get(`http://localhost:5000/api/blogs/${id}`);
+        const response = await axiosPublic.get(`/blogs/${id}`);
         setBlog(response.data);
-        
+
         // Fetch related blogs (same category)
-        const relatedResponse = await axios.get('http://localhost:5000/api/blogs/latest?limit=4');
+        const relatedResponse = await axiosPublic.get('/blogs/latest?limit=4');
         const filtered = relatedResponse.data.filter(b => b._id !== id && b.category === response.data.category);
         setRelatedBlogs(filtered.slice(0, 3));
-        
+
         // Simulate user interactions
         setIsLiked(Math.random() > 0.5);
         setIsBookmarked(Math.random() > 0.7);
         setUserRating(Math.floor(Math.random() * 2) + 4); // 4-5 stars
-        
+
         // Mock comments
         setComments([
           {
@@ -65,7 +65,7 @@ const BlogDetails = () => {
             avatar: '👨'
           }
         ]);
-        
+
       } catch (error) {
         console.log('Using fallback blog data');
         // Fallback data
@@ -148,7 +148,7 @@ Together, we can create a more sustainable future for generations to come.`,
           location: 'Global',
           language: 'English'
         };
-        
+
         setBlog(fallbackBlog);
         setRelatedBlogs([
           {
@@ -186,7 +186,7 @@ Together, we can create a more sustainable future for generations to come.`,
 
   const handleLike = async () => {
     try {
-      await axios.post(`http://localhost:5000/api/blogs/${id}/like`);
+      await axiosPublic.post(`/blogs/${id}/like`);
       setIsLiked(!isLiked);
       setBlog(prev => ({
         ...prev,
@@ -287,12 +287,11 @@ Together, we can create a more sustainable future for generations to come.`,
             {/* Header */}
             <header className="mb-8">
               <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
-                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                  blog.category === 'Sustainability' ? 'bg-green-100 text-green-800' :
-                  blog.category === 'Climate Change' ? 'bg-blue-100 text-blue-800' :
-                  blog.category === 'Renewable Energy' ? 'bg-yellow-100 text-yellow-800' :
-                  'bg-gray-100 text-gray-800'
-                }`}>
+                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${blog.category === 'Sustainability' ? 'bg-green-100 text-green-800' :
+                    blog.category === 'Climate Change' ? 'bg-blue-100 text-blue-800' :
+                      blog.category === 'Renewable Energy' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-gray-100 text-gray-800'
+                  }`}>
                   {blog.category}
                 </span>
                 {blog.status && (
@@ -306,11 +305,11 @@ Together, we can create a more sustainable future for generations to come.`,
                   </span>
                 )}
               </div>
-              
+
               <h1 className="heading-1 mb-4 text-gray-900">{blog.title}</h1>
-              
+
               <p className="text-large text-gray-600 mb-6">{blog.excerpt}</p>
-              
+
               {/* Author and Meta */}
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-6">
                 <div className="flex items-center gap-2">
@@ -341,9 +340,8 @@ Together, we can create a more sustainable future for generations to come.`,
                 <Button
                   onClick={handleLike}
                   variant={isLiked ? 'default' : 'ghost'}
-                  className={`flex items-center gap-2 ${
-                    isLiked ? 'bg-red-500 hover:bg-red-600' : 'border border-gray-300'
-                  }`}
+                  className={`flex items-center gap-2 ${isLiked ? 'bg-red-500 hover:bg-red-600' : 'border border-gray-300'
+                    }`}
                 >
                   <Heart size={16} className={isLiked ? 'fill-current' : ''} />
                   {blog.likes} Likes
@@ -359,9 +357,8 @@ Together, we can create a more sustainable future for generations to come.`,
                 <Button
                   onClick={handleBookmark}
                   variant="ghost"
-                  className={`flex items-center gap-2 border ${
-                    isBookmarked ? 'border-green-500 text-green-600' : 'border-gray-300'
-                  }`}
+                  className={`flex items-center gap-2 border ${isBookmarked ? 'border-green-500 text-green-600' : 'border-gray-300'
+                    }`}
                 >
                   <Bookmark size={16} className={isBookmarked ? 'fill-current' : ''} />
                   {isBookmarked ? 'Saved' : 'Save'}
@@ -463,7 +460,7 @@ Together, we can create a more sustainable future for generations to come.`,
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Tags */}
                 {blog.tags && blog.tags.length > 0 && (
                   <div className="mt-6 pt-6 border-t border-gray-200">
@@ -483,7 +480,7 @@ Together, we can create a more sustainable future for generations to come.`,
             {/* Reviews/Ratings Section */}
             <section className="mb-12">
               <h2 className="heading-2 mb-6">Reviews & Ratings</h2>
-              
+
               {/* Rating Summary */}
               <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
                 <div className="flex items-center justify-between mb-4">
@@ -539,7 +536,7 @@ Together, we can create a more sustainable future for generations to come.`,
               {/* Comments */}
               <div className="space-y-4">
                 <h3 className="heading-3">Comments ({comments.length})</h3>
-                
+
                 {/* Add Comment */}
                 <form onSubmit={handleCommentSubmit} className="bg-white rounded-lg border border-gray-200 p-6">
                   <textarea
@@ -624,9 +621,8 @@ Together, we can create a more sustainable future for generations to come.`,
                 <Button
                   onClick={handleLike}
                   variant={isLiked ? 'default' : 'ghost'}
-                  className={`w-full flex items-center justify-center gap-2 ${
-                    isLiked ? 'bg-red-500 hover:bg-red-600' : 'border border-gray-300'
-                  }`}
+                  className={`w-full flex items-center justify-center gap-2 ${isLiked ? 'bg-red-500 hover:bg-red-600' : 'border border-gray-300'
+                    }`}
                 >
                   <Heart size={16} className={isLiked ? 'fill-current' : ''} />
                   {isLiked ? 'Liked' : 'Like Article'}
@@ -642,9 +638,8 @@ Together, we can create a more sustainable future for generations to come.`,
                 <Button
                   onClick={handleBookmark}
                   variant="ghost"
-                  className={`w-full flex items-center justify-center gap-2 border ${
-                    isBookmarked ? 'border-green-500 text-green-600' : 'border-gray-300'
-                  }`}
+                  className={`w-full flex items-center justify-center gap-2 border ${isBookmarked ? 'border-green-500 text-green-600' : 'border-gray-300'
+                    }`}
                 >
                   <Bookmark size={16} className={isBookmarked ? 'fill-current' : ''} />
                   {isBookmarked ? 'Bookmarked' : 'Bookmark'}

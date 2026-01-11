@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaChartLine, FaChartBar, FaChartPie, FaDownload, FaCalendarAlt, FaUsers, FaLeaf, FaTrophy } from 'react-icons/fa';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import axiosPublic from '../../api/axiosPublic';
 
 const Analytics = () => {
   const [loading, setLoading] = useState(true);
@@ -21,8 +22,8 @@ const Analytics = () => {
     try {
       setLoading(true);
       // In a real app, this would fetch from your backend API
-      // const response = await axios.get(`http://localhost:5000/api/admin/analytics?range=${timeRange}`);
-      
+      // const response = await axiosPublic.get(`/admin/analytics?range=${timeRange}`);
+
       // Mock data for demonstration
       const mockData = {
         userGrowth: [
@@ -66,7 +67,7 @@ const Analytics = () => {
           { month: 'Jun', revenue: 8500, users: 238 }
         ]
       };
-      
+
       setAnalyticsData(mockData);
     } catch (error) {
       console.error('Failed to fetch analytics data:', error);
@@ -99,14 +100,14 @@ const Analytics = () => {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Analytics Dashboard</h1>
-          <p className="text-gray-600 mt-2">Track performance metrics and user engagement</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Analytics Dashboard</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">Track performance metrics and user engagement</p>
         </div>
         <div className="flex items-center gap-4">
           <select
             value={timeRange}
             onChange={(e) => setTimeRange(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            className="px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
           >
             <option value="7d">Last 7 Days</option>
             <option value="30d">Last 30 Days</option>
@@ -125,18 +126,17 @@ const Analytics = () => {
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         {analyticsData.engagementMetrics.map((metric, index) => (
-          <div key={index} className="bg-white rounded-lg shadow p-6">
+          <div key={index} className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border border-transparent dark:border-gray-700">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">{metric.name}</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {metric.name === 'Avg Duration' ? `${metric.value}s` : 
-                   metric.name === 'Bounce Rate' ? `${metric.value}%` : 
-                   metric.value.toLocaleString()}
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{metric.name}</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {metric.name === 'Avg Duration' ? `${metric.value}s` :
+                    metric.name === 'Bounce Rate' ? `${metric.value}%` :
+                      metric.value.toLocaleString()}
                 </p>
-                <div className={`flex items-center mt-2 text-sm ${
-                  metric.change > 0 ? 'text-green-600' : 'text-red-600'
-                }`}>
+                <div className={`flex items-center mt-2 text-sm ${metric.change > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                  }`}>
                   <span>{metric.change > 0 ? '↑' : '↓'}</span>
                   <span className="ml-1">{Math.abs(metric.change)}%</span>
                 </div>
@@ -152,8 +152,8 @@ const Analytics = () => {
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* User Growth Chart */}
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">User Growth</h3>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-transparent dark:border-gray-700">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">User Growth</h3>
           <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={analyticsData.userGrowth}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -168,8 +168,8 @@ const Analytics = () => {
         </div>
 
         {/* Activity Stats */}
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Weekly Activity Breakdown</h3>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-transparent dark:border-gray-700">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Weekly Activity Breakdown</h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={analyticsData.activityStats}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -188,8 +188,8 @@ const Analytics = () => {
       {/* Category Distribution and Revenue */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Category Distribution */}
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Content Category Distribution</h3>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-transparent dark:border-gray-700">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Content Category Distribution</h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
@@ -212,8 +212,8 @@ const Analytics = () => {
         </div>
 
         {/* Revenue Chart */}
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Monthly Revenue & Users</h3>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-transparent dark:border-gray-700">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Monthly Revenue & Users</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={analyticsData.monthlyRevenue}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -230,77 +230,77 @@ const Analytics = () => {
       </div>
 
       {/* Detailed Stats Table */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="p-6 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900">Performance Summary</h3>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden border border-transparent dark:border-gray-700">
+        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Performance Summary</h3>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-900/50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Metric
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Current Period
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Previous Period
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Change
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Trend
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
               <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
                   <div className="flex items-center">
                     <FaUsers className="mr-2 text-blue-500" />
                     Total Users
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">312</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">275</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600">+13.5%</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">312</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">275</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600 dark:text-green-400">+13.5%</td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="w-16 bg-green-200 rounded-full h-2">
-                    <div className="bg-green-600 h-2 rounded-full" style={{ width: '75%' }}></div>
+                  <div className="w-16 bg-green-200 dark:bg-green-900/30 rounded-full h-2">
+                    <div className="bg-green-600 dark:bg-green-500 h-2 rounded-full" style={{ width: '75%' }}></div>
                   </div>
                 </td>
               </tr>
               <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
                   <div className="flex items-center">
                     <FaLeaf className="mr-2 text-green-500" />
                     Activities
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1,247</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1,089</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600">+14.5%</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">1,247</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">1,089</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600 dark:text-green-400">+14.5%</td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="w-16 bg-green-200 rounded-full h-2">
-                    <div className="bg-green-600 h-2 rounded-full" style={{ width: '85%' }}></div>
+                  <div className="w-16 bg-green-200 dark:bg-green-900/30 rounded-full h-2">
+                    <div className="bg-green-600 dark:bg-green-500 h-2 rounded-full" style={{ width: '85%' }}></div>
                   </div>
                 </td>
               </tr>
               <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
                   <div className="flex items-center">
                     <FaTrophy className="mr-2 text-yellow-500" />
                     Challenges
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">89</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">76</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600">+17.1%</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">89</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">76</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600 dark:text-green-400">+17.1%</td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="w-16 bg-green-200 rounded-full h-2">
-                    <div className="bg-green-600 h-2 rounded-full" style={{ width: '90%' }}></div>
+                  <div className="w-16 bg-green-200 dark:bg-green-900/30 rounded-full h-2">
+                    <div className="bg-green-600 dark:bg-green-500 h-2 rounded-full" style={{ width: '90%' }}></div>
                   </div>
                 </td>
               </tr>
