@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../Context/AuthContext';
 import { Link } from 'react-router';
 import {
   FaLeaf,
@@ -16,13 +17,12 @@ import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Cart
 import axiosPublic from '../../api/axiosPublic';
 
 const DashboardOverview = () => {
+  const { user } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
-    totalUsers: 0,
     totalActivities: 0,
-    totalChallenges: 0,
-    totalEvents: 0,
-    userGrowth: 0,
+    myChallengesCount: 0,
+    myEventsCount: 0,
     activityGrowth: 0
   });
   const [chartData, setChartData] = useState({
@@ -34,34 +34,32 @@ const DashboardOverview = () => {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
 
   useEffect(() => {
-    fetchDashboardData();
-  }, []);
+    if (user?.email) {
+      fetchDashboardData();
+    }
+  }, [user]);
 
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
 
       // Fetch statistics
-      const statsResponse = await axiosPublic.get('/api/statistics');
+      const statsResponse = await axiosPublic.get(`/api/dashboard/user-stats?email=${user.email}`);
       setStats({
-        totalUsers: statsResponse.data.totalUsers || 0,
-        totalActivities: statsResponse.data.totalUserChallenges || 0,
-        totalChallenges: statsResponse.data.totalChallenges || 0,
-        totalEvents: statsResponse.data.totalEvents || 0,
-        userGrowth: 0,
-        activityGrowth: 0
+        totalActivities: statsResponse.data.totalActivities || 0,
+        myChallengesCount: statsResponse.data.myChallengesCount || 0,
+        myEventsCount: statsResponse.data.myEventsCount || 0,
+        activityGrowth: statsResponse.data.activityGrowth || 0
       });
 
-      // Fetch chart data - Still using fallback or could map from stats if possible. 
-      // For now, let's leave charts static-ish or empty to avoid errors, 
-      // but the user complained about "static datas".
-      // I'll leave the chart fetching commented out or mock it with 0s if endpoint missing.
-      // const chartResponse = await axiosPublic.get('/dashboard/charts');
-      // setChartData(chartResponse.data);
+      // Fetch chart data 
+      const chartResponse = await axiosPublic.get(`/api/dashboard/user-charts?email=${user.email}`);
+      setChartData(chartResponse.data);
 
-      // Fetch recent activities (Using challenges as proxy since /activities doesn't exist)
-      const activitiesResponse = await axiosPublic.get('/api/challenges?limit=5');
-      setRecentActivities(activitiesResponse.data.challenges || []);
+      // Fetch recent activities
+      const activitiesResponse = await axiosPublic.get(`/api/user-challenges/${user.email}`);
+      // Slice to last 5
+      setRecentActivities(activitiesResponse.data.slice(0, 5) || []);
 
       // Fetch upcoming events
       const eventsResponse = await axiosPublic.get('/api/events');
@@ -71,11 +69,9 @@ const DashboardOverview = () => {
       console.error('Failed to fetch dashboard data:', error);
 
       const fallbackStats = {
-        totalUsers: 0,
         totalActivities: 0,
-        totalChallenges: 0,
-        totalEvents: 0,
-        userGrowth: 0,
+        myChallengesCount: 0,
+        myEventsCount: 0,
         activityGrowth: 0
       };
       setStats(fallbackStats);
@@ -135,17 +131,9 @@ const DashboardOverview = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <StatCard
-          title="Total Users"
-          value={stats.totalUsers}
-          icon={FaUsers}
-          change={stats.userGrowth}
-          changeType="increase"
-          color="bg-blue-500"
-        />
-        <StatCard
-          title="Total Activities"
+          title="My Total Activities"
           value={stats.totalActivities}
           icon={FaLeaf}
           change={stats.activityGrowth}
@@ -153,14 +141,14 @@ const DashboardOverview = () => {
           color="bg-green-500"
         />
         <StatCard
-          title="Active Challenges"
-          value={stats.totalChallenges}
+          title="My Challenges"
+          value={stats.myChallengesCount}
           icon={FaTrophy}
           color="bg-yellow-500"
         />
         <StatCard
-          title="Upcoming Events"
-          value={stats.totalEvents}
+          title="My Events"
+          value={stats.myEventsCount}
           icon={FaCalendarAlt}
           color="bg-purple-500"
         />
@@ -171,56 +159,93 @@ const DashboardOverview = () => {
         {/* Line Chart - User Growth */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-transparent dark:border-gray-700">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">User & Activity Growth</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={chartData.monthlyData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="users" stroke="#3b82f6" strokeWidth={2} />
-              <Line type="monotone" dataKey="activities" stroke="#10b981" strokeWidth={2} />
-            </LineChart>
-          </ResponsiveContainer>
+          {chartData.monthlyData && chartData.monthlyData.some(d => d.activities > 0) ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={chartData.monthlyData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="activities" stroke="#10b981" strokeWidth={2} />
+              </LineChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex flex-col items-center justify-center text-center p-8 h-80 bg-gray-50 dark:bg-gray-700/50 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600">
+              <div className="mb-4 text-gray-400">
+                <FaLeaf size={48} className="mx-auto opacity-50" />
+              </div>
+              <p className="text-gray-500 dark:text-gray-400 mb-6 text-lg">No activity history yet</p>
+              <Link to="/challenges" className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium shadow-md">
+                Start Your Journey
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* Pie Chart - Activity Categories */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-transparent dark:border-gray-700">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Activity Categories</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={chartData.categoryData}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {chartData.categoryData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
+          {chartData.categoryData && chartData.categoryData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={chartData.categoryData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {chartData.categoryData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex flex-col items-center justify-center text-center p-8 h-80 bg-gray-50 dark:bg-gray-700/50 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600">
+              <div className="mb-4 text-gray-400">
+                <FaTrophy size={48} className="mx-auto opacity-50" />
+              </div>
+              <p className="text-gray-500 dark:text-gray-400 mb-6 text-lg">No activities joined yet</p>
+              <Link to="/challenges" className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium shadow-md">
+                Browse Challenges
+              </Link>
+            </div>
+          )}
+        </div >
+      </div >
 
       {/* Bar Chart - Weekly Activities */}
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mb-8 border border-transparent dark:border-gray-700">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Weekly Activity Trend</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={chartData.activityData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="day" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="count" fill="#10b981" />
-          </BarChart>
-        </ResponsiveContainer>
+        {
+          chartData.activityData && chartData.activityData.some(d => d.count > 0) ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={chartData.activityData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="day" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="count" fill="#10b981" />
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex flex-col items-center justify-center text-center p-8 h-80 bg-gray-50 dark:bg-gray-700/50 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600">
+              <div className="mb-4 text-gray-400">
+                <FaCalendarAlt size={48} className="mx-auto opacity-50" />
+              </div>
+              <p className="text-gray-500 dark:text-gray-400 mb-6 text-lg">No weekly activity yet</p>
+              <Link to="/challenges" className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium shadow-md">
+                Start Your Journey
+              </Link>
+            </div>
+          )
+        }
       </div>
 
       {/* Data Tables */}
@@ -238,10 +263,7 @@ const DashboardOverview = () => {
                     Activity
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    User
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Date
+                    Date Joined
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Actions
@@ -249,19 +271,17 @@ const DashboardOverview = () => {
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                {recentActivities.map((activity) => (
+                {recentActivities.length > 0 ? recentActivities.map((activity) => (
                   <tr key={activity._id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-                        <div className="text-sm font-medium text-gray-900 dark:text-white">{activity.title}</div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">{activity.type}</div>
+                        <div className="text-sm font-medium text-gray-900 dark:text-white">{activity.challenge?.title || 'Unknown Challenge'}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">{activity.challenge?.category || 'General'}</div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                      {activity.user}
-                    </td>
+                    {/* User column removed as it is My Activities */}
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      {new Date(activity.date).toLocaleDateString()}
+                      {new Date(activity.joinDate || Date.now()).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
@@ -277,7 +297,16 @@ const DashboardOverview = () => {
                       </div>
                     </td>
                   </tr>
-                ))}
+                )) : (
+                  <tr>
+                    <td colSpan="3" className="px-6 py-12 text-center text-gray-500">
+                      <p className="mb-4 text-lg">No recent activities found</p>
+                      <Link to="/challenges" className="inline-block px-6 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium shadow-sm">
+                        Join a Challenge
+                      </Link>
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -289,10 +318,10 @@ const DashboardOverview = () => {
               View all activities →
             </Link>
           </div>
-        </div>
+        </div >
 
         {/* Upcoming Events Table */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-transparent dark:border-gray-700">
+        < div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-transparent dark:border-gray-700" >
           <div className="p-6 border-b border-gray-200 dark:border-gray-700">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Upcoming Events</h3>
           </div>
@@ -354,9 +383,9 @@ const DashboardOverview = () => {
               View all events →
             </Link>
           </div>
-        </div>
-      </div>
-    </div>
+        </div >
+      </div >
+    </div >
   );
 };
 

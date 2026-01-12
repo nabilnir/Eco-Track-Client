@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
   FaUserCircle, FaEnvelope, FaCalendarAlt, FaSignOutAlt, FaLeaf,
-  FaTrophy, FaCloud, FaRecycle, FaTint, FaRunning, FaCheckCircle, FaTree
+  FaTrophy, FaCloud, FaRecycle, FaTint, FaRunning, FaCheckCircle, FaTree,
+  FaEdit, FaSave, FaTimes, FaCamera
 } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router';
 import toast from 'react-hot-toast';
@@ -13,6 +14,17 @@ const MyProfile = () => {
   const { user, loading, logout } = useAuth();
   const location = useLocation();
   const isDashboard = location.pathname.includes('/dashboard');
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [userProfile, setUserProfile] = useState(null);
+  const [editForm, setEditForm] = useState({
+    displayName: '',
+    bio: '',
+    photoURL: '',
+    coverPhotoURL: ''
+  });
+
   const [userStats, setUserStats] = useState({
     totalChallenges: 0,
     inProgressChallenges: 0,
@@ -29,10 +41,26 @@ const MyProfile = () => {
 
   useEffect(() => {
     if (user) {
+      fetchUserProfile();
       fetchUserStats();
     }
-
   }, [user]);
+
+  const fetchUserProfile = async () => {
+    try {
+      const response = await fetch(`${API_BASE}/api/users/${encodeURIComponent(user.email)}`);
+      const data = await response.json();
+      setUserProfile(data);
+      setEditForm({
+        displayName: data.displayName || user.displayName || '',
+        bio: data.bio || '',
+        photoURL: data.photoURL || user.photoURL || '',
+        coverPhotoURL: data.coverPhotoURL || ''
+      });
+    } catch (error) {
+      console.error('Failed to fetch user profile:', error);
+    }
+  };
 
   const fetchUserStats = async () => {
     try {
@@ -85,6 +113,110 @@ const MyProfile = () => {
     }
   };
 
+  const handleImageUpload = (e, field) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validate file size (max 5MB for original)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size should be less than 5MB');
+      return;
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please upload an image file');
+      return;
+    }
+
+    // Compress and convert to base64
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        // Create canvas for compression
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set max dimensions
+        const maxWidth = field === 'coverPhotoURL' ? 1200 : 400;
+        const maxHeight = field === 'coverPhotoURL' ? 400 : 400;
+
+        let width = img.width;
+        let height = img.height;
+
+        // Calculate new dimensions
+        if (width > height) {
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width;
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = (width * maxHeight) / height;
+            height = maxHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        // Draw and compress
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Convert to base64 with compression
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+
+        setEditForm(prev => ({
+          ...prev,
+          [field]: compressedBase64
+        }));
+
+        toast.success('Image uploaded successfully!');
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSaveProfile = async () => {
+    setIsSaving(true);
+    try {
+      const response = await fetch(`${API_BASE}/api/users/profile/${encodeURIComponent(user.email)}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(editForm)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setUserProfile(data.user);
+        setIsEditing(false);
+        toast.success('Profile updated successfully!');
+      } else {
+        toast.error(data.message || 'Failed to update profile');
+      }
+    } catch (error) {
+      console.error('Failed to save profile:', error);
+      toast.error('Failed to update profile');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditForm({
+      displayName: userProfile?.displayName || user.displayName || '',
+      bio: userProfile?.bio || '',
+      photoURL: userProfile?.photoURL || user.photoURL || '',
+      coverPhotoURL: userProfile?.coverPhotoURL || ''
+    });
+    setIsEditing(false);
+  };
+
   const handleLogout = () => {
     logout()
       .then(() => {
@@ -127,34 +259,118 @@ const MyProfile = () => {
     ? new Date(user.metadata.lastSignInTime).toLocaleDateString()
     : 'N/A';
 
+  const displayName = isEditing ? editForm.displayName : (userProfile?.displayName || user.displayName || 'EcoTracker User');
+  const bio = isEditing ? editForm.bio : (userProfile?.bio || '');
+  const photoURL = isEditing ? editForm.photoURL : (userProfile?.photoURL || user.photoURL);
+  const coverPhotoURL = isEditing ? editForm.coverPhotoURL : (userProfile?.coverPhotoURL || '');
+
   return (
     <div className={`min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 ${isDashboard ? 'py-6' : 'py-12 mt-18'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl font-bold text-center text-gray-900 dark:text-white mb-8">My EcoTrack Profile</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">My EcoTrack Profile</h1>
+          {!isEditing ? (
+            <button
+              onClick={() => setIsEditing(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-semibold transition-colors"
+            >
+              <FaEdit /> Edit Profile
+            </button>
+          ) : (
+            <div className="flex gap-2">
+              <button
+                onClick={handleSaveProfile}
+                disabled={isSaving}
+                className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-semibold transition-colors disabled:opacity-50"
+              >
+                <FaSave /> {isSaving ? 'Saving...' : 'Save'}
+              </button>
+              <button
+                onClick={handleCancelEdit}
+                disabled={isSaving}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-semibold transition-colors disabled:opacity-50"
+              >
+                <FaTimes /> Cancel
+              </button>
+            </div>
+          )}
+        </div>
 
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-transparent dark:border-gray-700">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-8">
+          {/* Cover Photo */}
+          <div className="relative h-48 bg-gradient-to-r from-emerald-400 to-cyan-500">
+            {coverPhotoURL && (
+              <img src={coverPhotoURL} alt="Cover" className="w-full h-full object-cover" />
+            )}
+            {isEditing && (
+              <label className="absolute bottom-4 right-4 cursor-pointer bg-black/50 hover:bg-black/70 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                <FaCamera /> Change Cover
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => handleImageUpload(e, 'coverPhotoURL')}
+                />
+              </label>
+            )}
+          </div>
 
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-8">
             <div className="lg:col-span-1 border-b lg:border-r lg:border-b-0 border-gray-200 dark:border-gray-700 pb-6 lg:pb-0 lg:pr-8">
               <div className="flex flex-col items-center text-center">
-                <div className="w-32 h-32 rounded-full overflow-hidden mb-4 border-4 border-emerald-500 shadow-lg">
-                  {user.photoURL ? (
-                    <img
-                      src={user.photoURL}
-                      alt={user.displayName || 'User Profile'}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <FaUserCircle className="w-full h-full text-gray-400 bg-gray-100 p-2" />
+                <div className="relative -mt-20 mb-4">
+                  <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white dark:border-gray-800 shadow-lg bg-white">
+                    {photoURL ? (
+                      <img
+                        src={photoURL}
+                        alt={displayName}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <FaUserCircle className="w-full h-full text-gray-400 bg-gray-100 p-2" />
+                    )}
+                  </div>
+                  {isEditing && (
+                    <label className="absolute bottom-0 right-0 cursor-pointer bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-full shadow-lg transition-colors">
+                      <FaCamera />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => handleImageUpload(e, 'photoURL')}
+                      />
+                    </label>
                   )}
                 </div>
 
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{user.displayName || 'EcoTracker User'}</h2>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editForm.displayName}
+                    onChange={(e) => setEditForm(prev => ({ ...prev, displayName: e.target.value }))}
+                    className="text-2xl font-bold text-gray-900 dark:text-white mb-2 px-3 py-1 border-2 border-emerald-500 rounded-lg bg-transparent text-center w-full"
+                    placeholder="Your Name"
+                  />
+                ) : (
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{displayName}</h2>
+                )}
 
                 <p className="text-gray-600 dark:text-gray-400 flex items-center mb-4">
                   <FaEnvelope className="mr-2 text-sm" />
                   {user.email}
                 </p>
+
+                {isEditing ? (
+                  <textarea
+                    value={editForm.bio}
+                    onChange={(e) => setEditForm(prev => ({ ...prev, bio: e.target.value }))}
+                    className="w-full px-3 py-2 border-2 border-emerald-500 rounded-lg bg-transparent text-gray-700 dark:text-gray-300 mb-4 resize-none"
+                    placeholder="Tell us about yourself..."
+                    rows="3"
+                  />
+                ) : bio ? (
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 italic">"{bio}"</p>
+                ) : null}
 
                 <div className="text-sm text-gray-500 dark:text-gray-400 space-y-2 w-full max-w-xs">
                   <div className="flex justify-between border-t pt-2 border-gray-100 dark:border-gray-700">
