@@ -29,7 +29,7 @@ const Section = ({
         {(title || subtitle) && (
           <div className="text-center mb-16">
             {title && (
-              <h2 className="text-3xl md:text-4xl font-bold leading-tight tracking-tight mb-4">
+              <h2 className="heading-serif text-3xl md:text-4xl font-bold leading-tight tracking-tight mb-4">
                 {title}
               </h2>
             )}

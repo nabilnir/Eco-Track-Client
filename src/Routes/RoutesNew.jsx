@@ -14,15 +14,16 @@ import Tips from "../Pages/Tips";
 import HomeLayout from "../Layout/HomeLayout";
 import EventDetails from "../Pages/EventDetails";
 import Events from "../Pages/Events";
-import Events from "../Pages/Events";
 import ProtectedRoutes from "./ProtectedRoutes";
 import DashboardLayout from "../Layout/DashboardLayout";
-import DashboardOverview from "../Pages/Dashboard/DashboardOverview";
+import DashboardHome from "../Pages/Dashboard/DashboardHome";
 import Profile from "../Pages/Dashboard/Profile";
 import Activities from "../Pages/Dashboard/Activities";
 import ChallengesDashboard from "../Pages/Dashboard/Challenges";
 import UserManagement from "../Pages/Dashboard/UserManagement";
-import UserManagement from "../Pages/Dashboard/UserManagement";
+import Analytics from "../Pages/Dashboard/Analytics";
+import Settings from "../Pages/Dashboard/Settings";
+import JoinedEvents from "../Pages/Dashboard/JoinedEvents";
 
 const router = createBrowserRouter([
   {
@@ -100,7 +101,7 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <DashboardOverview />
+                element: <DashboardHome />
               },
               {
                 path: 'profile',
@@ -117,6 +118,18 @@ const router = createBrowserRouter([
               {
                 path: 'users',
                 element: <UserManagement />
+              },
+              {
+                path: 'analytics',
+                element: <Analytics />
+              },
+              {
+                path: 'settings',
+                element: <Settings />
+              },
+              {
+                path: 'events',
+                element: <JoinedEvents />
               }
             ]
           }

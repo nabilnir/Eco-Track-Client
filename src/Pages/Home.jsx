@@ -183,7 +183,7 @@ const HomePage = () => {
         <div className="max-w-4xl mx-auto text-center bg-emerald-900 rounded-3xl p-12 text-white relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
           <div className="relative z-10">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Subscribe to Our Newsletter</h2>
+            <h2 className="heading-serif text-3xl md:text-4xl font-bold mb-4">Subscribe to Our Newsletter</h2>
             <p className="text-emerald-100 mb-8 max-w-2xl mx-auto">Get the latest eco-tips, challenge updates, and success stories delivered straight to your inbox.</p>
             <form className="flex flex-col sm:flex-row gap-4 justify-center max-w-lg mx-auto" onSubmit={(e) => e.preventDefault()}>
               <input
@@ -203,7 +203,7 @@ const HomePage = () => {
       {/* CTA Section */}
       <Section variant="gradient">
         <div className="text-center max-w-3xl mx-auto">
-          <h2 className="heading-2 mb-4">Ready to Make a Difference?</h2>
+          <h2 className="heading-serif heading-2 mb-4">Ready to Make a Difference?</h2>
           <p className="text-large text-text-light/90 mb-8">
             Join thousands of people already tracking their environmental impact and building a sustainable future.
           </p>

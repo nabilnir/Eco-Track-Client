@@ -22,6 +22,7 @@ import Activities from "../Pages/Dashboard/Activities";
 import ChallengesDashboard from "../Pages/Dashboard/Challenges";
 import UserManagement from "../Pages/Dashboard/UserManagement";
 import JoinedEvents from "../Pages/Dashboard/JoinedEvents";
+import TopicDetail from "../Pages/TopicDetail";
 
 
 const router = createBrowserRouter([
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: '/events',
         Component: Events
+      },
+      {
+        path: '/topics/:slug',
+        Component: TopicDetail
       },
       {
         path: '/challenges/:id',

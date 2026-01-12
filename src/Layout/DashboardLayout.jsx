@@ -29,7 +29,8 @@ const DashboardLayout = () => {
 
   // Determine user role from AuthContext
   // Optional: fallback to email check if role is mission for some reason
-  const userRole = user?.role || (user?.email?.includes('admin') ? 'admin' : 'user');
+  const isAdmin = user?.role === 'admin' || user?.email?.toLowerCase().includes('admin');
+  const userRole = isAdmin ? 'admin' : 'user';
 
   // Menu items based on user role
   const userMenuItems = [
@@ -66,12 +67,6 @@ const DashboardLayout = () => {
   ];
 
   const adminMenuItems = [
-    {
-      name: 'Dashboard',
-      path: '/dashboard',
-      icon: FaHome,
-      label: 'Overview'
-    },
     {
       name: 'User Management',
       path: '/dashboard/users',

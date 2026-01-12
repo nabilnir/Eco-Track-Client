@@ -102,7 +102,7 @@ const Testimonials = () => {
           <span className="inline-block px-4 py-1 bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 rounded-full text-sm font-medium mb-3">
             User Testimonials
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white leading-tight">
+          <h2 className="heading-serif text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white leading-tight">
             What Our Users Say
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 mt-4">
@@ -158,8 +158,8 @@ const Testimonials = () => {
                           <FiStar
                             key={i}
                             className={`text-lg ${i < Math.floor(review.ratings)
-                                ? 'text-yellow-500 fill-yellow-500'
-                                : 'text-gray-300 dark:text-gray-600'
+                              ? 'text-yellow-500 fill-yellow-500'
+                              : 'text-gray-300 dark:text-gray-600'
                               }`}
                             size={18}
                           />
@@ -197,8 +197,8 @@ const Testimonials = () => {
                   setCurrentIndex(index);
                 }}
                 className={`h-2.5 rounded-full transition-all duration-300 ${index === currentIndex
-                    ? 'bg-emerald-500 w-8'
-                    : 'bg-gray-300 dark:bg-gray-600 w-2.5 hover:bg-gray-400 dark:hover:bg-gray-500'
+                  ? 'bg-emerald-500 w-8'
+                  : 'bg-gray-300 dark:bg-gray-600 w-2.5 hover:bg-gray-400 dark:hover:bg-gray-500'
                   }`}
                 aria-label={`Go to testimonial ${index + 1}`}
               />

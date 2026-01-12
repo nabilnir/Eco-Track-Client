@@ -343,9 +343,9 @@ const DashboardOverview = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 {upcomingEvents.map((event) => (
-                  <tr key={event._id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                  <tr key={event._id} className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
                       {event.title}
                     </td>

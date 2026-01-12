@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { 
-  createUserWithEmailAndPassword, 
+import {
+  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
       if (currentUser) {
         // Assign role based on email for demo purposes
         // In a real app, this would come from a database or custom claims
-        if (currentUser.email === 'admin@ecotrack.com') {
+        if (currentUser.email?.toLowerCase().includes('admin')) {
           currentUser.role = 'admin';
         } else {
           currentUser.role = 'user';

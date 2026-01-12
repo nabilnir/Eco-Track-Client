@@ -20,13 +20,13 @@ const LiveStatistics = () => {
     treesPlanted: 0
   });
 
-  
+
   const API_BASE = import.meta.env.VITE_API_URL || '';
 
   useEffect(() => {
     fetchStatistics();
 
-    
+
     const interval = setInterval(fetchStatistics, 30000);
     return () => clearInterval(interval);
   }, []);
@@ -146,7 +146,7 @@ const LiveStatistics = () => {
     return (
       <section className="py-16 bg-gradient-to-r from-emerald-500 to-emerald-600 dark:from-emerald-700 dark:to-emerald-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
+          <h2 className="heading-serif text-3xl md:text-4xl font-bold text-center text-white mb-12">
             Our Community Impact
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
@@ -173,7 +173,7 @@ const LiveStatistics = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+          <h2 className="heading-serif text-3xl md:text-4xl font-bold text-white mb-4">
             Our Community Impact
           </h2>
           <p className="text-emerald-100 dark:text-emerald-200 text-lg">
@@ -185,7 +185,7 @@ const LiveStatistics = () => {
           {statisticsData.map((stat, index) => {
             const Icon = stat.icon;
             return (
-              <div 
+              <div
                 key={index}
                 className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center hover:bg-white/20 transition-all duration-300 hover:scale-105 transform dark:bg-gray-800/20 dark:hover:bg-gray-700/30 dark:border dark:border-gray-600/30"
                 style={{ animationDelay: `${index * 0.1}s` }}
@@ -208,7 +208,7 @@ const LiveStatistics = () => {
 
         <div className="mt-12 text-center">
           <p className="text-white/90 text-lg">
-             Join our growing community of environmental champions
+            Join our growing community of environmental champions
           </p>
           <p className="text-emerald-100 dark:text-emerald-200 text-sm mt-2">
             Updated live • Last synced: {new Date().toLocaleTimeString()}

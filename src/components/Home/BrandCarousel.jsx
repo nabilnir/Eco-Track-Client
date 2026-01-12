@@ -140,9 +140,9 @@ const BrandCarousel = () => {
             </span>
           </div>
 
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+          <h2 className="heading-serif text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
             Trusted by Leading
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-blue-600 dark:from-emerald-400 dark:to-blue-400">
+            <span className="block text-gradient-teal">
               Environmental Organizations
             </span>
           </h2>

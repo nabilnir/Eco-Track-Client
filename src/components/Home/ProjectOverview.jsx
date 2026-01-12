@@ -1,21 +1,25 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 const ProjectOverview = () => {
     const sections = [
         {
             title: "Sustainable Transport",
+            slug: "sustainable-transport",
             description: "Drive the Change. Embrace electric vehicles and public transit to drastically reduce your carbon footprint. Every mile counts toward a cleaner sky. Our platform helps you track and optimize your daily commute for maximum environmental impact.",
             image: "/assets/transport.png",
             reverse: false
         },
         {
             title: "Renewable Energy",
+            slug: "renewable-energy",
             description: "Powering the Future. Switch to solar and wind energy to protect our planet. Sustainable energy is not just a choice; it's our responsibility. We provide tools to monitor your energy transition and celebrate your shift to clean power sources.",
             image: "/assets/energy.png",
             reverse: true
         },
         {
             title: "Waste Reduction",
+            slug: "waste-reduction",
             description: "Zero Waste Living. Small changes in your daily routine can lead to a massive reduction in landfill waste. Start your journey with eco-friendly alternatives today. Join thousands of eco-warriors in our community committed to a cleaner, waste-free world.",
             image: "/assets/waste.png",
             reverse: false
@@ -26,7 +30,7 @@ const ProjectOverview = () => {
         <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
             <div className="max-w-7xl mx-auto px-5">
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 font-heading">
+                    <h2 className="heading-serif text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
                         Our Journey & Impact
                     </h2>
                     <div className="w-24 h-1.5 bg-green-500 mx-auto rounded-full mb-6"></div>
@@ -55,16 +59,19 @@ const ProjectOverview = () => {
 
                             {/* Text Column */}
                             <div className="w-full md:w-1/2 space-y-6">
-                                <h3 className="text-3xl font-bold text-gray-900 dark:text-white font-heading">
+                                <h3 className="heading-serif text-3xl font-bold text-gray-900 dark:text-white">
                                     {section.title}
                                 </h3>
                                 <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed italic border-l-4 border-green-500 pl-6 py-2">
                                     {section.description}
                                 </p>
                                 <div className="pt-4">
-                                    <button className="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-full shadow-lg transition-all duration-300 hover:shadow-green-500/25 transform hover:-translate-y-1">
+                                    <Link
+                                        to={`/topics/${section.slug}`}
+                                        className="inline-block px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-full shadow-lg transition-all duration-300 hover:shadow-green-500/25 transform hover:-translate-y-1"
+                                    >
                                         Learn More
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

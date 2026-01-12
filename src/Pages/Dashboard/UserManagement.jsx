@@ -30,7 +30,7 @@ const UserManagement = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/users`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/users`);
       // Ensure we handle both array response and object { users: [] } response patterns
       const fetchedUsers = Array.isArray(response.data) ? response.data : (response.data.users || []);
       setUsers(fetchedUsers);
@@ -48,11 +48,11 @@ const UserManagement = () => {
     try {
       if (editingUser) {
         // Update user
-        await axios.patch(`${import.meta.env.VITE_API_URL}/users/${editingUser._id}`, formData);
+        await axios.patch(`${import.meta.env.VITE_API_URL}/api/users/${editingUser._id}`, formData);
         toast.success('User updated successfully!');
       } else {
         // Create user
-        await axios.post(`${import.meta.env.VITE_API_URL}/users`, {
+        await axios.post(`${import.meta.env.VITE_API_URL}/api/users`, {
           ...formData,
           joinDate: new Date().toISOString() // Set join date for new users
         });
@@ -82,7 +82,7 @@ const UserManagement = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
       try {
-        await axios.delete(`${import.meta.env.VITE_API_URL}/users/${id}`);
+        await axios.delete(`${import.meta.env.VITE_API_URL}/api/users/${id}`);
         toast.success('User deleted successfully!');
         fetchUsers();
       } catch (error) {
@@ -94,7 +94,7 @@ const UserManagement = () => {
 
   const handleStatusChange = async (userId, newStatus) => {
     try {
-      await axios.patch(`${import.meta.env.VITE_API_URL}/users/${userId}`, { status: newStatus });
+      await axios.patch(`${import.meta.env.VITE_API_URL}/api/users/${userId}`, { status: newStatus });
       toast.success(`User status updated to ${newStatus}!`);
       fetchUsers();
     } catch (error) {

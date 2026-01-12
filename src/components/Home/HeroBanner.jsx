@@ -103,15 +103,15 @@ const HeroBanner = () => {
           <div
             key={slide._id}
             className={`absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-700 ease-in-out ${index === currentSlide
-                ? 'opacity-100 scale-100 z-10'
-                : 'opacity-0 scale-110 z-0'
+              ? 'opacity-100 scale-100 z-10'
+              : 'opacity-0 scale-110 z-0'
               }`}
             style={{ backgroundImage: `url(${slide.imageSrc || slide.imageUrl})` }}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30 flex items-center">
               <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full">
                 <div className="max-w-3xl">
-                  <h1 className="text-white text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-wide mb-4 drop-shadow-lg animate-fade-in-up">
+                  <h1 className="heading-serif text-white text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-wide mb-4 drop-shadow-lg animate-fade-in-up">
                     {slide.title}
                   </h1>
                   <p className="text-white text-lg sm:text-xl mb-8 font-light drop-shadow-md animate-fade-in-up animation-delay-200">
@@ -119,7 +119,7 @@ const HeroBanner = () => {
                   </p>
                   <a
                     href={slide.ctaLink || '/challenges'}
-                    className="btn-primary btn-lg inline-flex items-center gap-2 transform hover:scale-105 shadow-lg animate-fade-in-up animation-delay-400"
+                    className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-lg font-semibold inline-flex items-center gap-2 transform hover:scale-105 shadow-lg animate-fade-in-up animation-delay-400 transition-all duration-300"
                   >
                     <span>{slide.ctaText || 'View More'}</span>
                     <FaArrowRight />
@@ -162,8 +162,8 @@ const HeroBanner = () => {
               onClick={() => goToSlide(index)}
               disabled={isAnimating}
               className={`transition-all duration-300 rounded-full ${index === currentSlide
-                  ? 'w-10 h-3 bg-emerald-500'
-                  : 'w-3 h-3 bg-white/50 hover:bg-white/80'
+                ? 'w-10 h-3 bg-emerald-500'
+                : 'w-3 h-3 bg-white/50 hover:bg-white/80'
                 } disabled:cursor-not-allowed`}
               aria-label={`Go to slide ${index + 1}`}
             />

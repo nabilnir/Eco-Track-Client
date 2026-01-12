@@ -5,7 +5,7 @@ import Spinner from '../Spinner/Spinner';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-const RecentTips= () => {
+const RecentTips = () => {
   const [tips, setTips] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -56,14 +56,14 @@ const RecentTips= () => {
     <section className="py-20 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 
-            className="text-4xl font-bold text-gray-900 dark:text-white mb-4"
+          <h2
+            className="heading-serif text-4xl font-bold text-gray-900 dark:text-white mb-4"
             data-aos="fade-down"
             data-aos-delay="100"
           >
             Eco Tips from Our Community
           </h2>
-          <p 
+          <p
             className="text-xl text-gray-600 dark:text-gray-300"
             data-aos="fade-up"
             data-aos-delay="200"
@@ -77,8 +77,8 @@ const RecentTips= () => {
             <div className="text-center text-gray-500 dark:text-gray-300" data-aos="fade-up">No tips available.</div>
           ) : (
             tips.map((tip, index) => (
-              <div 
-                key={tip._id ?? tip.id} 
+              <div
+                key={tip._id ?? tip.id}
                 className="bg-white dark:bg-gray-700 rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow"
                 data-aos="fade-up"
                 data-aos-delay={index * 100}

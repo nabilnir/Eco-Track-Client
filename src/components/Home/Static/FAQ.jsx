@@ -49,17 +49,17 @@ const FAQ = () => {
     <section className="py-20 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-500 dark:bg-blue-600 rounded-full mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-500 dark:bg-emerald-600 rounded-full mb-4">
             <FaQuestionCircle className="text-3xl text-white" />
           </div>
-          <h2 
-            className="text-4xl font-bold text-gray-900 dark:text-white mb-4"
+          <h2
+            className="heading-serif text-4xl font-bold text-gray-900 dark:text-white mb-4"
             data-aos="fade-down"
             data-aos-delay="100"
           >
             Frequently Asked Questions
           </h2>
-          <p 
+          <p
             className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto"
             data-aos="fade-up"
             data-aos-delay="200"
@@ -78,24 +78,23 @@ const FAQ = () => {
             >
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full px-6 py-4 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-t-xl"
+                className="w-full px-6 py-4 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 rounded-t-xl"
               >
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white pr-4">
                   {faq.question}
                 </h3>
                 <div className="flex-shrink-0">
                   {activeIndex === index ? (
-                    <FaChevronUp className="text-blue-500 dark:text-blue-400 text-xl" />
+                    <FaChevronUp className="text-emerald-500 dark:text-emerald-400 text-xl" />
                   ) : (
                     <FaChevronDown className="text-gray-500 dark:text-gray-400 text-xl" />
                   )}
                 </div>
               </button>
-              
+
               <div
-                className={`overflow-hidden transition-all duration-300 ${
-                  activeIndex === index ? 'max-h-96' : 'max-h-0'
-                }`}
+                className={`overflow-hidden transition-all duration-300 ${activeIndex === index ? 'max-h-96' : 'max-h-0'
+                  }`}
               >
                 <div className="px-6 pb-4">
                   <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
@@ -108,17 +107,17 @@ const FAQ = () => {
         </div>
 
         <div className="mt-12 text-center">
-          <div 
+          <div
             className="inline-flex items-center gap-4 text-gray-600 dark:text-gray-300"
             data-aos="fade-up"
             data-aos-delay="800"
           >
             <FaQuestionCircle className="text-xl" />
             <p className="text-lg">
-              Still have questions? 
-              <a 
-                href="/contact" 
-                className="text-blue-600 dark:text-blue-400 hover:underline font-medium ml-1"
+              Still have questions?
+              <a
+                href="/contact"
+                className="text-emerald-600 dark:text-emerald-400 hover:underline font-medium ml-1"
               >
                 Contact our support team
               </a>

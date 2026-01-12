@@ -1,14 +1,14 @@
 import React from 'react';
 
-const HeroSection = ({ 
-  title, 
-  subtitle, 
-  description, 
-  primaryCTA, 
+const HeroSection = ({
+  title,
+  subtitle,
+  description,
+  primaryCTA,
   secondaryCTA,
   image = null,
   className = '',
-  ...props 
+  ...props
 }) => {
   return (
     <section className={`hero-gradient min-h-screen flex items-center justify-center relative py-24 px-5 overflow-hidden ${className}`} {...props}>
@@ -22,30 +22,30 @@ const HeroSection = ({
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
           <div className="text-left">
-            <h1 className="hero-title mb-6 animate-fade-in">
+            <h1 className="heading-serif hero-title mb-6 animate-fade-in">
               {title}
             </h1>
-            
+
             {subtitle && (
               <h2 className="text-2xl md:text-3xl font-heading text-text-light/90 mb-4 animate-slide-up">
                 {subtitle}
               </h2>
             )}
-            
+
             {description && (
-              <p className="text-large text-text-light/80 mb-8 animate-slide-up" style={{animationDelay: '0.2s'}}>
+              <p className="text-large text-text-light/80 mb-8 animate-slide-up" style={{ animationDelay: '0.2s' }}>
                 {description}
               </p>
             )}
-            
+
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 animate-slide-up" style={{animationDelay: '0.4s'}}>
+            <div className="flex flex-col sm:flex-row gap-4 animate-slide-up" style={{ animationDelay: '0.4s' }}>
               {primaryCTA && (
                 <a href={primaryCTA.href} className="btn-primary text-lg px-8 py-4">
                   {primaryCTA.label}
                 </a>
               )}
-              
+
               {secondaryCTA && (
                 <a href={secondaryCTA.href} className="btn-ghost text-lg px-8 py-4">
                   {secondaryCTA.label}
@@ -54,7 +54,7 @@ const HeroSection = ({
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-6 mt-16 animate-slide-up" style={{animationDelay: '0.6s'}}>
+            <div className="grid grid-cols-3 gap-6 mt-16 animate-slide-up" style={{ animationDelay: '0.6s' }}>
               <div className="text-center">
                 <div className="stat-number">10K+</div>
                 <div className="stat-label">Active Users</div>
@@ -73,8 +73,8 @@ const HeroSection = ({
           {/* Image */}
           {image && (
             <div className="flex justify-center lg:justify-end animate-fade-in">
-              <img 
-                src={image} 
+              <img
+                src={image}
                 alt={title}
                 className="hero-image"
               />
