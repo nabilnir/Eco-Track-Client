@@ -20,7 +20,7 @@ const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const from = location.state?.from?.pathname || '/';
+  const from = location.state?.from?.pathname || '/dashboard';
 
   // Password validation function
   const validatePassword = (password) => {

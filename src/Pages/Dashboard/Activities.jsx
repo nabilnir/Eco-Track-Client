@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FaPlus, FaEdit, FaTrash, FaEye, FaLeaf, FaSearch, FaFilter, FaCalendarAlt } from 'react-icons/fa';
 import axiosPublic from '../../api/axiosPublic';
+import Swal from 'sweetalert2';
+import toast from 'react-hot-toast';
 
 const Activities = () => {
   const [activities, setActivities] = useState([]);
@@ -72,16 +74,35 @@ const Activities = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this activity?')) {
-      try {
-        await axiosPublic.delete(`/activities/${id}`);
-        toast.success('Activity deleted successfully!');
-        fetchActivities();
-      } catch (error) {
-        console.error('Failed to delete activity:', error);
-        toast.error('Failed to delete activity');
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#10b981',
+      cancelButtonColor: '#ef4444',
+      confirmButtonText: 'Yes, delete it!',
+      background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#fff',
+      color: document.documentElement.classList.contains('dark') ? '#fff' : '#000'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axiosPublic.delete(`/activities/${id}`);
+          Swal.fire({
+            title: 'Deleted!',
+            text: 'Activity has been deleted.',
+            icon: 'success',
+            background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#fff',
+            color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
+            confirmButtonColor: '#10b981'
+          });
+          fetchActivities();
+        } catch (error) {
+          console.error('Failed to delete activity:', error);
+          toast.error('Failed to delete activity');
+        }
       }
-    }
+    });
   };
 
   const handleCloseModal = () => {

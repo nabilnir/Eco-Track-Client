@@ -3,12 +3,17 @@ import { AuthContext } from '../../Context/AuthContext';
 import AdminOverview from './AdminOverview';
 import DashboardOverview from './DashboardOverview';
 
-/**
- * DashboardHome - Conditionally renders the appropriate dashboard overview
- * based on user role. Admin users see AdminOverview, regular users see DashboardOverview.
- */
 const DashboardHome = () => {
-    const { user } = useContext(AuthContext);
+    const { user, loading } = useContext(AuthContext);
+
+    if (loading) {
+        return (
+            <div className="flex flex-col items-center justify-center p-20 animate-pulse">
+                <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+                <p className="mt-4 text-gray-500 font-medium font-['Inter']">Initializing Dashboard...</p>
+            </div>
+        );
+    }
 
     // Determine user role - check for 'admin' string in email OR role property
     const isAdmin = user?.role === 'admin' || user?.email?.toLowerCase().includes('admin');

@@ -19,7 +19,6 @@ const HomeLayout = () => {
   useTitle('Home')
   return (
     <div>
-      <Toaster position="top-right" />
       <HeroBanner />
       <LiveStatistics />
       <ActiveChallenges />

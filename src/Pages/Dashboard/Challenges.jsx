@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FaPlus, FaEdit, FaTrash, FaEye, FaTrophy, FaSearch, FaFilter, FaCalendarAlt, FaUsers, FaStar } from 'react-icons/fa';
 import axiosPublic from '../../api/axiosPublic';
+import Swal from 'sweetalert2';
+import toast from 'react-hot-toast';
 
 const Challenges = () => {
   const [challenges, setChallenges] = useState([]);
@@ -148,16 +150,35 @@ const Challenges = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this challenge?')) {
-      try {
-        await axiosPublic.delete(`/challenges/${id}`);
-        toast.success('Challenge deleted successfully!');
-        fetchChallenges();
-      } catch (error) {
-        console.error('Failed to delete challenge:', error);
-        toast.error('Failed to delete challenge');
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#10b981',
+      cancelButtonColor: '#ef4444',
+      confirmButtonText: 'Yes, delete it!',
+      background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#fff',
+      color: document.documentElement.classList.contains('dark') ? '#fff' : '#000'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axiosPublic.delete(`/challenges/${id}`);
+          Swal.fire({
+            title: 'Deleted!',
+            text: 'Challenge has been deleted.',
+            icon: 'success',
+            background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#fff',
+            color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
+            confirmButtonColor: '#10b981'
+          });
+          fetchChallenges();
+        } catch (error) {
+          console.error('Failed to delete challenge:', error);
+          toast.error('Failed to delete challenge');
+        }
       }
-    }
+    });
   };
 
   const handleCloseModal = () => {

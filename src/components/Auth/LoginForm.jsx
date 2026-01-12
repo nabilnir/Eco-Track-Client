@@ -16,7 +16,7 @@ const LoginForm = () => {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
 
-  const from = location.state?.from?.pathname || '/';
+  const from = location.state?.from?.pathname || '/dashboard';
 
   // Demo credentials
   const demoCredentials = {
@@ -26,7 +26,7 @@ const LoginForm = () => {
     },
     admin: {
       email: 'admin@ecotrack.com',
-      password: 'admin123'
+      password: 'Admin@123'
     }
   };
 
@@ -57,13 +57,18 @@ const LoginForm = () => {
     try {
       const result = await login(email, password);
       // Sync user data to backend (just in case they missed registration sync)
-      const user = result.user;
-      await axiosPublic.post('/users', {
-        name: user.displayName || 'User',
-        email: user.email,
-        photoURL: user.photoURL,
-        role: user.email === 'admin@ecotrack.com' ? 'admin' : 'user'
-      });
+      // Done in a separate try block so it doesn't break the login success if it fails
+      try {
+        const user = result.user;
+        await axiosPublic.post('/users', {
+          name: user.displayName || 'User',
+          email: user.email,
+          photoURL: user.photoURL,
+          role: user.email?.toLowerCase().includes('admin') ? 'admin' : 'user'
+        });
+      } catch (syncError) {
+        console.warn('Backend user sync failed:', syncError);
+      }
 
       toast.success('Logged in successfully! Welcome back to EcoTrack');
       navigate(from, { replace: true });

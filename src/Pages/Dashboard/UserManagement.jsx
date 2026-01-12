@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaUsers, FaEdit, FaTrash, FaSearch, FaFilter, FaUserShield, FaUserTimes, FaUserCheck, FaEnvelope, FaCalendarAlt, FaTimes } from 'react-icons/fa';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import Swal from 'sweetalert2';
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -80,16 +81,35 @@ const UserManagement = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
-      try {
-        await axios.delete(`${import.meta.env.VITE_API_URL}/api/users/${id}`);
-        toast.success('User deleted successfully!');
-        fetchUsers();
-      } catch (error) {
-        console.error('Failed to delete user:', error);
-        toast.error('Failed to delete user');
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#10b981',
+      cancelButtonColor: '#ef4444',
+      confirmButtonText: 'Yes, delete it!',
+      background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#fff',
+      color: document.documentElement.classList.contains('dark') ? '#fff' : '#000'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`${import.meta.env.VITE_API_URL}/api/users/${id}`);
+          Swal.fire({
+            title: 'Deleted!',
+            text: 'User has been deleted.',
+            icon: 'success',
+            background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#fff',
+            color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
+            confirmButtonColor: '#10b981'
+          });
+          fetchUsers();
+        } catch (error) {
+          console.error('Failed to delete user:', error);
+          toast.error('Failed to delete user');
+        }
       }
-    }
+    });
   };
 
   const handleStatusChange = async (userId, newStatus) => {

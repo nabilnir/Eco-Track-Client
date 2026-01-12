@@ -68,6 +68,12 @@ const DashboardLayout = () => {
 
   const adminMenuItems = [
     {
+      name: 'Dashboard',
+      path: '/dashboard',
+      icon: FaHome,
+      label: 'Overview'
+    },
+    {
       name: 'User Management',
       path: '/dashboard/users',
       icon: FaUsers,

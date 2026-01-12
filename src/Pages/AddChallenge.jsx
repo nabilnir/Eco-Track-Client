@@ -61,7 +61,6 @@ const AddChallenge = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 mt-15 transition-colors duration-300">
-      <Toaster position="top-right" />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 border border-gray-100 dark:border-gray-700">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Create New Challenge</h1>
